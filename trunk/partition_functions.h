@@ -1,6 +1,3 @@
-#include <cmath>
-#include <string>
-#include <vector>
-using namespace std;
+#include "main.h"
 
-vector<long> median_partition(vector<long> number);
+vector<long> median_partition(vector<long> number, int partition_number);
