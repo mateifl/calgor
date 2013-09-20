@@ -1,3 +1,7 @@
+#ifndef _MAIN_H_
+#define _MAIN_H_
+
+
 #include <cmath>
 #include <string>
 #include <vector>
@@ -7,4 +11,4 @@
 using namespace std;
 #pragma once
 
-
+#endif
