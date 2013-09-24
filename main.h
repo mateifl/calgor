@@ -1,13 +1,14 @@
 #ifndef _MAIN_H_
 #define _MAIN_H_
 
-
 #include <cmath>
 #include <string>
 #include <vector>
 #include <iostream>
 #include <cstdlib>
 #include <fstream>
+#include <numeric>
+#include <algorithm>
 using namespace std;
 #pragma once
 

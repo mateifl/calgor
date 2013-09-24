@@ -2,27 +2,25 @@
 #include "util.h"
 #include "partition_functions.h"
 
-vector<long> read_test_data(const string& file_name);
-
+vector<int> read_test_data(const string& file_name);
 
 int main()
 {
-    vector<long> input_data;
-
+    vector<int> input_data;
     input_data = read_test_data("tc1.txt");
     dprint(input_data);
 
-	vector<long> indexes = median_partition(input_data, 3);
+    CMedianPartition median_partition = CMedianPartition(input_data, 3);
+	vector<int> indexes = median_partition.median_partition();
 	dprint(indexes);
     return 0;
 }
 
 
-
-vector<long> read_test_data(const string& file_name) {
-    vector<long> v;
+vector<int> read_test_data(const string& file_name) {
+    vector<int> v;
     string buffer;
-    long l;
+    int l;
 
     ifstream file(file_name.c_str());
 	if(! file) {
@@ -39,5 +37,3 @@ vector<long> read_test_data(const string& file_name) {
     file.close();
     return v;
 }
-
-
