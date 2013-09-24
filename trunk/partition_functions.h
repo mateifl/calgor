@@ -3,6 +3,17 @@
 
 #include "main.h"
 
-vector<long> median_partition(vector<long> number, int partition_number);
+class CMedianPartition {
+    public:
+        CMedianPartition() {};
+        CMedianPartition(vector<int> numbers, int partition_number);
+
+        vector<int> median_partition();
+
+    private:
+        vector<int> m_numbers;
+        int mi_partition_number;
+        int** m_memotable;
+};
 
 #endif

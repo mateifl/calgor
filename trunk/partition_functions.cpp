@@ -1,51 +1,45 @@
 #include "partition_functions.h"
 
+CMedianPartition::CMedianPartition(vector<int> numbers, int partition_number)
+{
+    m_numbers = numbers;
+    mi_partition_number = partition_number;
+    pi_memotable = new int*[m_numbers.size()];
+    for(unsigned int i = 0; i < m_numbers.size(); i++)
 
-vector<long> median_partition(vector<long> numbers, int partition_number) {
-    long l_sum = 0;
-    vector<long>::iterator it;
-	vector<long> v_indexes;
+}
 
+vector<int> CMedianPartition::median_partition() {
+
+    int l_sum = 0;
+    vector<int>::iterator it;
+	vector<int> v_indexes;
+
+    for(unsigned int i = 0; i < m_numbers.size(); i++)
+    {
+        max(median_partition());
+    }
 	// this part must be replaced with a STL algorithm
-    for(it = numbers.begin(); it != numbers.end(); it++)
-        l_sum += *it;
-
-	long median = l_sum / partition_number;
-    cout << "Median: " << median << endl;
-
-	// the next problem is how to determine the deviation median
-
-	l_sum = 0;
-    long index = 0; //, l_deviation = 100;
-	//l_deviation = median / partition_number;
-
-    for(it  = numbers.begin(); it != numbers.end(); ) {
-        l_sum += *it;
-		it++;
-		if ( l_sum + *it - median >= median - l_sum) {
-			cout << "Sum: " << l_sum << endl;
-            v_indexes.push_back(index);
-            l_sum = 0;
-        }
-
-        index += 1;
-    }
-
-	l_sum = 0;
-	index = numbers.size() - 1; //, l_deviation = 100;
-	//l_deviation = median / partition_number;
-
-    for(it  = numbers.end(); it != numbers.begin(); ) {
-        l_sum += *it;
-		it--;
-		if ( l_sum + *it - median >= median - l_sum) {
-			cout << "Sum: " << l_sum << endl;
-            v_indexes.push_back(index);
-            l_sum = 0;
-        }
-
-        index -= 1;
-    }
-
     return v_indexes;
+}
+
+vector<int> median_partition(vector<int> numbers, int partition_number) {
+
+    int best = MAX;
+
+    for(unsigned int i = 0; i < m_numbers.size(); i++) {
+
+        best = min(best, max(median_partition(), accumulate());
+    }
+}
+
+vector<vector<int> > partition_on_slots(vector<int> frequecies, int slots_number) {
+    vector<vector<int> > slots;
+    vector<int>::iterator it;
+
+    for(it = frequecies.begin(); it != frequecies.end(); it++) {
+
+    }
+
+    return slots;
 }
