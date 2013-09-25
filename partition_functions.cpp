@@ -4,42 +4,27 @@ CMedianPartition::CMedianPartition(vector<int> numbers, int partition_number)
 {
     m_numbers = numbers;
     mi_partition_number = partition_number;
-    pi_memotable = new int*[m_numbers.size()];
+    mp_memotable = new int*[m_numbers.size()];
     for(unsigned int i = 0; i < m_numbers.size(); i++)
-
+        mp_memotable[i] = new int[m_numbers.size()];
 }
 
 vector<int> CMedianPartition::median_partition() {
-
-    int l_sum = 0;
     vector<int>::iterator it;
 	vector<int> v_indexes;
-
-    for(unsigned int i = 0; i < m_numbers.size(); i++)
-    {
-        max(median_partition());
-    }
-	// this part must be replaced with a STL algorithm
     return v_indexes;
 }
 
-vector<int> median_partition(vector<int> numbers, int partition_number) {
+int CMedianPartition::median_partition(vector<int> numbers, int partition_number) {
+    if(partition_number == 0)
+        return 0;
+    else if(numbers.size() == 1)
+        return numbers[0];
 
-    int best = MAX;
-
+    int best = 10000000;
     for(unsigned int i = 0; i < m_numbers.size(); i++) {
-
-        best = min(best, max(median_partition(), accumulate());
-    }
-}
-
-vector<vector<int> > partition_on_slots(vector<int> frequecies, int slots_number) {
-    vector<vector<int> > slots;
-    vector<int>::iterator it;
-
-    for(it = frequecies.begin(); it != frequecies.end(); it++) {
-
+        best = min(best, max(median_partition(), accumulate( numbers.begin(), numbers.begin() + i, 0));
     }
 
-    return slots;
+    return best;
 }
