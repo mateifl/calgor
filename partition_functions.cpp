@@ -9,6 +9,11 @@ CMedianPartition::CMedianPartition(vector<int> numbers, int partition_number)
         mp_memotable[i] = new int[m_numbers.size()];
 }
 
+CMedianPartition::~CMedianPartition()
+{
+    delete[] mp_memotable;
+}
+
 vector<int> CMedianPartition::median_partition() {
     vector<int>::iterator it;
 	vector<int> v_sums;
@@ -27,7 +32,7 @@ int CMedianPartition::median_partition(vector<int> numbers, unsigned int end_ind
     else if(numbers.size() == 1)
         return numbers[0];
 
-    cout << partition_number << " " << end_index << endl;
+//    cout << partition_number << " " << end_index << endl;
     int best = 10000000, sum, recursive_result;
     for(unsigned int i = 0; i < end_index; i++) {
     	sum = accumulate( numbers.begin() + i, numbers.begin() + end_index - 1, 0);
