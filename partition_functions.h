@@ -12,7 +12,7 @@ class CMedianPartition {
         };
         CMedianPartition(vector<int> numbers, int partition_number);
         vector<int> median_partition();
-
+        CMedianPartition::~CMedianPartition();
     private:
         int median_partition(vector<int> numbers, unsigned int end_index, int partition_number);
         vector<int> m_numbers;
