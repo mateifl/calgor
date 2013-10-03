@@ -6,14 +6,8 @@ vector<int> read_test_data(const string& file_name);
 
 int main()
 {
-    vector<int> input_data;
-    input_data = read_test_data("tc1.txt");
-    dprint(input_data);
+    vector<int> data;
 
-    CMedianPartition median_partition = CMedianPartition(input_data, 3);
-	vector<int> indexes = median_partition.median_partition();
-	dprint(indexes);
-    return 0;
 }
 
 
