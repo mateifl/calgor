@@ -21,10 +21,10 @@ int calculate_convex_hull_perimeter( vector<point> points ){
     return perimeter_convex_hull;
 }
 
-
+/*
 double distance(point p1, point p2) {
     return sqrt( (p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y) );
-}
+}*/
 
 
 short movement(point first, point second, point third) {
