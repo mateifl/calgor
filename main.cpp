@@ -1,12 +1,34 @@
 #include "main.h"
 #include "util.h"
-#include "partition_functions.h"
+#include "tsp.h"
 
-vector<int> read_test_data(const string& file_name);
+
+
+
 
 int main()
 {
-    vector<int> data;
+    set<short> input_set;
+    input_set.insert((short)1);
+    input_set.insert((short)2);
+    input_set.insert((short)3);
+    input_set.insert((short)4);
+    input_set.insert((short)5);
+
+    set< set<short> > sets = subsets(input_set, 3);
+
+    set<short>::iterator it1;
+    set< set<short> >::iterator it2;
+    set<short> s;
+
+    for( it2 = sets.begin(); it2 != sets.end(); it2++ ) {
+        s = *it2;
+        for( it1 = s.begin(); it1 != s.end(); it1++ ) {
+            cout << *it1 << " ";
+        }
+        cout << endl;
+    }
+
 
 }
 
