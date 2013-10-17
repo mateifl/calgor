@@ -1,7 +1,7 @@
 #include "convex_hull.h"
 
 bool compare(point first_point, point second_point);
-int distance(point first_point, point second_point);
+double distance(point p1, point p2);
 
 int calculate_convex_hull_perimeter( vector<point> points ){
     int perimeter_convex_hull;
@@ -22,8 +22,8 @@ int calculate_convex_hull_perimeter( vector<point> points ){
 }
 
 
-int distance(point first_point, point second_point) {
-    return sqrt( pow((first_point.x - second_point.x), 2) + pow((first_point.y - second_point.y), 2) );
+double distance(point p1, point p2) {
+    return sqrt( (p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y) );
 }
 
 
