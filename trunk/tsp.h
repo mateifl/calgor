@@ -8,6 +8,7 @@
 #include <vector>
 #include <fstream>
 #include <map>
+#include <string>
 using namespace std;
 #pragma once
 
