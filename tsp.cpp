@@ -46,10 +46,25 @@ set< set<short> > subsets(set<short> initial_set, size_t sub_set_size)
 }
 
 float points_distance(const point & p1, const point & p2) {
-    return sqrt( (p1.x - p2.x) * (p1.x - p2.x) + (p1.x - p2.x) * (p1.x - p2.x) );
+    return sqrt( (p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y) );
 }
 
 map<pair<short, short>, float> distances( vector<point> coordinates) {
+
+    vector<point>::iterator it;
+
+    for(it = coordinates.begin(); it != coordinates.end(); it++)
+        cout << it->x << " " << it->y;
+
+    cout << endl;
+
+    for(int i = 0; i < coordinates.size(); i++)
+        cout << coordinates[i].x << " " << coordinates[i].y;
+
+    cout << endl;
+    cout << sizeof(point) << endl;
+    cout << coordinates[6].x << " " << coordinates[6].y << endl;
+
     map<pair<short, short>, float> result;
     size_t vector_length = coordinates.size();
 	//vector<point>::iterator it1, it2;
@@ -59,6 +74,7 @@ map<pair<short, short>, float> distances( vector<point> coordinates) {
 			point p1 = coordinates[i];
 			point p2 = coordinates[j];
 			float dist = points_distance(p1, p2);
+			cout << " dist = " << dist << " " << p1.x << " " << p1.y << " " << p2.x << " " << p2.y  << endl;
 			pair<pair<short, short>, float> d = pair<pair<short, short>, float>( indexes, dist);
 			result.insert( d );
         }
@@ -69,7 +85,7 @@ map<pair<short, short>, float> distances( vector<point> coordinates) {
 vector<point> read_data(string filename) {
     vector<point> points;
     ifstream file(filename.c_str());
-	
+
     if(!file.is_open()) {
         cout << "Error opening file!" << endl;
         exit(1);
@@ -155,24 +171,24 @@ float tsp(vector<point> &vertices_coord) {
                 set<short>::iterator new_set_it;
                 for(new_set_it = v_new_set.begin(); new_set_it != v_new_set.end(); new_set_it++) {
 					float sum = a[v_new_set][*new_set_it] + v_dist[pair<short, short>( *it, *new_set_it )];
-                    if(sum < minim) 
+                    if(sum < minim)
                         minim = sum;
-                    
+
                 }
 				a[v_set].insert( pair<short, float>( *it, minim ));
             }
-			
+
         }
     }
-    
+
     set<float> costs;
 	set< set<short> > sets = subsets(v_vertices_set, vertices_number);
-	cout << "Max sets " << sets.size() << endl; 
+	cout << "Max sets " << sets.size() << endl;
 	set< set<short> >::iterator it = sets.begin();
 
 	for(short i = 1; i <= vertices_number; i++  )
 	{
-		cout <<  a[*it][i + 1]  << endl;
+		cout <<  a[*it][i + 1] + v_dist[pair<short, short>( 1, i )] << endl;
 	}
 
 	return 0.0f;
