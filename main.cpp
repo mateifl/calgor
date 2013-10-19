@@ -1,9 +1,16 @@
 #include "main.h"
 #include "util.h"
-#include "tsp.h"
+#include "sat.h"
 
 
+int main() {
 
+    set<int> numbers;
+    vector<condition> conditions = read_sat_data("2sat6.txt", numbers);
+    cout << numbers.size() << endl;
+    preprocess(conditions, numbers);
+    cout << numbers.size() << endl;
+}
 
 
 

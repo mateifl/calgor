@@ -13,7 +13,7 @@ vector<condition> read_sat_data(string filename, set<int> &numbers) {
     string buffer;
     int t1, t2;
     getline(file, buffer);
-    numbers = atoi(buffer.c_str());
+    //numbers = atoi(buffer.c_str());
     condition c;
 
     while(!file.eof()) {
@@ -22,8 +22,8 @@ vector<condition> read_sat_data(string filename, set<int> &numbers) {
         t2 = atoi( buffer.substr(buffer.find(" ") + 1).c_str() );
         c.t1 = t1;
         c.t2 = t2;
-        numbers.insert(abs(t1));
-        numbers.insert(abs(t2));
+        numbers.insert(t1);
+        numbers.insert(t2);
         conditions.push_back(c);
     }
 
@@ -70,5 +70,13 @@ bool check_condition(const condition & cond, const vector<bool> numbers) {
     return (v1_bool || v2_bool);
 }
 
-
+void preprocess( vector<condition> & conditions, set<int> & numbers ) {
+    set<int> numbers_copy(numbers);
+    set<int>::iterator it;
+    for(it = numbers_copy.begin(); it != numbers_copy.end(); it++){
+        int n = (-1) * (*it);
+        if( numbers_copy.find(n) == numbers_copy.end() )
+            numbers.erase(*it);
+    }
+}
 
