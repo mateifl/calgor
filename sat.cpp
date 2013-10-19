@@ -13,12 +13,15 @@ map<int, scondition> read_sat_data(string filename, set<int> &numbers) {
     string buffer;
     int t1, t2;
     getline(file, buffer);
-    
+
     scondition c;
 	int i = 0;
 
     while(!file.eof()) {
         getline(file, buffer);
+        if(buffer.size() == 0)
+            continue;
+
         t1 = atoi( buffer.substr(0, buffer.find(" ")).c_str() );
         t2 = atoi( buffer.substr(buffer.find(" ") + 1).c_str() );
         c.t1 = t1;
@@ -72,14 +75,30 @@ bool check_condition(const scondition & cond, const vector<bool> numbers) {
     return (v1_bool || v2_bool);
 }
 
-set<int> preprocess( map<int, scondition> & conditions, set<int> & numbers ) {
+map<int, scondition> preprocess(map<int, scondition> & conditions, vector<bool> & initial_numbers) {
+    set<int> numbers = numbers_from_conditions(conditions);
+    cout << "numbers: " << numbers.size() << endl;
+    set<int> numbers_to_remove = find_numbers_to_remove(numbers, initial_numbers);
+    cout << "numbers to remove: " << numbers_to_remove.size() << endl;
+    return remove_conditions(conditions, numbers_to_remove);
+
+}
+
+set<int> find_numbers_to_remove(set<int> & numbers, vector<bool> & initial_numbers) {
     set<int> numbers_copy(numbers);
 	set<int> numbers_to_remove;
     set<int>::iterator it;
     for(it = numbers_copy.begin(); it != numbers_copy.end(); it++){
         int n = (-1) * (*it);
-        if( numbers_copy.find(n) == numbers_copy.end() )
+        if( numbers_copy.find(n) == numbers_copy.end() ) {
 			numbers_to_remove.insert(*it);
+
+			if(*it < 0)
+                initial_numbers[abs(*it)] = false;
+            else
+                initial_numbers[abs(*it)] = true;
+
+        }
     }
 	return numbers_to_remove;
 }
@@ -93,14 +112,6 @@ map<int, scondition> remove_conditions(map<int, scondition> & conditions, set<in
 			new_conditions.erase(it->first);
 	}
 	return new_conditions;
-}
-
-set<int> diff( set<int> & initial, const set<int> & set_to_remove){
-	set<int>::iterator it;
-	for(it = set_to_remove.begin(); it != set_to_remove.end(); it++) {
-		initial.erase(*it);
-	}
-	return initial;
 }
 
 set<int> numbers_from_conditions(map<int, scondition> & conditions) {
