@@ -94,3 +94,21 @@ map<int, scondition> remove_conditions(map<int, scondition> & conditions, set<in
 	}
 	return new_conditions;
 }
+
+set<int> diff( set<int> & initial, const set<int> & set_to_remove){
+	set<int>::iterator it;
+	for(it = set_to_remove.begin(); it != set_to_remove.end(); it++) {
+		initial.erase(*it);
+	}
+	return initial;
+}
+
+set<int> numbers_from_conditions(map<int, scondition> & conditions) {
+	map<int, scondition>::iterator it;
+	set<int> numbers;
+	for(it = conditions.begin(); it != conditions.end(); it++){
+		numbers.insert(it->second.t1);
+		numbers.insert(it->second.t2);
+	}
+	return numbers;
+}
