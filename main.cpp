@@ -6,14 +6,47 @@
 int main() {
 	cout << "start" << endl;
     set<int> numbers;
-	map<int, scondition> conditions = read_sat_data("2sat6.txt", numbers);
+	map<int, scondition> conditions = read_sat_data("2sat1.txt", numbers);
 	cout << "data read" << endl;
 	cout << "conditions: " << conditions.size() << endl;
-    cout << numbers.size() << endl;
+    cout << "initial numbers " << numbers.size() << endl;
     set<int> numbers_to_remove = preprocess(conditions, numbers);
-    cout << numbers_to_remove.size() << endl;
+    cout << "numbers to remove "<< numbers_to_remove.size() << endl;
 	map<int, scondition> new_conditions = remove_conditions(conditions, numbers_to_remove);
-	cout << new_conditions.size();
+	cout << new_conditions.size() << endl;
+
+	numbers = numbers_from_conditions(new_conditions);
+	cout << "initial numbers " << numbers.size() << endl;
+	numbers_to_remove.clear();
+	numbers_to_remove = preprocess(new_conditions, numbers);
+	cout << "numbers to remove "<< numbers_to_remove.size() << endl;
+	new_conditions = remove_conditions(new_conditions, numbers_to_remove);
+	cout << new_conditions.size() << endl;
+
+	numbers = numbers_from_conditions(new_conditions);
+	cout << "initial numbers " << numbers.size() << endl;
+	numbers_to_remove.clear();
+	numbers_to_remove = preprocess(new_conditions, numbers);
+	cout << "numbers to remove "<< numbers_to_remove.size() << endl;
+	new_conditions = remove_conditions(new_conditions, numbers_to_remove);
+	cout << new_conditions.size() << endl;
+
+	numbers = numbers_from_conditions(new_conditions);
+	cout << "initial numbers " << numbers.size() << endl;
+	numbers_to_remove.clear();
+	numbers_to_remove = preprocess(new_conditions, numbers);
+	cout << "numbers to remove "<< numbers_to_remove.size() << endl;
+	new_conditions = remove_conditions(new_conditions, numbers_to_remove);
+	cout << new_conditions.size() << endl;
+
+		numbers = numbers_from_conditions(new_conditions);
+	cout << "initial numbers " << numbers.size() << endl;
+	numbers_to_remove.clear();
+	numbers_to_remove = preprocess(new_conditions, numbers);
+	cout << "numbers to remove "<< numbers_to_remove.size() << endl;
+	new_conditions = remove_conditions(new_conditions, numbers_to_remove);
+	cout << new_conditions.size() << endl;
+
 }
 
 
