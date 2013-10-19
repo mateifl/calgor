@@ -1,8 +1,8 @@
 #include "main.h"
 #include "sat.h"
 
-vector<condition> read_sat_data(string filename, set<int> &numbers) {
-    vector<condition> conditions;
+map<int, scondition> read_sat_data(string filename, set<int> &numbers) {
+    map<int, scondition> conditions;
     ifstream file(filename.c_str());
 
     if(!file.is_open()) {
@@ -13,8 +13,9 @@ vector<condition> read_sat_data(string filename, set<int> &numbers) {
     string buffer;
     int t1, t2;
     getline(file, buffer);
-    //numbers = atoi(buffer.c_str());
-    condition c;
+    
+    scondition c;
+	int i = 0;
 
     while(!file.eof()) {
         getline(file, buffer);
@@ -24,7 +25,8 @@ vector<condition> read_sat_data(string filename, set<int> &numbers) {
         c.t2 = t2;
         numbers.insert(t1);
         numbers.insert(t2);
-        conditions.push_back(c);
+		conditions.insert(pair<int, scondition>(i ,c));
+		i++;
     }
 
     return conditions;
@@ -56,7 +58,7 @@ void sat(string filename) {
     }
 }
 */
-bool check_condition(const condition & cond, const vector<bool> numbers) {
+bool check_condition(const scondition & cond, const vector<bool> numbers) {
     int idx1 = abs(cond.t1);
     bool v1_bool = numbers.at(idx1);
     bool v2_bool = numbers.at(abs(cond.t2));
@@ -70,13 +72,25 @@ bool check_condition(const condition & cond, const vector<bool> numbers) {
     return (v1_bool || v2_bool);
 }
 
-void preprocess( vector<condition> & conditions, set<int> & numbers ) {
+set<int> preprocess( map<int, scondition> & conditions, set<int> & numbers ) {
     set<int> numbers_copy(numbers);
+	set<int> numbers_to_remove;
     set<int>::iterator it;
     for(it = numbers_copy.begin(); it != numbers_copy.end(); it++){
         int n = (-1) * (*it);
         if( numbers_copy.find(n) == numbers_copy.end() )
-            numbers.erase(*it);
+			numbers_to_remove.insert(*it);
     }
+	return numbers_to_remove;
 }
 
+map<int, scondition> remove_conditions(map<int, scondition> & conditions, set<int> & numbers) {
+	map<int, scondition> new_conditions(conditions);
+	map<int, scondition>::iterator it;
+
+	for(it = conditions.begin(); it != conditions.end(); it++){
+		if( numbers.find( it->second.t1 ) != numbers.end() || numbers.find( it->second.t2 ) != numbers.end() )
+			new_conditions.erase(it->first);
+	}
+	return new_conditions;
+}

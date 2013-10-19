@@ -4,12 +4,16 @@
 
 
 int main() {
-
+	cout << "start" << endl;
     set<int> numbers;
-    vector<condition> conditions = read_sat_data("2sat6.txt", numbers);
+	map<int, scondition> conditions = read_sat_data("2sat6.txt", numbers);
+	cout << "data read" << endl;
+	cout << "conditions: " << conditions.size() << endl;
     cout << numbers.size() << endl;
-    preprocess(conditions, numbers);
-    cout << numbers.size() << endl;
+    set<int> numbers_to_remove = preprocess(conditions, numbers);
+    cout << numbers_to_remove.size() << endl;
+	map<int, scondition> new_conditions = remove_conditions(conditions, numbers_to_remove);
+	cout << new_conditions.size();
 }
 
 
