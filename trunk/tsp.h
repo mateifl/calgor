@@ -21,7 +21,7 @@ struct point {
 typedef struct point point;
 
 set< set<short> > subsets(set<short> initial_set, size_t sub_set_size);
-float tsp(vector<point> &vertices_coord);
+float tsp(const vector<point> &vertices_coord);
 vector<point> read_data(string filename);
 void print_set( set<short> s );
 map<pair<short, short>, float> distances( vector<point> coordinates);
