@@ -2,7 +2,7 @@
 
 bool compare(point first_point, point second_point);
 double distance(point p1, point p2);
-
+/*
 int calculate_convex_hull_perimeter( vector<point> points ){
     int perimeter_convex_hull;
     sort(points.begin(), points.end(), compare);
@@ -21,10 +21,10 @@ int calculate_convex_hull_perimeter( vector<point> points ){
     return perimeter_convex_hull;
 }
 
-/*
+
 double distance(point p1, point p2) {
     return sqrt( (p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y) );
-}*/
+}
 
 
 short movement(point first, point second, point third) {
@@ -32,7 +32,7 @@ short movement(point first, point second, point third) {
 
     return result;
 }
-
+*/
 
 bool compare(point first_point, point second_point) {
     if( first_point.x != second_point.x )

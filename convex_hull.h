@@ -3,8 +3,8 @@
 #include "main.h"
 
 struct point {
-    double x;
-    double y;
+    float x;
+    float y;
 };
 
 typedef struct point point;
