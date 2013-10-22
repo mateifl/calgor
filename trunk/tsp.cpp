@@ -24,8 +24,8 @@ set< set<short> > subsets(set<short> initial_set, size_t sub_set_size)
             v_set.insert( *it );
         i++;
     }
+
     v_result.insert(v_set);
-    
     v_set.clear();
 
     while( next_permutation( v_mask, v_mask + v_set_size ) )
@@ -160,6 +160,8 @@ float tsp(const vector<point> &vertices_coord) {
 
                 }
 				a[v_set].insert( pair<short, float>( *it, minim ));
+				//print_set(v_set, false);
+				//cout << " " << *it << " " << minim << endl;
             }
 
         }
@@ -172,8 +174,7 @@ float tsp(const vector<point> &vertices_coord) {
 
 	for(unsigned short i = 1; i < vertices_number; i++  )
 	{
-        float c = a[*it][i + 1] + v_dist[pair<short, short>( 1, i )];
-		cout <<  c << endl;
+        float c = a[*it][i + 1] + v_dist[pair<short, short>( 1, i + 1)];
         if(cost > c)
             cost = c;
 	}
@@ -182,10 +183,12 @@ float tsp(const vector<point> &vertices_coord) {
 	return cost;
 }
 
-void print_set( set<short> s ) {
+void print_set( set<short> s, bool with_newline = true ) {
 	set<short>::iterator it;
+	cout << "{";
 	for( it = s.begin(); it != s.end(); it++)
 		cout << " " << *it;
-
-	cout << endl;
+	cout << "}";
+	if(with_newline)
+		cout << endl;
 }
