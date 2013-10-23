@@ -13,4 +13,6 @@ template <class T> void dprint(vector<T> v)
     cout << endl;
 }
 
+void print_short_array(short *a, size_t a_length);
+
 #endif
