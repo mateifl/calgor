@@ -40,8 +40,8 @@ int main()
         res.clear();
 	}
 */
-//    vector<point> points = read_data("tsp_tc1.txt");
-//    tsp(points);
+    vector<point> points = read_data("tsp_tc1.txt");
+    tsp(points);
 /*    points = read_data("tsp_tc3.txt");
     tsp(points);
     points = read_data("tsp_tc4.txt");
