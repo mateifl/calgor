@@ -3,7 +3,6 @@
 
 
 void add_to_vector(vector<vector<short> > &result, const vector<short> &initial_set, const char *v_mask, int sub_set_size) {
-
     vector<short> subset = vector<short>(sub_set_size);
     int j = 0;
     for(int i = 0; i < initial_set.size(); i++)
@@ -41,9 +40,11 @@ vector<vector<short> > subsets(vector<short> initial_set, size_t sub_set_size)
     return v_result;
 }
 
+
 float points_distance(const point & p1, const point & p2) {
     return sqrt( (p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y) );
 }
+
 
 map<pair<short, short>, float> distances( vector<point> coordinates) {
     map<pair<short, short>, float> result;
@@ -51,16 +52,17 @@ map<pair<short, short>, float> distances( vector<point> coordinates) {
 
     for(unsigned short i = 0; i < vector_length; i++) {
         for(unsigned short j = 0; j < vector_length; j++) {
-			pair<short, short> indexes = pair<short, short>(i + 1, j + 1);
+			pair<short, short> indexes = make_pair(i + 1, j + 1);
 			point p1 = coordinates[i];
 			point p2 = coordinates[j];
 			float dist = points_distance(p1, p2);
-			pair<pair<short, short>, float> d = pair<pair<short, short>, float>( indexes, dist);
+			pair<pair<short, short>, float> d = make_pair(indexes, dist);
 			result.insert( d );
         }
     }
     return result;
 }
+
 
 vector<point> read_data(string filename) {
     vector<point> points;
@@ -87,6 +89,7 @@ vector<point> read_data(string filename) {
 	cout << "Data read" << endl;
     return points;
 }
+
 
 bool find_in_vector(vector_short v, short value_to_find) {
     for(unsigned int i = 0; i < v.size(); i++)
@@ -121,25 +124,32 @@ float tsp(const vector<point> &vertices_coord) {
 
             if( i == 1) {
                 map<short, float> m;
-                m.insert( pair<short, float>(short(1), 0.0f) );
-                a.insert( pair<vector_short, map<short, float> >(v_set, m) );
+                m.insert( make_pair(short(1), 0.0f) );
+                a.insert( make_pair(v_set, m) );
             }
             else {
                 map<short, float> m;
-                m.insert( pair<short, float>(short(1), 1000000.0f) );
-                a.insert( pair<vector_short, map<short, float> >(v_set, m) );
+                m.insert( make_pair(short(1), 1000000.0f) );
+                a.insert( make_pair(v_set, m) );
             }
         }
     }
 
+    cout << "Init matrix size: " << a.size() << endl;
+
+    map< vector_short, map<short, float> >::iterator it1;
+
+    for(it1 = a.begin(); it1 != a.end(); it1 ++) 
+        print_set(it1->first, true);
+
+    cout << "end" << endl;
     for(unsigned short i = 2; i <= vertices_number; i++) {
-		cout << i << endl;
+		//cout << "Iteration: " << i << endl;
         // subsets of size i
         vector<vector_short> sets = subsets(v_vertices, i);
 
         for( v_sets_iterator = sets.begin(); v_sets_iterator != sets.end(); v_sets_iterator++ ) {
             vector_short v = *v_sets_iterator;
-
             // if 1 not in v_set
             if( !find_in_vector(v, vertex_one) )
                 continue;
@@ -149,20 +159,20 @@ float tsp(const vector<point> &vertices_coord) {
                     continue;
 
                 vector_short v_new = v;
-                v.erase(remove(v.begin(), v.end(), v[j]), v.end());
+                v_new.erase(remove(v_new.begin(), v_new.end(), v[j]), v_new.end());
+                //print_set(v, true);
 
+                print_set(v_new, true);
+                // ok here, sets are printed correctly.
                 float minim = 10000000.0f;
                 // calculate the minimum of the path
-                for(int k = 0; k < i - 1; k++) {
-                    cout << a[v_new][k];
-					float sum = a[v_new][k] + v_dist[pair<short, short>( j, k )];
+                for(int k = 0; k < i; k++) {
+					float sum = a[v_new][v[k]] + v_dist[pair<short, short>( v[j], v[k] )];
                     if(sum < minim)
                         minim = sum;
                 }
-                cout << j << " " << i << " " << minim << endl;
-				a[v].insert( pair<short, float>(j, minim));
+				a[v].insert( make_pair(j, minim));
             }
-
         }
     }
 
@@ -188,7 +198,7 @@ void print_set( vector_short s, bool with_newline = true ) {
 	cout << "[";
 	for( it = s.begin(); it != s.end(); it++)
 		cout << " " << *it;
-	cout << "]";
+	cout << " ]";
 	if(with_newline)
 		cout << endl;
 }
