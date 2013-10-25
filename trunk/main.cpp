@@ -22,31 +22,32 @@ int main() {
 
 int main()
 {
-/*
+
     int n = 5;
-    vector<short> v;
+    char letters[5] = {'a', 'b', 'c', 'd', 'e' };
+    vector<char> v;
 
-	for(int i = 0; i < n; i++)
-		v.push_back(i + 1);
+    for(int i = 0; i < n; i++)
+        v.push_back(letters[i]);
 
-    vector< vector<short> > res;
-    vector< vector<short> >::iterator it;
+    vector< vector<char> > res;
+    vector< vector<char> >::iterator it;
 	for(int i = 2; i < n; i++) {
 		cout << i << endl;
-		res = subsets(v, i);
+		res = subsets2(v, i);
 		for(it = res.begin(); it != res.end(); it++){
-            print_set(*it, true);
+                    dprint(*it);
 		}
         res.clear();
 	}
-*/
-    vector<point> points = read_data("tsp_tc1.txt");
-    tsp(points);
+
+//    vector<point> points = read_data("tsp.txt");
+//    tsp(points);
 
     /*
     map< pair<short, short>, float> m = distances(points);
 
-    cout << m[make_pair(1, 1)] << endl;
+     cout << m[make_pair(1, 1)] << endl;
     cout << m[make_pair(1, 2)] << endl;
     cout << m[make_pair(1, 3)] << endl;
     cout << m[make_pair(1, 4)] << endl;
@@ -54,8 +55,8 @@ int main()
     cout << m[make_pair(3, 4)] << endl;
     */
     
-    points = read_data("tsp_tc4.txt");
-    tsp(points);
+//    points = read_data("tsp_tc4.txt");
+//    tsp(points);
 //    points = read_data("tsp_tc4.txt");
 //    tsp(points);
 

@@ -145,7 +145,7 @@ float tsp(const vector<point> &vertices_coord) {
     cout << "end" << endl;
     */
     for(unsigned short i = 2; i <= vertices_number; i++) {
-		//cout << "Iteration: " << i << endl;
+        cout << "Iteration: " << i << endl;
         // subsets of size i
         vector<vector_short> sets = subsets(v_vertices, i);
 
