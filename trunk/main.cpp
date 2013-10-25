@@ -42,9 +42,21 @@ int main()
 */
     vector<point> points = read_data("tsp_tc1.txt");
     tsp(points);
-/*    points = read_data("tsp_tc3.txt");
-    tsp(points);
+
+    /*
+    map< pair<short, short>, float> m = distances(points);
+
+    cout << m[make_pair(1, 1)] << endl;
+    cout << m[make_pair(1, 2)] << endl;
+    cout << m[make_pair(1, 3)] << endl;
+    cout << m[make_pair(1, 4)] << endl;
+    cout << m[make_pair(2, 3)] << endl;
+    cout << m[make_pair(3, 4)] << endl;
+    */
+    
     points = read_data("tsp_tc4.txt");
     tsp(points);
-*/
+//    points = read_data("tsp_tc4.txt");
+//    tsp(points);
+
 }

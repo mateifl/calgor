@@ -110,7 +110,7 @@ float tsp(const vector<point> &vertices_coord) {
     for(unsigned short i = 1; i <= vertices_number; i++)
         v_vertices.push_back(i);
 
-    short vertex_one = 1;
+    short vertex_one = v_vertices[0];
     map< vector_short, map<short, float> > a;
     vector<vector_short>::iterator v_sets_iterator;
 
@@ -122,14 +122,13 @@ float tsp(const vector<point> &vertices_coord) {
 			if( !find_in_vector(v_set, vertex_one) )
 				continue;
 
+            map<short, float> m;
             if( i == 1) {
-                map<short, float> m;
-                m.insert( make_pair(short(1), 0.0f) );
+                m.insert( make_pair(vertex_one, 0.0f) );
                 a.insert( make_pair(v_set, m) );
             }
             else {
-                map<short, float> m;
-                m.insert( make_pair(short(1), 1000000.0f) );
+                m.insert( make_pair(vertex_one, 10000000.0f) );
                 a.insert( make_pair(v_set, m) );
             }
         }
@@ -137,12 +136,14 @@ float tsp(const vector<point> &vertices_coord) {
 
     cout << "Init matrix size: " << a.size() << endl;
 
+    /*
     map< vector_short, map<short, float> >::iterator it1;
 
     for(it1 = a.begin(); it1 != a.end(); it1 ++) 
         print_set(it1->first, true);
 
     cout << "end" << endl;
+    */
     for(unsigned short i = 2; i <= vertices_number; i++) {
 		//cout << "Iteration: " << i << endl;
         // subsets of size i
@@ -160,18 +161,33 @@ float tsp(const vector<point> &vertices_coord) {
 
                 vector_short v_new = v;
                 v_new.erase(remove(v_new.begin(), v_new.end(), v[j]), v_new.end());
-                //print_set(v, true);
-
+                /*
+                cout << " v = ";
+                print_set(v, true);
+                cout << " v_new = ";
                 print_set(v_new, true);
+                */
                 // ok here, sets are printed correctly.
                 float minim = 10000000.0f;
                 // calculate the minimum of the path
-                for(int k = 0; k < i; k++) {
-					float sum = a[v_new][v[k]] + v_dist[pair<short, short>( v[j], v[k] )];
+                for(int k = 0; k < i - 1; k++) {
+                    if( v_new[k] == v [j]){
+                        cerr << "Error: " << v[k] << endl;
+                        continue;
+                    }
+                    /*
+                    cout << "a";
+                    print_set(v_new, false);
+                    cout << "[" << v[k] << "] = " << a[v_new][v[k]] <<  endl;
+                    cout << "dist[" << v[j] << "][" << v[k] << "] = " << v_dist[make_pair(v[j], v[k])] << endl;
+                    */
+					float sum = a[v_new][v_new[k]] + v_dist[make_pair(v[j], v_new[k])];
                     if(sum < minim)
                         minim = sum;
+                    //cout << "sum: " << sum << " minim: " << minim << endl;
                 }
-				a[v].insert( make_pair(j, minim));
+                //cout << "setting result element =======================================================" << endl;
+				a[v].insert(make_pair(v[j], minim));
             }
         }
     }
