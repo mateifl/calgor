@@ -95,7 +95,7 @@ void process(string filename) {
         }
         //cout << "input vector created. size: " << v1.size() << endl;
         long long mp = max_partition(v1, numbers_size, partition_number, subproblems);
-        print_partitions(v1, mp);
+        print_partitions(v1, mp, partition_number);
         v1.clear();
         subproblems.clear();
     }    
@@ -124,33 +124,48 @@ void process_bs(string filename) {
         }
         long long mp = max_partition_bs(v1, partition_number);
         cout << "Max. partition: " << mp << endl;
-        print_partitions(v1, mp);
+		print_partitions(v1, mp, partition_number);
         v1.clear();
         
     }    
     
 }
 
-void print_partitions(vector<long long> numbers, long long max_partition)
+void print_partitions(const vector<long long> numbers, const long long max_partition, const int partition_number)
 {
-    size_t i = numbers.size() - 1;
+	size_t i = numbers.size() - 1, partition_num = partition_number;
     ostringstream line;
     long long temp_sum = 0LL;
     string result = "";
     
     while( i > 0 )
     {
-        line << " " << numbers[i];
-        result = " " + line.str() + " " + result; 
-        temp_sum += numbers[i];
-        if ( ( temp_sum + numbers[i - 1] > max_partition) ){
-            result =   " / " + result;
+
+        line << numbers[i];
+        result = line.str() + " " + result; 
+        
+		if ( partition_num == i + 1 ) {
+			result =   "/ " + result;
+			i--;
+			partition_num--; 
+			line.clear();
+			line.str("");
+			continue;
+		}
+
+		temp_sum += numbers[i];
+
+        if (temp_sum + numbers[i - 1] > max_partition){
+            result =   "/ " + result;
+			partition_num -= 1;
             temp_sum = 0LL;
         }
-        line.flush();
+        line.clear();
+		line.str("");
         i--;
     }
-    
-    result = line.str() + "\n";
-    cout << result << endl;
+	line.clear();
+	line.str("");
+    line << numbers[0];
+    cout << line.str() + " " + result << endl;
 }
