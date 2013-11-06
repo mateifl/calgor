@@ -16,6 +16,6 @@ long long max_partition_bs(const vector<long long> &numbers, int partition_numbe
 long long max_partition(vector<long long> numbers, int end_index, int partition_number, map<pair<int, int>, long long> &subproblems);
 void process(string filename);
 void process_bs(string filename);
-void print_partitions(vector<long long> numbers, long long max_partition);
+void print_partitions(vector<long long> numbers, long long max_partition, const int partition_number);
 
 #endif

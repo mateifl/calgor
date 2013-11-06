@@ -3,6 +3,6 @@
 
 int main(int argc, char* argv[])
 {
-    process_bs("books_tc_small.txt");
+    process_bs("book1tc.txt");
     //process("books_tc_small.txt");
 }
