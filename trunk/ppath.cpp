@@ -8,7 +8,7 @@ set<int> prime_numbers(int low, int high) {
 		test.push_back(1);
 	}
 	
-	int sqr = sqrt(high) + 1;
+	int sqr = sqrt((double)high) + 1;
 
 	for(int i = 2; i <= sqr; i++) {
 		for(int j = i * i; j <= high; j += i) {
@@ -54,13 +54,52 @@ void check_string_in_primes(int prime, int position, char number,
    stringstream ss;
    ss << prime;
    string s = ss.str();
+   if( s[position] == number ) 
+       return;
    s[position] = number;
    int new_prime = atoi(s.c_str());
    
    if( numbers.find(new_prime) != numbers.end() )
    {
-       //cout << "found " << p << " neighbor" << endl; 
 	   neighbors.insert(new_prime);
    }
    
+}
+
+
+// Breath first implementation.
+int bfs(graph g, int start_node, int end_node) {
+    if(end_node == start_node)
+        return 0;
+    queue<int> q;
+    q.push(start_node);
+    int node;
+    set<int> visited_nodes, neighbors;
+    set<int>::iterator it;
+    int path_length;
+    map<int, int> distances;
+    distances.insert( make_pair(start_node, 0));
+
+    while(q.size() > 0){
+        node = q.front();
+        q.pop();
+        visited_nodes.insert(node);
+        neighbors = g[node];
+        path_length = distances[node];
+        
+        if( neighbors.find(end_node) != neighbors.end() ) {
+            distances.insert( make_pair(end_node, path_length + 1));
+            break;
+        }
+
+        for(it = neighbors.begin(); it != neighbors.end(); it++) {
+            if( visited_nodes.find(*it) == visited_nodes.end() ) {
+                visited_nodes.insert(*it);
+                distances.insert( make_pair(*it, path_length + 1));
+                q.push(*it);
+            }
+        }
+    }
+
+    return distances[end_node];
 }

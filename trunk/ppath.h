@@ -9,6 +9,9 @@
 #include <string>
 #include <cstdio>
 #include <set>
+#include <queue>
+#include <ctime>
+#include <unordered_map>
 using namespace std;
 
 typedef map<int, set<int>> graph;
@@ -18,5 +21,7 @@ graph create_graph(const set<int> &numbers);
 
 void check_string_in_primes(int prime, int position, char number, 
                            set<int> &neighbors, const set<int> &numbers ); 
+
+int bfs(graph g, int start_node, int end_node);
 
 #endif
