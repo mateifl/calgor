@@ -103,3 +103,44 @@ int bfs(graph g, int start_node, int end_node) {
 
     return distances[end_node];
 }
+
+
+// Breath first implementation.
+int bfs2(graph g, int start_node, int end_node) {
+    if(end_node == start_node)
+        return 0;
+    queue<int> q;
+    q.push(start_node);
+    int node;
+    set<int> neighbors;
+    set<int>::iterator it;
+    int path_length;
+    unordered_map<int, int> distances, visited_nodes;
+    distances.insert( make_pair(start_node, 0));
+
+    while(q.size() > 0){
+        node = q.front();
+        q.pop();
+        visited_nodes.insert(make_pair(node, 1));
+        neighbors = g[node];
+        path_length = distances[node];
+        /*
+        if( neighbors.find(end_node) != neighbors.end() ) {
+            distances.insert( make_pair(end_node, path_length + 1));
+            break;
+        }
+        */
+        for(it = neighbors.begin(); it != neighbors.end(); it++) {
+            if(*it == end_node)
+                return path_length + 1;
+            if( visited_nodes.find(*it) == visited_nodes.end() ) {
+                visited_nodes.insert( make_pair(*it, 1) );
+                neighbors.erase(*it);
+                distances.insert( make_pair(*it, path_length + 1));
+                q.push(*it);
+            }
+        }
+    }
+
+    return distances[end_node];
+}
