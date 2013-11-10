@@ -24,14 +24,14 @@ vector<string> read_items(FILE *f, int item_size) {
     char *p;
     
     fscanf(f, "%d\n", &number_of_items);
-    vector<string> result;
+    vector<string> result(number_of_items);
     for(int i = 0; i < number_of_items; i++)
     {
-        p = fgets(pch_item, item_size, f);
+        p = fgets(pch_item, item_size + 1, f);
         if(p == NULL)
             cerr << "Error reading items!" << endl;
-        item = pch_item;
-        result.push_back(item);
+        item = string(pch_item, item_size - 1);
+        result[i] = item;
     }
     
     return result;

@@ -64,7 +64,7 @@ string_map new_centers(string_map &centers) {
             if( it2 == centers.end() )  
                 break;
         
-            cout << "FOCEN: " << old_center << endl;
+            //cout << "FOCEN: " << old_center << endl;
             old_names.push_back(old_center); 
             new_center = it2->second;
         }
@@ -121,13 +121,15 @@ int main(int argc, char** argv) {
     clock_t t = clock();
     FILE *f;
     f = fopen(argv[1], "r");
-    vector<string> recruits = read_items(f, 20);
-    cout << recruits.size() << endl;
-    cout << recruits[0] << endl;
+    string_map recruits = read_pairs(f, 12, 6);
+    cout << "Recruits: " << recruits.size() << endl;
+    
     string_map centers = read_pairs(f, 5, 5);
     cout << "Centers: " <<  centers.size() << endl;
+    
     vector<string> v = read_items(f, 12);
-    cout << v.size() << endl;
+    cout << "New Recruits: " << v.size() << endl;
+    
     fclose(f);
     clock_t t1 = clock();    
     cout << "Read:" <<  ((float)(t1 - t))/CLOCKS_PER_SEC << endl;
@@ -136,18 +138,19 @@ int main(int argc, char** argv) {
     cout << "Remap:" <<  ((float)(t2 - t1))/CLOCKS_PER_SEC << endl;
         
     vector<string>::iterator it;
-    string mro;
-    /*
+    string mro, new_mro;
+    
     for( it = v.begin(); it != v.end(); it++ ){
-        mro = s[*it];
-        if( new_c.find(mro) != new_c.end() ) {
-            printf("%s %s\n", it->c_str(), new_c[mro].c_str() );
+        mro = recruits[*it];
+        new_mro = new_c[mro];
+        if( new_mro.size() > 0 ) {
+            printf("%s %s\n", it->c_str(), new_mro.c_str() );
         }
         else
         {
             printf("%s %s\n", it->c_str(), mro.c_str() );
         }
-    }*/
+    }
     clock_t t3 = clock();    
     cout << "Write:" <<  ((float)(t3 - t2))/CLOCKS_PER_SEC << endl;
     cout << "Total:" <<  ((float)(t3 - t))/CLOCKS_PER_SEC << endl;
