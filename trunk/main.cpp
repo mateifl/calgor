@@ -121,10 +121,11 @@ int main(int argc, char** argv) {
     clock_t t = clock();
     FILE *f;
     f = fopen(argv[1], "r");
-    vector<string> recruits = read_items(f, 19);
+    vector<string> recruits = read_items(f, 20);
     cout << recruits.size() << endl;
+    cout << recruits[0] << endl;
     string_map centers = read_pairs(f, 5, 5);
-    cout << centers.size() << endl;
+    cout << "Centers: " <<  centers.size() << endl;
     vector<string> v = read_items(f, 12);
     cout << v.size() << endl;
     fclose(f);
