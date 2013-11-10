@@ -20,15 +20,14 @@ vector<string> read_items(FILE *f, int item_size) {
     int number_of_items;
     char pch_item[item_size];
     string item;
-    vector<string> result;
     
     fscanf(f, "%d\n", &number_of_items);
-    
+    vector<string> result(number_of_items);
     for(int i = 0; i < number_of_items; i++)
     {
         fscanf(f, "%s\n", pch_item);
         item = pch_item;
-        result.push_back(item);
+        result[i] = item;
     }
     
     return result;

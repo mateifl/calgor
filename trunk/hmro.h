@@ -7,6 +7,7 @@
 #include <map>
 #include <numeric>
 #include <cstdio>
+#include <ctime>
 using namespace std;
 
 typedef map<string, string> string_map;
