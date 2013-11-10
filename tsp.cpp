@@ -1,5 +1,5 @@
 #include "tsp.h"
-#include "util.h"
+//#include "util.h"
 
 
 void add_to_vector(vector<vector<short> > &result, const vector<short> &initial_set, const char *v_mask, int sub_set_size) {
@@ -116,6 +116,7 @@ float tsp(const vector<point> &vertices_coord) {
 
     // initialize the solution matrix
     for(unsigned short i = 1; i <= vertices_number; i++) {
+		cout << "Init: " << i << endl;
         vector< vector_short > sets = subsets(v_vertices, i);
         for( v_sets_iterator = sets.begin(); v_sets_iterator != sets.end(); v_sets_iterator++ ) {
             vector_short v_set = *v_sets_iterator;
@@ -132,6 +133,7 @@ float tsp(const vector<point> &vertices_coord) {
                 a.insert( make_pair(v_set, m) );
             }
         }
+		sets.clear();
     }
 
     cout << "Init matrix size: " << a.size() << endl;
@@ -145,7 +147,9 @@ float tsp(const vector<point> &vertices_coord) {
     cout << "end" << endl;
     */
     for(unsigned short i = 2; i <= vertices_number; i++) {
-        cout << "Iteration: " << i << endl;
+
+		cout << "Iteration: " << i << endl;
+
         // subsets of size i
         vector<vector_short> sets = subsets(v_vertices, i);
 
@@ -190,6 +194,7 @@ float tsp(const vector<point> &vertices_coord) {
 				a[v].insert(make_pair(v[j], minim));
             }
         }
+		sets.clear();
     }
 
     vector<vector_short> sets = subsets(v_vertices, vertices_number);
