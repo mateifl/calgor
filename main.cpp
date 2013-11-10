@@ -1,3 +1,5 @@
+#include "hmro.h"
+/*
 #include <vector>
 //#include <algorithm>
 #include <iostream>
@@ -5,9 +7,9 @@
 //#include <numeric>
 #include <cstdio>
 using namespace std;
-
-typedef map<string, string> string_map;
-string_map new_centers(string_map &centers);
+*/
+//typedef map<string, string> string_map;
+//string_map new_centers(string_map &centers);
 //string_map read_pairs(FILE *f, int size_first, int size_second); 
 //vector<string> read_items(FILE *f, int item_size); 
 
@@ -62,6 +64,7 @@ string_map new_centers(string_map &centers) {
             if( it2 == centers.end() )  
                 break;
         
+            cout << "FOCEN: " << old_center << endl;
             old_names.push_back(old_center); 
             new_center = it2->second;
         }
@@ -78,7 +81,7 @@ string_map new_centers(string_map &centers) {
     return new_c;
 }
 
-
+/*
 int main(int argc, char** argv) {
     int testcases_number;
     scanf("%d\n", &testcases_number);
@@ -106,28 +109,34 @@ int main(int argc, char** argv) {
     }
     
 }
+*/
 
 
-/*
 int main(int argc, char** argv) {
     if(argc != 2)
     {
         cout << "wrong number of parameters!" << endl;
         return -1;
     }
+    clock_t t = clock();
     FILE *f;
     f = fopen(argv[1], "r");
-    string_map s = read_pairs(f, 12, 5);
-    cout << s.size() << endl;
+    vector<string> recruits = read_items(f, 19);
+    cout << recruits.size() << endl;
     string_map centers = read_pairs(f, 5, 5);
     cout << centers.size() << endl;
     vector<string> v = read_items(f, 12);
     cout << v.size() << endl;
     fclose(f);
+    clock_t t1 = clock();    
+    cout << "Read:" <<  ((float)(t1 - t))/CLOCKS_PER_SEC << endl;
     string_map new_c = new_centers(centers);
+    clock_t t2 = clock();    
+    cout << "Remap:" <<  ((float)(t2 - t1))/CLOCKS_PER_SEC << endl;
         
     vector<string>::iterator it;
     string mro;
+    /*
     for( it = v.begin(); it != v.end(); it++ ){
         mro = s[*it];
         if( new_c.find(mro) != new_c.end() ) {
@@ -137,9 +146,9 @@ int main(int argc, char** argv) {
         {
             printf("%s %s\n", it->c_str(), mro.c_str() );
         }
-    }
-    
+    }*/
+    clock_t t3 = clock();    
+    cout << "Write:" <<  ((float)(t3 - t2))/CLOCKS_PER_SEC << endl;
+    cout << "Total:" <<  ((float)(t3 - t))/CLOCKS_PER_SEC << endl;
     return 0;
 }
-
-*/
