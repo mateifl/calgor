@@ -45,8 +45,7 @@ long long max_partition(	vector<long long> numbers, int numbers_size, int partit
 {
     map<pair<int, int>, long long>::iterator it = subproblems.find(make_pair(numbers_size,partition_number));
 	if (it != subproblems.end()) {
-//        cout << "SP" << endl;
-        return it->second;
+                return it->second;
 	}
 	if(partition_number == 1) {
 		long long s = accumulate(numbers.begin(), numbers.begin() + numbers_size, 0LL);
@@ -59,7 +58,7 @@ long long max_partition(	vector<long long> numbers, int numbers_size, int partit
 		return numbers[0];
 	}
 	
-	long long max_p = 500 * 10000000l;
+	long long max_p = 500L * 10000000L;
 	
 	for(int i = partition_number - 1; i < numbers_size; i++) {
 		long long acc = accumulate(numbers.begin() + i, numbers.begin() + numbers_size, 0LL) ;	
@@ -105,7 +104,7 @@ void process(string filename) {
 void process_bs(string filename) {
     FILE *input_file;
     input_file = fopen(filename.c_str(), "r");
-    char pch_line[5120], *pch, pch_line1[128];
+    char pch_line[5120], *pch;
     const char *delim = " ";    
     long number;
     int numbers_size, partition_number;
@@ -133,7 +132,7 @@ void process_bs(string filename) {
 
 void print_partitions(const vector<long long> numbers, const long long max_partition, const int partition_number)
 {
-	size_t i = numbers.size() - 1, partition_num = partition_number;
+    size_t i = numbers.size() - 1, partition_num = partition_number;
     ostringstream line;
     long long temp_sum = 0LL;
     string result = "";

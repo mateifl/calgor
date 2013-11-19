@@ -5,7 +5,7 @@
 void add_to_vector(vector<vector<short> > &result, const vector<short> &initial_set, const char *v_mask, int sub_set_size) {
     vector<short> subset = vector<short>(sub_set_size);
     int j = 0;
-    for(int i = 0; i < initial_set.size(); i++)
+    for(unsigned int i = 0; i < initial_set.size(); i++)
     {
         if( v_mask[i] == 1 ){
             subset[j]  = initial_set.at(i);
