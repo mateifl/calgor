@@ -1,30 +1,31 @@
 #ifndef _UTIL_H_
 #define _UTIL_H_
+
 #include <iostream>
 #include <vector>
+#include <map>
 #include <algorithm>
 using namespace std;
 
+/* prints the edges o a greaph in the form:
+1 2
+1 3
+2 4
 
-template <class T> void dprint(vector<T> v)
-{
-    cout << "Size: " << v.size() << endl;
-    for(unsigned int i = 0; i < v.size(); i++)
-        cout << v[i] << " ";
-    cout << endl;
+The graph must be in an adjancecy list representation: map< T, vector<U> > for example.  */
+
+template <typename T> void print(T i){
+    cout << i << " ";
 }
 
-template <class T> T vector_sum(vector<T> v)
-{
-	T sum = 0;
-	vector<T>::iterator it;
-	for( it = v.begin(); it != v.end(); it++)
-		sum += *it;
-	return sum;
+template <typename T, typename U> void print_graph_edges(map<T, vector<U> > g) {
+    T::iterator it;
+    
+    for( it = g.begin(); it != g.end(); it++)
+    {
+        for_each( it->begin(); it->end(); print );
+    }
+
 }
-
-
-void print_short_array(short *a, size_t a_length);
-
 
 #endif
