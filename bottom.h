@@ -10,6 +10,7 @@
 #include <set>
 #include <stack>
 #include <ctime>
+
 using namespace std;
 
 typedef map<int, vector<int> > graph;

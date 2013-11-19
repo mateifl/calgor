@@ -7,7 +7,7 @@
 #include <algorithm>
 using namespace std;
 
-/* prints the edges o a greaph in the form:
+/* prints the edges of a graph in the form:
 1 2
 1 3
 2 4
@@ -19,11 +19,13 @@ template <typename T> void print(T i){
 }
 
 template <typename T, typename U> void print_graph_edges(map<T, vector<U> > g) {
-    T::iterator it;
-    
+    typename map<T, vector<U> >::iterator it;
+    typename vector<U>::iterator it_vect;
+
     for( it = g.begin(); it != g.end(); it++)
     {
-        for_each( it->begin(); it->end(); print );
+    	for(it_vect = it->second.begin(); it_vect != it->second.end(); it_vect++)
+    		cout << it->first << " " << *it_vect << endl;
     }
 
 }
