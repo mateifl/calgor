@@ -1,4 +1,5 @@
 #include "bottom.h"
+#include "util.h"
 
 graph dfs(graph &g, int start_node) {
     graph dfs_tree;
@@ -14,8 +15,10 @@ graph dfs(graph &g, int start_node) {
         node = node_stack.top();
         node_stack.pop();
         neighbors = g[node];
+
+        dfs_tree[node] = vector<int>();
         for(it = neighbors.begin(); it != neighbors.end(); it++) {
-            if( dfs_tree.find(*it) != dfs_tree.end() ){
+            if( dfs_tree.find(*it) == dfs_tree.end() ){
                 node_stack.push(*it);  
                 dfs_tree[node].push_back(*it);
             }
