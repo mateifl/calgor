@@ -2,15 +2,23 @@
 #define _HASH_TABLE_H_
 
 #include <string>
+#include <vector>
 using namespace std;
 
-/*
-class hash_table<typename key, typename value> {
-private:
+template <typename key, typename value>  class hash_table {
+    private:
+        vector<value> values;
+        
+    public:
+        value get(key k);
+        void insert(key k, value v);
+        void remove(key k);
+        void clear() {
+            values.clear();
+        }
 
-public:
 };
-*/
+
 
 class string_hash_table {
     
