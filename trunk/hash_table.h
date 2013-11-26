@@ -1,48 +1,22 @@
-#ifndef _HASH_TABLE_H_
-#define _HASH_TABLE_H_
-
+#ifndef HASH_TABLE_H
+#define	HASH_TABLE_H
 #include <string>
 #include <vector>
 using namespace std;
 
-template <typename key, typename value>  class hash_table {
-    private:
-        vector<value> values;
-        
-    public:
-        value get(key k);
-        void insert(key k, value v);
-        void remove(key k);
-        void clear() {
-            values.clear();
-        }
-
-};
 
 
-class string_hash_table {
-    
-private:
-    char **table;
-    long hash_code(string &str);
-    long hash_code(long number);
-    long compress(long hash_code);
+class hash_table {
 public:
-    /* contructors */
-    string_hash_table();
-    string_hash_table(long size);
-
-    ~string_hash_table();
-    
-    /* accesors */
+    hash_table();
+    hash_table(size_t size);
+    ~hash_table();
     string get(string key);
-    string get(int key);
-    /* modifiers */
-    void insert(string key, string value);
-    void insert(int key, string value);
-    void remove(string key);
-    void remove(int key);
+private:
+    vector<string> table;
+    int hash_function( string s );
 };
 
 
-#endif
+#endif	
+
