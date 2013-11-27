@@ -43,7 +43,7 @@ void read_data(FILE *f, graph &g, graph &g_reversed) {
         pch = strtok(NULL, " ");
         i_end_vertex = atol(pch);
         g[i_start_vertex].push_back(i_end_vertex);
-        g[i_end_vertex].push_back(i_start_vertex);
+        g_reversed[i_end_vertex].push_back(i_start_vertex);
         pch = strtok(NULL, " ");
     }
 
@@ -56,4 +56,15 @@ vector<graph> calculate_sccs( graph &g) {
     // call dfs on reversed edges
     // call dfs on original edges  
     return sccs;
+}
+
+int main() {
+	graph g, g_rev;
+	FILE *f;
+
+	f = fopen("tc_bottom1.txt", "r");
+
+	read_data(f, g, g_rev);
+	cout << g.size() << " " << g_rev.size() << endl;
+	return 0;
 }
