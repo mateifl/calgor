@@ -4,9 +4,12 @@
 
 int main(int argc, char** argv) {
 
-	graph g;
+	graph g, g_rev;
+
+
+
 	//vector<int> v1, v2, v3;
-	
+    /*	
 	g[1].push_back(2);
 	g[1].push_back(3);
 	g[2].push_back(3);
@@ -17,6 +20,6 @@ int main(int argc, char** argv) {
 	graph g2 = dfs(g, 1);
 
 	print_graph_edges(g2);
-
+    */
     return 0;
 }
