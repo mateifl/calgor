@@ -5,7 +5,7 @@
 int main(int argc, char** argv) {
 
 	graph g, g_rev;
-
+    read_data(stdin, g, g_rev);
 
 
 	//vector<int> v1, v2, v3;

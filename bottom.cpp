@@ -1,6 +1,8 @@
 #include "bottom.h"
 #include "util.h"
 
+// This returns a tree with the 
+
 graph dfs(graph &g, int start_node) {
     graph dfs_tree;
     stack<int> node_stack;
@@ -49,14 +51,9 @@ void read_data(FILE *f, graph &g, graph &g_reversed) {
 
 vector<graph> calculate_sccs( graph &g) {
     vector<graph> sccs;
-
+    //graph g, g_rev;
+    
     // call dfs on reversed edges
-
-
-
     // call dfs on original edges  
-
-
-
     return sccs;
 }
