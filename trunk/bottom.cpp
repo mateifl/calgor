@@ -38,10 +38,15 @@ void read_data(FILE *f, graph &g, graph &g_reversed) {
     fgets(pch_line, 512 * 100, f);
 
     pch = strtok(pch_line, " ");
+    cout << pch << endl;
     while( pch != NULL ){
         i_start_vertex = atol(pch);
         pch = strtok(NULL, " ");
+        if( pch == NULL )
+            break;
         i_end_vertex = atol(pch);
+//        cout << "Direct: " << i_start_vertex << " " << i_end_vertex << endl;
+//        cout << "Reverse: " << i_end_vertex << " " << i_start_vertex << endl;
         g[i_start_vertex].push_back(i_end_vertex);
         g_reversed[i_end_vertex].push_back(i_start_vertex);
         pch = strtok(NULL, " ");
@@ -61,7 +66,6 @@ vector<graph> calculate_sccs( graph &g) {
 int main() {
 	graph g, g_rev;
 	FILE *f;
-
 	f = fopen("tc_bottom1.txt", "r");
 
 	read_data(f, g, g_rev);
