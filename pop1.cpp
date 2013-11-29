@@ -3,6 +3,8 @@
 #include <vector>
 #include <iostream>
 #include <cstdlib>
+#include <cstring>
+#include <cstdio>
 #include <numeric>
 #include <algorithm>
 #include <set>
@@ -54,15 +56,23 @@ template <typename T> bool check_if_prime(T l_number, vector<T> &primes) {
 }
 
 bool check_number2( long number, vector<long> primes) {
-	long n;
+	long n, rest;
 
-	char pch_number[11];
+	char pch_number[11], pch_buffer[11];
 	sprintf(pch_number, "%d", number);
-	int i = 1;
-
-	while(1) {
-
-
+	pch_number[11] = '\0';
+	int i = 0, i_copy_lenght;
+	cout << strlen(pch_number) << endl;
+	while(i < strlen(pch_number) - 1) {
+		i_copy_lenght = strlen(pch_number) - i;
+		strncpy(pch_buffer, pch_number, strlen(pch_number) - i);
+		pch_buffer[i_copy_lenght - 1] = '\0';
+		n = atol(pch_buffer);
+		strncpy(pch_buffer, pch_number + i_copy_lenght - 1, i + 1);
+		pch_buffer[i + 1] = '\0';
+		rest = atol(pch_buffer);
+		cout << n <<  " " << rest << " " << i << endl;
+		i += 1;
 	}
 
 }
@@ -112,6 +122,6 @@ int main(int argc, char** argv) {
 
 //	cout << check_if_prime(15487469L, primes) << endl;
 //	cout << check_if_prime(15487467L, primes) << endl;
-	cout << check_number(131137139, primes) << endl;
+	check_number2(1234567, primes);
 	return 0;
 }
