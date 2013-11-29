@@ -3,11 +3,26 @@
 
 // This returns a tree with the 
 
+/*
+template <typename T> class  dfs_visitor {
+public:
+    virtual void visit(T node) = 0;
+};
+
+class finishing_times_visitor : dfs_visitor<int> {
+public:
+    virtual void visit(int node);
+private:
+    map<int, int> finishing_times;
+};
+*/
+
 graph dfs(graph &g, int start_node) {
     graph dfs_tree;
     stack<int> node_stack;
     node_stack.push(start_node);
-
+    set<int> visited_nodes;
+    visited_nodes.insert(start_node);
     int node;
 
     vector<int> neighbors;
@@ -20,9 +35,10 @@ graph dfs(graph &g, int start_node) {
 
         dfs_tree[node] = vector<int>();
         for(it = neighbors.begin(); it != neighbors.end(); it++) {
-            if( dfs_tree.find(*it) == dfs_tree.end() ){
+            if( visited_nodes.find(*it) == visited_nodes.end() ){
                 node_stack.push(*it);  
                 dfs_tree[node].push_back(*it);
+                visited_nodes.insert(*it);
             }
         }
     }
@@ -54,12 +70,11 @@ void read_data(FILE *f, graph &g, graph &g_reversed) {
 
 }
 
-vector<graph> calculate_sccs( graph &g) {
-    vector<graph> sccs;
-    //graph g, g_rev;
-    
-    // call dfs on reversed edges
-    // call dfs on original edges  
+vector<vector<int> > calculate_sccs( graph &g, graph &g_reversed) {
+    vector<vector<int> > sccs;
+
+
+
     return sccs;
 }
 
@@ -69,6 +84,18 @@ int main() {
 	f = fopen("tc_bottom1.txt", "r");
 
 	read_data(f, g, g_rev);
-	cout << g.size() << " " << g_rev.size() << endl;
-	return 0;
+
+	// cout << g.size() << " " << g_rev.size() << endl;
+    cout << "Data read!" << endl;
+    
+    print_graph_edges(g);
+    graph dfs_tree = dfs(g, 1);
+    cout << "First dfs applied" << endl;
+    print_graph_edges(dfs_tree);
+    
+    dfs_tree = dfs(g_rev, 1);
+    cout << "Second dfs applied" << endl;
+    print_graph_edges(dfs_tree);
+    
+    return 0;
 }
