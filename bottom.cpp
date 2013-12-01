@@ -3,19 +3,70 @@
 
 // This returns a tree with the 
 
-/*
 template <typename T> class  dfs_visitor {
 public:
     virtual void visit(T node) = 0;
 };
 
-class finishing_times_visitor : dfs_visitor<int> {
+class finishing_times_visitor : public dfs_visitor<int> {
 public:
+	finishing_times_visitor() {
+		mi_finishing_time = 0;
+	}
+
+	map<int, int> finish_times(){
+		return mm_finishing_times;
+	}
+
     virtual void visit(int node);
 private:
-    map<int, int> finishing_times;
+    map<int, int> mm_finishing_times;
+	int mi_finishing_time;
 };
-*/
+
+void finishing_times_visitor::visit(int node){
+	mm_finishing_times.insert(make_pair(node, mi_finishing_time));
+	mi_finishing_time += 1;
+}
+
+class dfs_tree_visitor : public dfs_visitor<int> {
+public:
+
+	graph tree_graph(){
+		return tree;
+	}
+
+	virtual void visit(int node){};
+private:
+	graph tree;
+};
+
+
+
+
+template <typename T> void generic_dfs(map<T, vector<T> > g, T start_node, dfs_visitor<T> *visitor) {
+	stack<T> node_stack;
+    node_stack.push(start_node);
+    set<T> visited_nodes;
+    visited_nodes.insert(start_node);
+    T node;
+
+	vector<T> neighbors;
+    vector<T>::iterator it;
+	
+    while(node_stack.size() > 0){
+        node = node_stack.top();
+        node_stack.pop();
+        neighbors = g[node];
+		visitor->visit(node);
+        for(it = neighbors.begin(); it != neighbors.end(); it++) {
+            if( visited_nodes.find(*it) == visited_nodes.end() ){
+                node_stack.push(*it);  
+                visited_nodes.insert(*it);
+            }
+        }
+    }
+}
 
 graph dfs(graph &g, int start_node) {
     graph dfs_tree;
@@ -88,14 +139,22 @@ int main() {
 	// cout << g.size() << " " << g_rev.size() << endl;
     cout << "Data read!" << endl;
     
-    print_graph_edges(g);
-    graph dfs_tree = dfs(g, 1);
+    print_graph_edges(g_rev);
+	finishing_times_visitor *v = new finishing_times_visitor();
+	generic_dfs(g_rev, 1, v); 
     cout << "First dfs applied" << endl;
-    print_graph_edges(dfs_tree);
     
+	map<int, int> tree = v->finish_times();
+	map<int, int>::iterator it;
+
+	for(it = tree.begin(); it != tree.end();  it++)
+	{
+		cout << it->first << " " << it->second << endl;
+	}
+    /*
     dfs_tree = dfs(g_rev, 1);
     cout << "Second dfs applied" << endl;
     print_graph_edges(dfs_tree);
-    
+    */
     return 0;
 }
