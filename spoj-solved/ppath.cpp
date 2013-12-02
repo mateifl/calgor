@@ -19,7 +19,7 @@ void check_string_in_primes(int prime, int position, char number,
 }
 
 
-// Breath first implementation.
+// Breadth first search implementation.
 int bfs2(graph2 g, int start_node, int end_node) {
     if(end_node == start_node)
         return 0;
