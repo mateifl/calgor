@@ -3,8 +3,6 @@
 
 #define DBG_PRINT 
 
-// This returns a tree with the 
-
 template <typename T> class  dfs_visitor {
 public:
     virtual void visit(vector<T> nodes) = 0;
@@ -12,24 +10,16 @@ public:
 
 class finishing_times_visitor : public dfs_visitor<int> {
 public:
-	finishing_times_visitor() {
-		mi_finishing_time = 1;
+	vector<int> finish_times(){
+		return mv_finishing_times;
 	}
 
-	map<int, int> finish_times(){
-		return mm_finishing_times;
+    virtual void visit(vector<int> nodes) {
+		mv_finishing_times.push_back(nodes[0]);
 	}
-
-    virtual void visit(vector<int> nodes);
 private:
-    map<int, int> mm_finishing_times;
-	int mi_finishing_time;
+    vector<int> mv_finishing_times;
 };
-
-void finishing_times_visitor::visit(vector<int> nodes){
-	mm_finishing_times.insert(make_pair(nodes[0], mi_finishing_time));
-	mi_finishing_time += 1;
-}
 
 class sccs_leader_visitor : public dfs_visitor<int> {
 public:
@@ -44,11 +34,16 @@ private:
 	map<int, int> mm_leaders;
 };
 
-
-template <typename T> void generic_dfs(map<T, vector<T> > g, T start_node, dfs_visitor<T> *visitor) {
+/* Parameters:
+	g - graph in adjacency list representation
+	start_node - start node for DFS
+	processed_node - map with the status of every node: 0 - not visited, 1 - visited (node visited but not every neighbour), 
+	2 - processed (the node and everyone of it's negihbours have been visited).
+	visitor - object used to gather data related to the DFS.
+*/
+template <typename T> void generic_dfs(map<T, vector<T> > g, T start_node, map<T, short> &processed_nodes, dfs_visitor<T> *visitor) {
 	stack<T> node_stack;
     node_stack.push(start_node);
-    set<T> processed_nodes;
 
 	T node;
 
@@ -59,25 +54,40 @@ template <typename T> void generic_dfs(map<T, vector<T> > g, T start_node, dfs_v
     while(node_stack.size() > 0){
 		nodes.clear();
         node = node_stack.top();
-        node_stack.pop();
+		cout << "Proc. node " << node << endl;
+		// mark node as discovered
+		processed_nodes[node] = 1;
+		// get the neighbours
+        neighbors = g[node];
+		bool continue_flag = false;
 
-		if( processed_nodes.find( node ) != processed_nodes.end() )
+		for(it = neighbors.begin(); it != neighbors.end(); it++) {
+			short node_state = processed_nodes[*it];
+
+			if( node_state == 2 )
+				continue;
+			else if(node_state == 0)
+			{
+				processed_nodes[*it] = 1;
+				node_stack.push(*it);
+				continue_flag = true;
+				break;
+			}
+		}
+
+		if(continue_flag)
 			continue;
-
-		// build and populate the visitor
+		// node processed
+		processed_nodes[node] = 2;
+		node_stack.pop();
 		nodes.push_back(node);
 		nodes.push_back(start_node);
 		visitor->visit(nodes);
-		// put neighbours in the stack
-        neighbors = g[node];
-		for(it = neighbors.begin(); it != neighbors.end(); it++)
-			if( processed_nodes.find(*it) == processed_nodes.end() ) 
-				node_stack.push(*it);
-		// node processed
-		processed_nodes.insert(node);
+
     }
 }
 
+/*
 graph dfs(graph &g, int start_node) {
     graph dfs_tree;
     stack<int> node_stack;
@@ -105,6 +115,23 @@ graph dfs(graph &g, int start_node) {
     }
 
     return dfs_tree;
+}
+*/
+
+void read_edge_by_line(FILE *f, graph &g, graph &g_reversed) {
+	int i_number_vertices, i_number_of_edges, i_start_vertex, i_end_vertex;
+	char pch_line[128], *pch;// = new char[16];
+	fscanf(f, "%d %d\n", &i_number_vertices, &i_number_of_edges);
+	for(int i = 0; i < i_number_of_edges; i++)
+	{
+		fgets(pch_line, 128, f);
+		pch = strtok(pch_line, " ");
+		i_start_vertex = atol(pch);
+        pch = strtok(NULL, " \n");
+        i_end_vertex = atol(pch);
+        g[i_start_vertex].push_back(i_end_vertex);
+        g_reversed[i_end_vertex].push_back(i_start_vertex);
+	}
 }
 
 void read_data(FILE *f, graph &g, graph &g_reversed) {
@@ -135,77 +162,71 @@ map<int, int> calculate_sccs( graph &g, graph &g_reversed) {
 	// run dfs on the reversed graph
 	finishing_times_visitor *v = new finishing_times_visitor();
 	map<int, vector<int> >::iterator it;
-	map<int, int> finish_times, tmp_map;
+	map<int, short> processed_nodes;
 	for(it = g_reversed.begin(); it != g_reversed.end(); it++)
 	{
-		if( finish_times.find(it->first) == finish_times.end() )
-		{
-			generic_dfs(g_reversed, it->first, v); 
-			tmp_map = v->finish_times();
-			finish_times.insert(tmp_map.begin(), tmp_map.end());
-		}
+		generic_dfs(g_reversed, it->first, processed_nodes, v);
 		
 	}
+	vector<int> finishing_times = v->finish_times();
+
 	delete v;
 
 #ifdef DBG_PRINT
-	for( map<int, int>::iterator itd = finish_times.begin(); itd != finish_times.end(); itd++)
-		cout << itd->first << " " << itd->second << endl;
 #endif
 
 	// run dfs on the initial graph in order of the finishing times
 
-	map<int, int>::iterator it2;
-	map<int, int> finish_times_rev; 
-	for(it2 = finish_times.begin(); it2 != finish_times.end(); it2++)
-		finish_times_rev.insert(make_pair(it2->second, it2->first));
-
 	sccs_leader_visitor *v2 = new sccs_leader_visitor();
-	map<int, int> leaders;
-	map<int, int>::reverse_iterator rit;
-	for(rit = finish_times.rbegin(); rit != finish_times.rend(); ++rit)
-	{
-		if( leaders.find(rit->second) == leaders.end() )
-		{
-#ifdef DBG_PRINT
-			cout << "Processing node " << rit->second << " with finishing time: " << rit->first << endl;  
-#endif
-			generic_dfs(g_reversed, rit->second, v2); 
-			tmp_map = v2->leaders();
-			leaders.insert(tmp_map.begin(), tmp_map.end());
-		}
+	vector<int>::reverse_iterator rit;
+	processed_nodes.clear();
+	for(rit = finishing_times.rbegin(); rit != finishing_times.rend(); ++rit)
+		generic_dfs(g_reversed, *rit, processed_nodes, v2);
 
-	}
+	map<int, int> leaders = v2->leaders();
+	delete v2;
+
 	return leaders;
 }
 
 int main() {
 	graph g, g_rev;
 	FILE *f;
-	f = fopen("tc_bottom1.txt", "r");
+	f = fopen("etest.txt", "r");
 
-	read_data(f, g, g_rev);
-    cout << "Data read!" << endl;
+	read_edge_by_line(f, g, g_rev);
+
 #ifdef DBG_PRINT
+	cout << "Reversed graph:" << endl;
 	print_adjacency_list(g_rev);
 	cout << endl;
 #endif
-	finishing_times_visitor *v = new finishing_times_visitor();
-	generic_dfs(g, 1, v);
-	map<int, int> finish_times = v->finish_times();
-//	map<int, int>::iterator it;
 
-//	for(it = finish_times.begin(); it != finish_times.end();  it++)
-//		cout << it->first << " " << it->second << endl;
+	map<int, vector<int> >::iterator it_map;
+	vector<int>::iterator it_vect;
+	map<int, short> processed_nodes;
+	for(it_map = g_rev.begin(); it_map != g_rev.end(); it_map++)
+	{
+		for(it_vect = it_map->second.begin(); it_vect != it_map->second.end(); it_vect++)
+			processed_nodes[*it_vect] = 0;
+	}
+
+	finishing_times_visitor *v = new finishing_times_visitor();
+	generic_dfs(g, 13, processed_nodes, v);
+	vector<int> finish_times = v->finish_times();
+
+
+	for(it_vect = finish_times.begin(); it_vect != finish_times.end();  it_vect++)
+		cout << *it_vect << " " << endl;
 
 	delete v;
 //    print_graph_edges(g_rev);
-	
+	/*
 	map<int, int> leaders = calculate_sccs(g, g_rev);
 	map<int, int>::iterator it;
 
 	for(it = leaders.begin(); it != leaders.end();  it++)
 		cout << it->first << " " << it->second << endl;
-	
+	*/
     return 0;
 }
