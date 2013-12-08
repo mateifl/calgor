@@ -44,7 +44,6 @@ private:
 template <typename T> void generic_dfs(map<T, vector<T> > g, T start_node, map<T, short> &processed_nodes, dfs_visitor<T> *visitor) {
 	stack<T> node_stack;
     node_stack.push(start_node);
-
 	T node;
 
 	vector<T> neighbors;
@@ -54,6 +53,8 @@ template <typename T> void generic_dfs(map<T, vector<T> > g, T start_node, map<T
     while(node_stack.size() > 0){
 		nodes.clear();
         node = node_stack.top();
+//		if(processed_nodes[node] == 2)
+//			continue;
 		cout << "Proc. node " << node << endl;
 		// mark node as discovered
 		processed_nodes[node] = 1;
@@ -83,40 +84,8 @@ template <typename T> void generic_dfs(map<T, vector<T> > g, T start_node, map<T
 		nodes.push_back(node);
 		nodes.push_back(start_node);
 		visitor->visit(nodes);
-
     }
 }
-
-/*
-graph dfs(graph &g, int start_node) {
-    graph dfs_tree;
-    stack<int> node_stack;
-    node_stack.push(start_node);
-    set<int> processed_nodes;
-    processed_nodes.insert(start_node);
-    int node;
-
-    vector<int> neighbors;
-    vector<int>::iterator it;
-
-    while(node_stack.size() > 0){
-        node = node_stack.top();
-        node_stack.pop();
-        neighbors = g[node];
-
-        dfs_tree[node] = vector<int>();
-        for(it = neighbors.begin(); it != neighbors.end(); it++) {
-            if( processed_nodes.find(*it) == processed_nodes.end() ){
-                node_stack.push(*it);  
-                dfs_tree[node].push_back(*it);
-                processed_nodes.insert(*it);
-            }
-        }
-    }
-
-    return dfs_tree;
-}
-*/
 
 void read_edge_by_line(FILE *f, graph &g, graph &g_reversed) {
 	int i_number_vertices, i_number_of_edges, i_start_vertex, i_end_vertex;
@@ -165,6 +134,8 @@ map<int, int> calculate_sccs( graph &g, graph &g_reversed) {
 	map<int, short> processed_nodes;
 	for(it = g_reversed.begin(); it != g_reversed.end(); it++)
 	{
+		if(processed_nodes[it->first] == 2)
+			continue;
 		generic_dfs(g_reversed, it->first, processed_nodes, v);
 		
 	}
@@ -173,6 +144,10 @@ map<int, int> calculate_sccs( graph &g, graph &g_reversed) {
 	delete v;
 
 #ifdef DBG_PRINT
+	vector<int>::iterator itv;
+	cout << "Finishing times calculated" << endl;
+	for_each(finishing_times.begin(), finishing_times.end(), print<int>);
+	cout << endl;
 #endif
 
 	// run dfs on the initial graph in order of the finishing times
@@ -180,9 +155,12 @@ map<int, int> calculate_sccs( graph &g, graph &g_reversed) {
 	sccs_leader_visitor *v2 = new sccs_leader_visitor();
 	vector<int>::reverse_iterator rit;
 	processed_nodes.clear();
-	for(rit = finishing_times.rbegin(); rit != finishing_times.rend(); ++rit)
-		generic_dfs(g_reversed, *rit, processed_nodes, v2);
+	for(rit = finishing_times.rbegin(); rit != finishing_times.rend(); ++rit){
+		if(processed_nodes[*rit] == 2)
+			continue;
 
+		generic_dfs(g, *rit, processed_nodes, v2);
+	}
 	map<int, int> leaders = v2->leaders();
 	delete v2;
 
@@ -193,7 +171,6 @@ int main() {
 	graph g, g_rev;
 	FILE *f;
 	f = fopen("etest.txt", "r");
-
 	read_edge_by_line(f, g, g_rev);
 
 #ifdef DBG_PRINT
@@ -201,32 +178,26 @@ int main() {
 	print_adjacency_list(g_rev);
 	cout << endl;
 #endif
-
+	
 	map<int, vector<int> >::iterator it_map;
 	vector<int>::iterator it_vect;
-	map<int, short> processed_nodes;
-	for(it_map = g_rev.begin(); it_map != g_rev.end(); it_map++)
-	{
-		for(it_vect = it_map->second.begin(); it_vect != it_map->second.end(); it_vect++)
-			processed_nodes[*it_vect] = 0;
-	}
-
 	finishing_times_visitor *v = new finishing_times_visitor();
-	generic_dfs(g, 13, processed_nodes, v);
+	map<int, short> processed_nodes;
+	generic_dfs(g_rev, 1, processed_nodes, v);
 	vector<int> finish_times = v->finish_times();
-
 
 	for(it_vect = finish_times.begin(); it_vect != finish_times.end();  it_vect++)
 		cout << *it_vect << " " << endl;
 
 	delete v;
+	
 //    print_graph_edges(g_rev);
-	/*
+	
 	map<int, int> leaders = calculate_sccs(g, g_rev);
 	map<int, int>::iterator it;
 
 	for(it = leaders.begin(); it != leaders.end();  it++)
 		cout << it->first << " " << it->second << endl;
-	*/
+	
     return 0;
 }
