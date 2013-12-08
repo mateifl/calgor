@@ -16,7 +16,7 @@ template <typename T> void print(T i){
 prints the edges of a graph in the form:
 
 1 2
-1 3
+1 3	
 2 4
 
 The graph must be in an adjancecy list representation: map< T, vector<U> > for example.  
