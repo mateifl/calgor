@@ -8,10 +8,10 @@ all: $(TARGET)/pop1.exe $(TARGET)/bottom.exe
 #bottom: $(TARGET)/bottom.exe
 
 $(TARGET)/pop1.exe: $(TARGET)/pop1.o
-	g++ $(TARGET)/pop1.o -o $(TARGET)/pop1
+	g++ $(TARGET)/pop1.o -o $(TARGET)/pop1.exe
 
 $(TARGET)/bottom.exe: $(TARGET)/bottom.o
-	g++ $(TARGET)/bottom.o -o $(TARGET)/bottom
+	g++ $(TARGET)/bottom.o -o $(TARGET)/bottom.exe
 
 $(TARGET)/pop1.o: pop1.cpp 
 	g++ -c pop1.cpp -o $(TARGET)/pop1.o

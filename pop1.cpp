@@ -117,7 +117,7 @@ long long pop_number(long long l_number) {
 }
 
 
-/*
+
 int main(int argc, char** argv) {
 	
 	vector<long> primes = prime_numbers(2L, 33000L);
@@ -127,4 +127,4 @@ int main(int argc, char** argv) {
 	check_number2(1234567, primes);
 	return 0;
 }
-*/
+
