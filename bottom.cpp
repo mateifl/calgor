@@ -22,11 +22,6 @@ template <typename T> void generic_dfs(map<T, vector<T> > g, T start_node, map<T
     while(node_stack.size() > 0){
 		nodes.clear();
         node = node_stack.top();
-//		if(processed_nodes[node] == 2)
-//			continue;
-#ifdef DBG_PRINT
-		cout << "Proc. node " << node << endl;
-#endif
 		// mark node as discovered
 		processed_nodes[node] = 1;
 		// get the neighbours
@@ -74,6 +69,35 @@ void read_edge_by_line(FILE *f, graph &g, graph &g_reversed) {
 	}
 }
 
+
+void read_edge_by_line(FILE *f, graph2 &g, graph2 &g_reversed) {
+	int i_number_vertices, i_number_of_edges, j;
+	char pch_line[128], *pch;// = new char[16];
+	fscanf(f, "%d %d\n", &i_number_vertices, &i_number_of_edges);
+    vector<int> data(2 * i_number_of_edges);
+
+	for(int i = 0; i < 2 * i_number_of_edges; i += 2)
+	{
+		fgets(pch_line, 128, f);
+		pch = strtok(pch_line, " ");
+		j = atol(pch);
+        data[i] = j;
+        pch = strtok(NULL, " \n");
+        j = atol(pch);
+        data[i + 1] = j;
+	}
+
+    int size_vector = *max_element( data.begin(), data.end() );
+    g = graph2(size_vector);
+    g_reversed = graph2(size_vector);
+    for(int i = 0; i < 2 * i_number_of_edges; i += 2) {
+        g[data[i]].push_back(data[i + 1]);
+        g_reversed[i + 1].push_back(i);
+    }
+
+
+}
+
 void read_data(FILE *f, graph &g, graph &g_reversed) {
 
     int i_number_vertices, i_number_of_edges, i_start_vertex, i_end_vertex;
@@ -94,71 +118,13 @@ void read_data(FILE *f, graph &g, graph &g_reversed) {
     }
 }
 
-/*
-map<int, int> calculate_sccs( graph &g, graph &g_reversed) {
-	// run dfs on the reversed graph
-	finishing_times_visitor<int> *v = new finishing_times_visitor<int>();
-	map<int, vector<int> >::iterator it;
-	map<int, short> processed_nodes;
-	for(it = g_reversed.begin(); it != g_reversed.end(); it++)
-	{
-		if(processed_nodes[it->first] == 2)
-			continue;
-		generic_dfs(g_reversed, it->first, processed_nodes, v);
-		
-	}
-	vector<int> finishing_times = v->finish_times();
-
-	delete v;
-
-#ifdef DBG_PRINT
-	vector<int>::iterator itv;
-	cout << "Finishing times calculated" << endl;
-	for_each(finishing_times.begin(), finishing_times.end(), print<int>);
-	cout << endl;
-#endif
-
-	// run dfs on the initial graph in order of the finishing times
-
-	sccs_leader_visitor<int> *v2 = new sccs_leader_visitor<int>();
-	vector<int>::reverse_iterator rit;
-	processed_nodes.clear();
-	for(rit = finishing_times.rbegin(); rit != finishing_times.rend(); ++rit){
-		if(processed_nodes[*rit] == 2)
-			continue;
-
-		generic_dfs(g, *rit, processed_nodes, v2);
-	}
-	map<int, int> leaders = v2->leaders();
-	delete v2;
-
-	return leaders;
-}
-*/
-
 int main() {
-	graph g, g_rev;
+	graph2 g, g_rev;
 	FILE *f;
 	f = fopen("edges5000_1_res_70.txt", "r");
 	read_edge_by_line(f, g, g_rev);
-
-#ifdef DBG_PRINT
-	cout << "Reversed graph:" << endl;
-	print_adjacency_list(g_rev);
-	cout << endl;
-#endif
-/*	
-	map<int, vector<int> >::iterator it_map;
-	vector<int>::iterator it_vect;
-	finishing_times_visitor<int> *v = new finishing_times_visitor<int>();
-	map<int, short> processed_nodes;
-	generic_dfs(g_rev, 1, processed_nodes, v);
-	vector<int> finish_times = v->finish_times();
-	delete v;
-*/
-//    print_graph_edges(g_rev);
 	clock_t t1 = clock();
-	map<int, int> leaders = calculate_sccs(g, g_rev);
+	map<int, int> leaders = calculate_sccs<graph2, int>(g, g_rev);
     
 	map<int, int>::iterator it;
     map<int, vector<int> > sccs_groups;
@@ -168,8 +134,6 @@ int main() {
     
     clock_t t2 = clock();
     cout << sccs_groups.size() << endl;
-
     cout << (float)(t2 - t1)/CLOCKS_PER_SEC << endl;
-
     return 0;
 }

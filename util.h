@@ -40,7 +40,4 @@ template <typename T, typename G> void print_adjacency_list(G &g) {
         cout << endl;
     }
 }
-
-
-
 #endif
