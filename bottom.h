@@ -94,7 +94,7 @@ void generic_dfs(G &g, T start_node, map<T, short> &processed_nodes, dfs_visitor
 
 template <typename T> T access_iterator(vector<T> i, int j) { return j; }
 
-template <typename T> T access_iterator(pair<const T, T> &i, int j) { return i.first; }
+template <typename T> T access_iterator(pair< T, T> &i, int j) { return i.first; }
 
 template <typename G, typename T> map<T, T> calculate_sccs( G &g, G &g_reversed) {
 	// run dfs on the reversed graph
@@ -104,7 +104,8 @@ template <typename G, typename T> map<T, T> calculate_sccs( G &g, G &g_reversed)
     int j = 0;
 	for(it = g_reversed.begin(); it != g_reversed.end(); it++)
 	{
-        T node = access_iterator<T>(*it, j);
+        T node = it->first;
+		
 		if(processed_nodes[node] == 2)
 			continue;
 		generic_dfs<G,T>(g_reversed, node, processed_nodes, v);

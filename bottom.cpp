@@ -88,11 +88,11 @@ void read_edge_by_line(FILE *f, graph2 &g, graph2 &g_reversed) {
 	}
 
     int size_vector = *max_element( data.begin(), data.end() );
-    g = graph2(size_vector);
-    g_reversed = graph2(size_vector);
+    g = graph2(size_vector + 1);
+    g_reversed = graph2(size_vector + 1);
     for(int i = 0; i < 2 * i_number_of_edges; i += 2) {
         g[data[i]].push_back(data[i + 1]);
-        g_reversed[i + 1].push_back(i);
+        g_reversed[data[i + 1]].push_back(data[i]);
     }
 
 
@@ -118,13 +118,17 @@ void read_data(FILE *f, graph &g, graph &g_reversed) {
     }
 }
 
-int main() {
-	graph2 g, g_rev;
+
+
+int main(int argc, char** argv) {
+	graph g, g_rev;
 	FILE *f;
+	clock_t t1 = clock();
 	f = fopen("edges5000_1_res_70.txt", "r");
 	read_edge_by_line(f, g, g_rev);
-	clock_t t1 = clock();
-	map<int, int> leaders = calculate_sccs<graph2, int>(g, g_rev);
+
+	
+	map<int, int> leaders = calculate_sccs<graph, int>(g, g_rev);
     
 	map<int, int>::iterator it;
     map<int, vector<int> > sccs_groups;
@@ -135,5 +139,8 @@ int main() {
     clock_t t2 = clock();
     cout << sccs_groups.size() << endl;
     cout << (float)(t2 - t1)/CLOCKS_PER_SEC << endl;
+
+
+
     return 0;
 }
