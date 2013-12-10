@@ -14,6 +14,7 @@
 using namespace std;
 
 typedef map<int, vector<int> > graph;
+typedef vector< vector<int> > graph2;
 
 template <typename T> class  dfs_visitor {
 public:
@@ -47,7 +48,8 @@ private:
 };
 
 
-template <typename G, typename T> void generic_dfs(G &g, T start_node, map<T, short> &processed_nodes, dfs_visitor<T> *visitor){
+template <typename G, typename T> 
+void generic_dfs(G &g, T start_node, map<T, short> &processed_nodes, dfs_visitor<T> *visitor){
 	stack<T> node_stack;
     node_stack.push(start_node);
 	T node;
@@ -59,9 +61,6 @@ template <typename G, typename T> void generic_dfs(G &g, T start_node, map<T, sh
     while(node_stack.size() > 0){
 		nodes.clear();
         node = node_stack.top();
-#ifdef DBG_PRINT
-		cout << "Proc. node " << node << endl;
-#endif
 		// mark node as discovered
 		processed_nodes[node] = 1;
 		// get the neighbours
@@ -91,20 +90,25 @@ template <typename G, typename T> void generic_dfs(G &g, T start_node, map<T, sh
 		nodes.push_back(start_node);
 		visitor->visit(nodes);
     }
-
 }
+
+template <typename T> T access_iterator(vector<T> i, int j) { return j; }
+
+template <typename T> T access_iterator(pair<const T, T> &i, int j) { return i.first; }
 
 template <typename G, typename T> map<T, T> calculate_sccs( G &g, G &g_reversed) {
 	// run dfs on the reversed graph
 	finishing_times_visitor<T> *v = new finishing_times_visitor<T>();
 	typename G::iterator it;
 	map<T, short> processed_nodes;
+    int j = 0;
 	for(it = g_reversed.begin(); it != g_reversed.end(); it++)
 	{
-		if(processed_nodes[it->first] == 2)
+        T node = access_iterator<T>(*it, j);
+		if(processed_nodes[node] == 2)
 			continue;
-		generic_dfs(g_reversed, it->first, processed_nodes, v);
-		
+		generic_dfs<G,T>(g_reversed, node, processed_nodes, v);
+        j += 1;		
 	}
 	vector<int> finishing_times = v->finish_times();
 	delete v;
@@ -118,7 +122,7 @@ template <typename G, typename T> map<T, T> calculate_sccs( G &g, G &g_reversed)
 		if(processed_nodes[*rit] == 2)
 			continue;
 
-		generic_dfs(g, *rit, processed_nodes, v2);
+		generic_dfs<G,T>(g, *rit, processed_nodes, v2);
 	}
 	map<T, T> leaders = v2->leaders();
 	delete v2;
