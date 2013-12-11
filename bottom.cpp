@@ -91,11 +91,13 @@ void read_edge_by_line(FILE *f, graph2 &g, graph2 &g_reversed) {
     g = graph2(size_vector + 1);
     g_reversed = graph2(size_vector + 1);
     for(int i = 0; i < 2 * i_number_of_edges; i += 2) {
-        g[data[i]].push_back(data[i + 1]);
-        g_reversed[data[i + 1]].push_back(data[i]);
+        if( g[data[i]] == NULL )
+            g[data[i]] = new vector<int>();
+        g[data[i]]->push_back(data[i + 1]);
+        if( g_reversed[data[i + 1]] == NULL )
+            g_reversed[data[i + 1]] = new vector<int>();
+        g_reversed[data[i + 1]]->push_back(data[i]);
     }
-
-
 }
 
 void read_data(FILE *f, graph &g, graph &g_reversed) {
@@ -118,29 +120,25 @@ void read_data(FILE *f, graph &g, graph &g_reversed) {
     }
 }
 
-
-
 int main(int argc, char** argv) {
-	graph g, g_rev;
+	graph2 g, g_rev;
 	FILE *f;
 	clock_t t1 = clock();
 	f = fopen("edges5000_1_res_70.txt", "r");
 	read_edge_by_line(f, g, g_rev);
-
-	
-	map<int, int> leaders = calculate_sccs<graph, int>(g, g_rev);
+    clock_t t2 = clock();
+    cout << "Read time: " << (float)(t2 - t1)/CLOCKS_PER_SEC << endl;
+	map<int, int> leaders = calculate_sccs<graph2, int>(g, g_rev);
     
 	map<int, int>::iterator it;
     map<int, vector<int> > sccs_groups;
-
+    clock_t t3 = clock();
+    cout << "sccs time: " << (float)(t3 - t2)/CLOCKS_PER_SEC << endl;
 	for(it = leaders.begin(); it != leaders.end();  it++) 
         sccs_groups[it->second].push_back(it->first);
     
-    clock_t t2 = clock();
+    clock_t t4 = clock();
+    cout << "Read time: " << (float)(t4 - t3)/CLOCKS_PER_SEC << endl;
     cout << sccs_groups.size() << endl;
-    cout << (float)(t2 - t1)/CLOCKS_PER_SEC << endl;
-
-
-
     return 0;
 }

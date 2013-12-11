@@ -14,7 +14,7 @@
 using namespace std;
 
 typedef map<int, vector<int> > graph;
-typedef vector< vector<int> > graph2;
+typedef vector< vector<int>* > graph2;
 
 template <typename T> class  dfs_visitor {
 public:
@@ -54,7 +54,7 @@ void generic_dfs(G &g, T start_node, map<T, short> &processed_nodes, dfs_visitor
     node_stack.push(start_node);
 	T node;
 
-	vector<T> neighbors;
+	vector<T> *neighbors;
     typename vector<T>::iterator it;
 	vector<T> nodes;
 
@@ -67,7 +67,7 @@ void generic_dfs(G &g, T start_node, map<T, short> &processed_nodes, dfs_visitor
         neighbors = g[node];
 		bool continue_flag = false;
 
-		for(it = neighbors.begin(); it != neighbors.end(); it++) {
+		for(it = neighbors->begin(); it != neighbors->end(); it++) {
 			short node_state = processed_nodes[*it];
 
 			if( node_state == 2 )
@@ -92,9 +92,9 @@ void generic_dfs(G &g, T start_node, map<T, short> &processed_nodes, dfs_visitor
     }
 }
 
-template <typename T> T access_iterator(vector<T> i, int j) { return j; }
+template <typename T> T access_iterator(vector<T> *v, int j) { return j; }
 
-template <typename T> T access_iterator(pair< T, T> &i, int j) { return i.first; }
+template <typename T> T access_iterator(pair<T, T> &i, int j) { return i.first; }
 
 template <typename G, typename T> map<T, T> calculate_sccs( G &g, G &g_reversed) {
 	// run dfs on the reversed graph
@@ -104,7 +104,10 @@ template <typename G, typename T> map<T, T> calculate_sccs( G &g, G &g_reversed)
     int j = 0;
 	for(it = g_reversed.begin(); it != g_reversed.end(); it++)
 	{
-        T node = it->first;
+        if( *it == NULL )
+            continue;
+
+        T node = access_iterator<T>(*it, j);
 		
 		if(processed_nodes[node] == 2)
 			continue;
