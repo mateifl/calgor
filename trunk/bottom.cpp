@@ -88,14 +88,25 @@ void read_edge_by_line(FILE *f, graph2 &g, graph2 &g_reversed) {
 	}
 
     int size_vector = *max_element( data.begin(), data.end() );
+
     g = graph2(size_vector + 1);
     g_reversed = graph2(size_vector + 1);
-    for(int i = 0; i < 2 * i_number_of_edges; i += 2) {
+    
+	for(int i = 0; i < 2 * i_number_of_edges; i += 2) {
         if( g[data[i]] == NULL )
             g[data[i]] = new vector<int>();
+
+		if( g[data[i + 1]] == NULL )
+            g[data[i + 1]] = new vector<int>();
+
         g[data[i]]->push_back(data[i + 1]);
+
         if( g_reversed[data[i + 1]] == NULL )
             g_reversed[data[i + 1]] = new vector<int>();
+
+        if( g_reversed[data[i]] == NULL )
+            g_reversed[data[i]] = new vector<int>();
+
         g_reversed[data[i + 1]]->push_back(data[i]);
     }
 }
@@ -131,14 +142,32 @@ int main(int argc, char** argv) {
 	map<int, int> leaders = calculate_sccs<graph2, int>(g, g_rev);
     
 	map<int, int>::iterator it;
-    map<int, vector<int> > sccs_groups;
+    map<int, set<int> > sccs_groups;
     clock_t t3 = clock();
     cout << "sccs time: " << (float)(t3 - t2)/CLOCKS_PER_SEC << endl;
 	for(it = leaders.begin(); it != leaders.end();  it++) 
-        sccs_groups[it->second].push_back(it->first);
+        sccs_groups[it->second].insert(it->first);
     
     clock_t t4 = clock();
-    cout << "Read time: " << (float)(t4 - t3)/CLOCKS_PER_SEC << endl;
+    cout << "Arrange time: " << (float)(t4 - t3)/CLOCKS_PER_SEC << endl;
     cout << sccs_groups.size() << endl;
+
+	map<int, set<int> >::iterator it_sccs;
+	set<int>::iterator it_group;
+	vector<int>::iterator it_vector;
+	for(it_sccs = sccs_groups.begin(); it_sccs != sccs_groups.end(); it_sccs++)
+	{
+		bool flag = true;
+		for(it_group = it_sccs->second.begin(); it_group != it_sccs->second.end(); it_group++)
+		{
+			vector<int> end_nodes = *g[*it_group];
+			for(it_vector = end_nodes.begin(); it_vector != end_nodes.end(); it_vector++)
+			{
+				//if( it_sccs->second.find(
+			}
+
+		}
+	}
+
     return 0;
 }

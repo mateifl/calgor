@@ -16,12 +16,14 @@ using namespace std;
 typedef map<int, vector<int> > graph;
 typedef vector< vector<int>* > graph2;
 
-template <typename T> class  dfs_visitor {
+template <typename T> 
+class  dfs_visitor {
 public:
     virtual void visit(vector<T> nodes) = 0;
 };
 
-template <typename T> class finishing_times_visitor : public dfs_visitor<T> {
+template <typename T> 
+class finishing_times_visitor : public dfs_visitor<T> {
 public:
 	vector<T> finish_times(){
 		return mv_finishing_times;
@@ -34,7 +36,8 @@ private:
     vector<T> mv_finishing_times;
 };
 
-template <typename T> class sccs_leader_visitor : public dfs_visitor<T> {
+template <typename T> 
+class sccs_leader_visitor : public dfs_visitor<T> {
 public:
 
 	map<T, T> leaders() { 
@@ -104,15 +107,20 @@ template <typename G, typename T> map<T, T> calculate_sccs( G &g, G &g_reversed)
     int j = 0;
 	for(it = g_reversed.begin(); it != g_reversed.end(); it++)
 	{
-        if( *it == NULL )
+        
+        if( *it == NULL ) {
+			j += 1;
             continue;
+		}
 
         T node = access_iterator<T>(*it, j);
 		
-		if(processed_nodes[node] == 2)
+		if(processed_nodes[node] == 2) {
+			j += 1;
 			continue;
-		generic_dfs<G,T>(g_reversed, node, processed_nodes, v);
-        j += 1;		
+		}
+		generic_dfs<G,T>(g_reversed, node, processed_nodes, v);	
+		j += 1;
 	}
 	vector<int> finishing_times = v->finish_times();
 	delete v;

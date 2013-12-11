@@ -57,7 +57,6 @@ template <typename T> bool check_if_prime(T l_number, vector<T> &primes) {
 
 bool check_number2( long number, vector<long> primes) {
 	long n, rest;
-
 	char pch_number[11], pch_buffer[11];
 	sprintf(pch_number, "%d", number);
 	pch_number[11] = '\0';
@@ -74,7 +73,6 @@ bool check_number2( long number, vector<long> primes) {
 		cout << n <<  " " << rest << " " << i << endl;
 		i += 1;
 	}
-
 }
 
 bool check_number( long number, vector<long> &primes) {
