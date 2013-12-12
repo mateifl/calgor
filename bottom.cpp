@@ -130,7 +130,7 @@ void read_data(FILE *f, graph &g, graph &g_reversed) {
         pch = strtok(NULL, " ");
     }
 }
-
+/*
 int main(int argc, char** argv) {
 	graph2 g, g_rev;
 	FILE *f;
@@ -171,3 +171,4 @@ int main(int argc, char** argv) {
 
     return 0;
 }
+*/

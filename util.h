@@ -36,7 +36,7 @@ template <typename T, typename G> void print_adjacency_list(G &g) {
     for( it = g.begin(); it != g.end(); it++)
     {
         cout << it->first << ": "; 
-    	for_each(it->second.begin(); it->second.end(); print<T>);
+    	//for_each(it->second.begin(); it->second.end(); print<T>);
         cout << endl;
     }
 }
