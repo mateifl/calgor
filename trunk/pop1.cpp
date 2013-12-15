@@ -11,6 +11,39 @@
 #include <set>
 using namespace std;
 
+long modpow(long a, long b, long n) {
+	long res = 1;
+	//int counter = 0;
+	while (b)
+	{
+		//counter += 1;
+		if (b % 2) { res = (res * a) % n; }
+
+		a = (a * a) % n;
+		b /= 2;
+	}
+	//cout << "counter "<< counter << endl;
+	return res;
+}
+
+
+bool is_prime(long l_number) {
+	if( l_number == 1 || l_number % 2 == 0)
+		return false;
+	if( l_number == 2 || l_number == 3 || l_number == 5 || l_number == 7 || l_number == 11 )
+		return true;
+	if( (l_number - 1) % 6 != 0 && (l_number + 1) % 6 != 0 )
+		return false;
+
+	long lnr = l_number - 1;
+	long s = 0;
+
+	while(lnr % 2 == 0) {
+		s += 1;
+		lnr = lnr / 2;
+	}
+}
+
 template <typename T> vector<short> select_primes(T low, T high) {
 	vector<short> test;
 
