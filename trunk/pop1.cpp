@@ -12,8 +12,8 @@
 #include <set>
 using namespace std;
 
-long modpow(long a, long b, long n) {
-	long res = 1;
+long long modpow(long long a, long long b, long long n) {
+	long long res = 1;
 	//int counter = 0;
 	while (b)
 	{
@@ -60,10 +60,11 @@ bool is_prime(long l_number) {
     for(int i = 1; i <= 5; i++) 
     {
         random_number = rand() % (l_number - 1);
-
+		if( is_composite( random_number, lnr,  s, l_number) )
+			return false;
     }
 
-
+	return true;
 
 }
 
@@ -157,6 +158,53 @@ bool check_number2( long long number, vector<long long> &primes, set<long long> 
 	return false;
 }
 
+
+int main(int argc, char** argv) {
+
+	cout << is_prime(838041641 ) << endl;
+	cout << is_prime(817504253 ) << endl;
+	cout << is_prime(776531419 ) << endl;
+	cout << is_prime(99923 ) << endl; 
+	cout << is_prime(33191 ) << endl; 
+	  
+	cout << is_prime(104729 ) << endl;
+	cout << is_prime(22303   ) << endl;
+	 
+	/*
+	long i_nr_tests, nr;
+	char pch_nr[12];
+
+	scanf("%ld\n", &i_nr_tests);
+	cout << i_nr_tests << endl;
+    clock_t t2 = clock();
+
+	for(int i = 0; i < i_nr_tests; i++) {
+        fgets(pch_nr, 11, stdin);			
+        nr = atol(pch_nr);
+		cout << nr << endl;
+		if( nr % 2 == 0)
+			nr+=1;
+		while(1) {
+
+			bool prime = is_prime(nr);
+			if( prime ) {
+				printf("%d\n", nr);
+				break;
+			}
+			else
+				nr+=2;
+		}	
+	}
+
+    clock_t t3 = clock();
+    cout << "Calculus: " << (float)(t3 - t2)/CLOCKS_PER_SEC << endl;
+	*/
+
+	return 0;
+}
+
+
+/*
 int main(int argc, char** argv) {
 	long i_nr_tests;
     long long nr;
@@ -198,3 +246,4 @@ int main(int argc, char** argv) {
 	return 0;
 }
 
+*/
