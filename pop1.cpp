@@ -54,17 +54,15 @@ bool is_prime(long l_number) {
 		lnr = lnr / 2;
 	}
 
-    srand ( time(NULL) );
-    long random_number;
-
-    for(int i = 1; i <= 5; i++) 
-    {
-        random_number = rand() % (l_number - 1);
-		if( is_composite( random_number, lnr,  s, l_number) )
-			return false;
-    }
-
-	return true;
+	if( l_number < 1373653 )
+		return !(is_composite(2, lnr, s, l_number) && is_composite(3, lnr, s, l_number));	
+	if( l_number == 1373653 || l_number == 25326001 )
+		return false;
+	if( l_number < 25326001)
+		return !(is_composite(2, lnr, s, l_number) && is_composite(3, lnr, s, l_number) && is_composite(5, lnr, s, l_number));
+	
+	return !( is_composite(2, lnr, s, l_number) && is_composite(3, lnr, s, l_number) && 
+			  is_composite(5, lnr, s, l_number) && is_composite(7, lnr, s, l_number) );	    
 
 }
 
@@ -158,10 +156,47 @@ bool check_number2( long long number, vector<long long> &primes, set<long long> 
 	return false;
 }
 
+vector<long long> read_data(FILE *file)
+{
+	vector<long long> v_data;
+	long long nr1, nr2, nr3, nr4, nr5, nr6, nr7, nr8;
+
+	while( !feof(file) )
+	{
+		fscanf(file, "%ld %ld %ld %ld %ld %ld %ld %ld\n", &nr1, &nr2, &nr3, &nr4, &nr5, &nr6, &nr7, &nr8);
+		v_data.push_back(nr1);
+		v_data.push_back(nr2);
+		v_data.push_back(nr3);
+		v_data.push_back(nr4);
+		v_data.push_back(nr5);
+		v_data.push_back(nr6);
+		v_data.push_back(nr7);
+		v_data.push_back(nr8);
+	}
+
+	return v_data;
+}
 
 int main(int argc, char** argv) {
+	FILE *f = fopen("primes48.txt", "r");
 
-	cout << is_prime(838041641 ) << endl;
+	vector<long long> data = read_data(f);
+	vector<long long>::iterator it;
+	cout << "Data read" << endl;
+
+	clock_t t2 = clock();
+
+	for(it = data.begin(); it != data.end(); it++)
+	{
+		if( !is_prime(*it))
+			cout << *it << endl;
+	}
+
+	clock_t t3 = clock();
+    cout << "Calculus: " << (float)(t3 - t2)/CLOCKS_PER_SEC << endl;
+
+
+	cout << is_prime(838041637 ) << endl;
 	cout << is_prime(817504253 ) << endl;
 	cout << is_prime(776531419 ) << endl;
 	cout << is_prime(99923 ) << endl; 
@@ -169,7 +204,10 @@ int main(int argc, char** argv) {
 	  
 	cout << is_prime(104729 ) << endl;
 	cout << is_prime(22303   ) << endl;
-	 
+	cout << is_prime(1373653) << endl;
+	cout << is_prime(25326001) << endl;
+
+	fclose(f);
 	/*
 	long i_nr_tests, nr;
 	char pch_nr[12];
