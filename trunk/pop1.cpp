@@ -116,7 +116,7 @@ template <typename T> bool check_if_prime(T l_number, vector<T> &primes, set<T> 
 	return true;
 }
 
-bool check_number2( long long number, vector<long long> &primes, set<long long> &primes_set) {
+bool check_number2( long long number) {
 	long long n, rest;
 	char pch_number[11], pch_buffer[11];
 	sprintf(pch_number, "%d", number);
@@ -129,7 +129,7 @@ bool check_number2( long long number, vector<long long> &primes, set<long long> 
 		pch_buffer[i] = '\0';
 		n = atol(pch_buffer);
 		//cout << "n = " << n << endl;
-		if( !check_if_prime<long long>(n, primes, primes_set) )
+		if( !is_prime(n) )
 		{
 			i++;
 			continue;
@@ -146,20 +146,18 @@ bool check_number2( long long number, vector<long long> &primes, set<long long> 
 		}
 		rest = atol(pch_buffer);	
 
-		bool res = check_number2(rest, primes, primes_set);
-
-		if(res)
-			return res;
-
-		return check_if_prime(rest, primes, primes_set);
+		if( is_prime(rest) )
+			return true;
+		else 
+			return check_number2(rest);
 	}
 	return false;
 }
 
-vector<long long> read_data(FILE *file)
+template <typename T> vector<T> read_data(FILE *file)
 {
-	vector<long long> v_data;
-	long long nr1, nr2, nr3, nr4, nr5, nr6, nr7, nr8;
+	vector<T> v_data;
+	T nr1, nr2, nr3, nr4, nr5, nr6, nr7, nr8;
 
 	while( !feof(file) )
 	{
@@ -172,16 +170,19 @@ vector<long long> read_data(FILE *file)
 		v_data.push_back(nr6);
 		v_data.push_back(nr7);
 		v_data.push_back(nr8);
+		// cout << nr8 << endl;
 	}
 
 	return v_data;
 }
 
+
+/*
 int main(int argc, char** argv) {
 	FILE *f = fopen("primes48.txt", "r");
 
-	vector<long long> data = read_data(f);
-	vector<long long>::iterator it;
+	vector<long> data = read_data<long>(f);
+	vector<long>::iterator it;
 	cout << "Data read" << endl;
 
 	clock_t t2 = clock();
@@ -236,13 +237,12 @@ int main(int argc, char** argv) {
 
     clock_t t3 = clock();
     cout << "Calculus: " << (float)(t3 - t2)/CLOCKS_PER_SEC << endl;
-	*/
 
 	return 0;
 }
+*/
 
 
-/*
 int main(int argc, char** argv) {
 	long i_nr_tests;
     long long nr;
@@ -269,8 +269,8 @@ int main(int argc, char** argv) {
 			nr+=1;
 		while(1) {
 
-			bool is_prime = check_if_prime<long long>(nr, primes, primes_set);
-			if( is_prime && check_number2(nr, primes, primes_set) ){
+			bool prime = is_prime(nr);
+			if( prime && check_number2(nr) ){
 				printf("%d\n", nr);
 				break;
 			}
@@ -283,5 +283,3 @@ int main(int argc, char** argv) {
 
 	return 0;
 }
-
-*/
