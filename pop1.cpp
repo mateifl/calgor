@@ -267,8 +267,8 @@ int main(int argc, char** argv) {
         nr = atol(pch_nr);
 		if( nr % 2 == 0)
 			nr+=1;
-		while(1) {
 
+		while(1) {
 			bool prime = is_prime(nr);
 			if( prime && check_number2(nr) ){
 				printf("%d\n", nr);
