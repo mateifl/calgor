@@ -19,7 +19,6 @@ long long modpow(long long a, long long b, long long n) {
 	{
 		//counter += 1;
 		if (b % 2) { res = (res * a) % n; }
-
 		a = (a * a) % n;
 		b /= 2;
 	}
@@ -39,9 +38,12 @@ bool is_composite(long a, long d, long s, long l_number)
 }
 
 bool is_prime(long l_number) {
+//	printf("prime %ld \n", l_number);
 	if( l_number == 1 || l_number % 2 == 0)
 		return false;
 	if( l_number == 2 || l_number == 3 || l_number == 5 || l_number == 7 || l_number == 11 )
+		return true;
+	if( l_number == 13 || l_number == 17 || l_number == 23 || l_number == 19 || l_number == 29 )
 		return true;
 	if( (l_number - 1) % 6 != 0 && (l_number + 1) % 6 != 0 )
 		return false;
@@ -116,24 +118,48 @@ template <typename T> bool check_if_prime(T l_number, vector<T> &primes, set<T> 
 	return true;
 }
 
-bool check_number2( long long number) {
+bool check_number2( long long number, set<long long> &prime_set, set<long long> &not_prime_set) {
 	long long n, rest;
 	char pch_number[11], pch_buffer[11];
 	sprintf(pch_number, "%d", number);
 	pch_number[10] = '\0';
 	unsigned int i = 1, i_copy_lenght;
-	
+	bool n_prime, rest_prime;
+
 	while(i < strlen(pch_number)) {
 		i_copy_lenght = strlen(pch_number) - i;
 		strncpy(pch_buffer, pch_number, i);
 		pch_buffer[i] = '\0';
 		n = atol(pch_buffer);
 		//cout << "n = " << n << endl;
-		if( !is_prime(n) )
+
+		if( n % 2 == 0 && n > 2) {
+			i ++;
+			continue;
+		}
+		
+		if( not_prime_set.find(n) != not_prime_set.end() )
 		{
+//			cout << "hit not prime " << endl;
 			i++;
 			continue;
 		}
+		
+		if( prime_set.find(n) == prime_set.end() )
+		{
+			n_prime = is_prime(n);
+			if( !n_prime  )
+			{
+				not_prime_set.insert(n);
+				i++;
+				continue;
+			}
+			else{
+				prime_set.insert(n);
+			}
+		}
+//		else
+//			cout << "hit" << endl;
 		//cout << "n is prime" << endl;
 		strncpy(pch_buffer, pch_number + i, i_copy_lenght);
 		pch_buffer[i_copy_lenght] = '\0';
@@ -146,10 +172,19 @@ bool check_number2( long long number) {
 		}
 		rest = atol(pch_buffer);	
 
+		if( not_prime_set.find(rest) != not_prime_set.end() )
+			return check_number2(rest, prime_set, not_prime_set);
+		
 		if( is_prime(rest) )
+		{
+			prime_set.insert(rest);
 			return true;
+		}
 		else 
-			return check_number2(rest);
+		{
+			not_prime_set.insert(rest);
+			return check_number2(rest, prime_set, not_prime_set);
+		}
 	}
 	return false;
 }
@@ -170,107 +205,41 @@ template <typename T> vector<T> read_data(FILE *file)
 		v_data.push_back(nr6);
 		v_data.push_back(nr7);
 		v_data.push_back(nr8);
-		// cout << nr8 << endl;
+
 	}
 
 	return v_data;
 }
-
-
-/*
-int main(int argc, char** argv) {
-	FILE *f = fopen("primes48.txt", "r");
-
-	vector<long> data = read_data<long>(f);
-	vector<long>::iterator it;
-	cout << "Data read" << endl;
-
-	clock_t t2 = clock();
-
-	for(it = data.begin(); it != data.end(); it++)
-	{
-		if( !is_prime(*it))
-			cout << *it << endl;
-	}
-
-	clock_t t3 = clock();
-    cout << "Calculus: " << (float)(t3 - t2)/CLOCKS_PER_SEC << endl;
-
-
-	cout << is_prime(838041637 ) << endl;
-	cout << is_prime(817504253 ) << endl;
-	cout << is_prime(776531419 ) << endl;
-	cout << is_prime(99923 ) << endl; 
-	cout << is_prime(33191 ) << endl; 
-	  
-	cout << is_prime(104729 ) << endl;
-	cout << is_prime(22303   ) << endl;
-	cout << is_prime(1373653) << endl;
-	cout << is_prime(25326001) << endl;
-
-	fclose(f);
-	/*
-	long i_nr_tests, nr;
-	char pch_nr[12];
-
-	scanf("%ld\n", &i_nr_tests);
-	cout << i_nr_tests << endl;
-    clock_t t2 = clock();
-
-	for(int i = 0; i < i_nr_tests; i++) {
-        fgets(pch_nr, 11, stdin);			
-        nr = atol(pch_nr);
-		cout << nr << endl;
-		if( nr % 2 == 0)
-			nr+=1;
-		while(1) {
-
-			bool prime = is_prime(nr);
-			if( prime ) {
-				printf("%d\n", nr);
-				break;
-			}
-			else
-				nr+=2;
-		}	
-	}
-
-    clock_t t3 = clock();
-    cout << "Calculus: " << (float)(t3 - t2)/CLOCKS_PER_SEC << endl;
-
-	return 0;
-}
-*/
-
 
 int main(int argc, char** argv) {
 	long i_nr_tests;
     long long nr;
 	scanf("%ld\n", &i_nr_tests);
     char pch_nr[12];
-    clock_t t1 = clock();
-	vector<long long> primes = prime_numbers<long long>(2LL, 35000LL);
-	vector<long long>::iterator it; 
-	set<long long> primes_set; 
-
-	for(it = primes.begin(); it != primes.end(); it++) {
-		primes_set.insert(*it);
-	}
-
+    
     clock_t t2 = clock();
-    cout << "Primes: " << (float)(t2 - t1)/CLOCKS_PER_SEC << endl;
+ //   cout << "Primes: " << (float)(t2 - t1)/CLOCKS_PER_SEC << endl;
 	
-    cout << i_nr_tests << endl;
-
+ //   cout << i_nr_tests << endl;
+	set<long long> primes_set, not_prime_set;
 	for(int i = 0; i < i_nr_tests; i++) {
         fgets(pch_nr, 11, stdin);			
         nr = atol(pch_nr);
 		if( nr % 2 == 0)
 			nr+=1;
-
+		
+		primes_set.clear();
+		not_prime_set.clear();
 		while(1) {
+			cout << "Check " << nr << endl;
 			bool prime = is_prime(nr);
-			if( prime && check_number2(nr) ){
+			if( !prime )
+			{
+				nr+=2;
+				continue;
+			}
+
+			if( check_number2(nr, primes_set, not_prime_set) ){
 				printf("%d\n", nr);
 				break;
 			}
