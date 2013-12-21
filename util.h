@@ -7,10 +7,6 @@
 #include <algorithm>
 using namespace std;
 
-template <typename T> void print(T i){
-    cout << i << " ";
-}
-
 /* 
 prints the edges of a graph in the form:
 1 2
@@ -19,7 +15,7 @@ prints the edges of a graph in the form:
 The graph must be in an adjancecy list representation: map< T, vector<U> > for example.  
 */
 
-template <typename T, typename U> void print_graph_edges(map<T, vector<U> > g) {
+template <typename T, typename U> void print_graph_edges(map<T, vector<U> > &g) {
     typename map<T, vector<U> >::iterator it;
     typename vector<U>::iterator it_vect;
 
