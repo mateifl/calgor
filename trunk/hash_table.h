@@ -29,6 +29,7 @@ template <typename K, typename V>
 class hash_table {
 public:
     hash_table(K *keys, V *values, size_t items_number);
+    hash_table(vector<K> keys, vector<V> values, size_t items_number);
     ~hash_table();
     V get(const K &key);
     //void put(const K key, const V value);
@@ -47,10 +48,17 @@ private:
 };
 
 template <typename K, typename V> 
+hash_table<K, V>::hash_table(vector<K> keys, vector<V> values, size_t items_number) {
+	K *temp_keys = &keys[0];
+	V *temp_values = &values[0];
+	hash_table(temp_keys, temp_values, items_number);
+}
+
+template <typename K, typename V> 
 hash_table<K, V>::hash_table(K *keys, V *values, size_t items_number) {
 	vector< pair<long, hash_entry<K, V> > > hash_codes(items_number);  
 	long hash_key = 0, min_hash_key, max_hash_key;
-	hash_entry<K, V> entry;
+	// hash_entry<K, V> entry();
 	m_items_number = items_number;
 	m_prime = 2 * items_number + 1;
 	
@@ -69,7 +77,7 @@ hash_table<K, V>::hash_table(K *keys, V *values, size_t items_number) {
 		if( max_hash_key < hash_key )
 			max_hash_key = hash_key;
 
-		entry = hash_entry<K, V>(keys[i], values[i]);
+		hash_entry<K, V> entry = hash_entry<K, V>(keys[i], values[i]);
 		hash_codes[i] = make_pair(hash_key, entry);
 	}	
 
