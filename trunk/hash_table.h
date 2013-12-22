@@ -8,6 +8,7 @@
 #include <utility>
 #include <cmath>
 #include <string>
+#include <fstream>
 using namespace std;
 
 
@@ -16,6 +17,8 @@ class hash_entry {
 public:
 	hash_entry(K k, V v);
 	hash_entry() {};
+	K get_key() { return key; };
+	V get_value() { return value; };
 private:
 	K key;
 	V value;
@@ -32,14 +35,14 @@ template <typename K, typename V>
 class hash_table {
 public:
     hash_table(K *keys, V *values, size_t items_number);
-    hash_table(vector<K> keys, vector<V> values, size_t items_number);
     ~hash_table();
     V get(const K &key);
     //void put(const K key, const V value);
     bool has_key(const K key);
+	size_t size() { return m_items_number; }
 private:
     vector< vector< hash_entry<K, V> >* >  v_buffer;
-	long hash(char *key);
+	long hash(const char *key);
 	long hash(string key);
 	long hash(long key);
 	long compress(long hash_value);
@@ -52,23 +55,14 @@ private:
 };
 
 template <typename K, typename V> 
-hash_table<K, V>::hash_table(vector<K> keys, vector<V> values, size_t items_number) {
-	K *temp_keys = &keys[0];
-	V *temp_values = &values[0];
-	hash_table(temp_keys, temp_values, items_number);
-}
-
-template <typename K, typename V> 
 hash_table<K, V>::hash_table(K *keys, V *values, size_t items_number) {
-	vector< pair<long, hash_entry<K, V> > > hash_codes(items_number);  
-	long hash_key = 0;
 	m_items_number = items_number;
 	m_prime = 2 * items_number + 1;
 	
 	while(!is_prime(m_prime))
 		m_prime += 2;
 
-	cout << "m_prime = " << m_prime << endl;
+	v_buffer.resize(m_prime);
 	// Create the hash codes. Store them along with the (key, value) object in a vector
 	// Are 2 vectors here necessary? 
 
@@ -76,20 +70,13 @@ hash_table<K, V>::hash_table(K *keys, V *values, size_t items_number) {
 	{
 		long hash_key = hash(keys[i]);
 		hash_key = compress(hash_key);	
+		if( v_buffer[hash_key] == NULL)
+	 		v_buffer[hash_key] = new vector< hash_entry<K, V> >();
 
 		hash_entry<K, V> entry = hash_entry<K, V>(keys[i], values[i]);
-		hash_codes[i] = make_pair(hash_key, entry);
+		v_buffer[hash_key]->push_back(entry);
 	}	
 
-	v_buffer = vector< vector< hash_entry<K, V> >* >(m_prime);
-	typename vector< pair<long, hash_entry<K, V> > >::iterator it;
-
-	for( it = hash_codes.begin(); it != hash_codes.end(); it++ )
-	{
-	 	if( v_buffer[it->first] == NULL)
-	 		v_buffer[it->first] = new vector< hash_entry<K, V> >();
-	 	v_buffer[it->first]->push_back(it->second);
-	}
 }
 
 template <typename K, typename V> 
@@ -98,7 +85,7 @@ hash_table<K, V>::~hash_table() {
 }
 
 template <typename K, typename V> 
-long hash_table<K, V>::hash(char *key) {
+long hash_table<K, V>::hash(const char *key) {
     unsigned long hash_key = 5381;
 
     for(size_t i = 0; i < strlen(key); i++)
@@ -128,7 +115,7 @@ template <typename K, typename V>
 long hash_table<K, V>::compress(long hash_value) {
 
 	long p = 19999993, a = 7151, b = 65993;	
-	return abs(((a * hash_value + b)) % m_prime);
+	return abs((long)(((a * hash_value + b)) % m_prime));
 }
 
 template <typename K, typename V> 
@@ -140,13 +127,13 @@ V hash_table<K, V>::get(const K &k) {
 
 template <typename K, typename V>
 bool hash_table<K, V>::has_key(const K key) {
-	
 	long index = compress(hash(key));
-
+	if( index >= v_buffer.size() )
+		return false;
 	if ( v_buffer[index] != NULL ) {
 		typename vector< hash_entry<K, V> >::iterator it;
-		for (it = v_buffer->begin(); it != v_buffer->end(); it++) {
-			if ( key == it->first) 
+		for (it = v_buffer[index]->begin(); it != v_buffer[index]->end(); it++) {
+			if ( key == it->get_key()) 
 				return true;
 		}
 	}
@@ -176,7 +163,7 @@ bool hash_table<K, V>::is_composite(long a, long d, long s, long l_number)
         return false;
 
     for(long l = 0; l < s; l++)
-        if( modpow(a, pow( (long double)2, l) * d, l_number ) == l_number - 1 )
+        if( (long)modpow(a, pow( (long double)2, l) * d, l_number ) == l_number - 1 )
             return false;
     return true;
 }
