@@ -1,11 +1,13 @@
 #ifndef HASH_TABLE_H
 #define	HASH_TABLE_H
+#include <iostream>
 #include <cstdlib>
 #include <cstdio>
 #include <cstring>
 #include <vector>
 #include <utility>
 #include <cmath>
+#include <string>
 using namespace std;
 
 
@@ -13,6 +15,7 @@ template <typename K, typename V>
 class hash_entry {
 public:
 	hash_entry(K k, V v);
+	hash_entry() {};
 private:
 	K key;
 	V value;
@@ -35,8 +38,9 @@ public:
     //void put(const K key, const V value);
     bool has_key(const K key);
 private:
-    vector< hash_entry<K, V> >  v_buffer;
+    vector< vector< hash_entry<K, V> >* >  v_buffer;
 	long hash(char *key);
+	long hash(string key);
 	long hash(long key);
 	long compress(long hash_value);
 	size_t m_items_number;
@@ -57,31 +61,27 @@ hash_table<K, V>::hash_table(vector<K> keys, vector<V> values, size_t items_numb
 template <typename K, typename V> 
 hash_table<K, V>::hash_table(K *keys, V *values, size_t items_number) {
 	vector< pair<long, hash_entry<K, V> > > hash_codes(items_number);  
-	long hash_key = 0, min_hash_key, max_hash_key;
-	// hash_entry<K, V> entry();
+	long hash_key = 0;
 	m_items_number = items_number;
 	m_prime = 2 * items_number + 1;
 	
 	while(!is_prime(m_prime))
 		m_prime += 2;
 
-	// Create the hash codes. Detect the min and max hash key 
+	cout << "m_prime = " << m_prime << endl;
+	// Create the hash codes. Store them along with the (key, value) object in a vector
+	// Are 2 vectors here necessary? 
 
 	for( size_t i = 0; i < items_number; i++)
 	{
 		long hash_key = hash(keys[i]);
 		hash_key = compress(hash_key);	
 
-		if( min_hash_key > hash_key )
-			min_hash_key = hash_key;
-		if( max_hash_key < hash_key )
-			max_hash_key = hash_key;
-
 		hash_entry<K, V> entry = hash_entry<K, V>(keys[i], values[i]);
 		hash_codes[i] = make_pair(hash_key, entry);
 	}	
 
-	v_buffer = vector< vector< hash_entry<K, V> >* >(max_hash_key);
+	v_buffer = vector< vector< hash_entry<K, V> >* >(m_prime);
 	typename vector< pair<long, hash_entry<K, V> > >::iterator it;
 
 	for( it = hash_codes.begin(); it != hash_codes.end(); it++ )
@@ -99,12 +99,17 @@ hash_table<K, V>::~hash_table() {
 
 template <typename K, typename V> 
 long hash_table<K, V>::hash(char *key) {
-    unsigned long hash = 5381;
+    unsigned long hash_key = 5381;
 
     for(size_t i = 0; i < strlen(key); i++)
-		hash = ((hash << 5) + hash) + key[i];
+		hash_key = ((hash_key << 5) + hash_key) + key[i];
 
-    return hash;
+    return hash_key;
+}
+
+template <typename K, typename V> 
+long hash_table<K, V>::hash(string key) {
+    return hash(key.c_str());
 }
 
 template <typename K, typename V> 
@@ -206,7 +211,5 @@ bool hash_table<K, V>::is_prime(long l_number) {
 	return !( is_composite(2, lnr, s, l_number) && is_composite(3, lnr, s, l_number) && 
 			  is_composite(5, lnr, s, l_number) && is_composite(7, lnr, s, l_number) );	    
 }
-
-
 
 #endif
