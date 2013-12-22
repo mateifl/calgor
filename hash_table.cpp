@@ -1,9 +1,5 @@
 #include "hash_table.h"
 
-#include <iostream>
-#include <fstream>
-#include <string>
-using namespace std;
 
 
 void read_data(string filename, vector<string> &keys, vector<string> &values) {
@@ -25,15 +21,18 @@ void read_data(string filename, vector<string> &keys, vector<string> &values) {
 int main(int argc, char** argv) {
 	vector<string> keys;
 	vector<string> values;
-	read_data("hash_test.txt", keys, values);
+
+
+	read_data("test_data.txt", keys, values);
 	cout << "Data read!" << endl;
-//	hash_entry<string,string> he = hash_entry<string,string>("key", "value");
-//	pair<long, hash_entry<string,string> > p = make_pair(1L, he);
-//	vector< pair<long, hash_entry<string, string> > > v(5);
-//	v.push_back(p);
-	hash_table<string, string> htable(keys, values, keys.size());
+	string *ps_keys = &keys[0];
+	string *ps_values = &values[0];
+	hash_table<string, string> htable = hash_table<string, string>(ps_keys, ps_values, keys.size());
 
-
-
+	cout << "Done creating hash table" << endl;
+	cout << "Items: " << htable.size() << endl;
+	cout << htable.has_key("1212") << endl;
+	cout << htable.has_key("84122233538") << endl;
+	
 	return 0;
 }
