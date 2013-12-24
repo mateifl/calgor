@@ -9,13 +9,18 @@
 #include <cmath>
 #include <string>
 #include <fstream>
+#include <ctime>
+#include <map>
 using namespace std;
 
 
 template <typename K, typename V> 
 class hash_entry {
 public:
-	hash_entry(K k, V v);
+	hash_entry(K k, V v){
+		key = k;
+		value = v;
+	};
 	hash_entry() {};
 	K get_key() { return key; };
 	V get_value() { return value; };
@@ -23,13 +28,6 @@ private:
 	K key;
 	V value;
 };
-
-template <typename K, typename V> 
-hash_entry<K, V>::hash_entry(K k, V v) {
-	key = k;
-	value = v;
-};
-
 
 template <typename K, typename V> 
 class hash_table {
@@ -42,6 +40,7 @@ public:
 	size_t size() { return m_items_number; }
 private:
     vector< vector< hash_entry<K, V> >* >  v_buffer;
+	
 	long hash(const char *key);
 	long hash(string key);
 	long hash(long key);
@@ -57,19 +56,20 @@ private:
 template <typename K, typename V> 
 hash_table<K, V>::hash_table(K *keys, V *values, size_t items_number) {
 	m_items_number = items_number;
-	m_prime = 2 * items_number + 1;
+	m_prime = 4 * items_number + 1;
 	
 	while(!is_prime(m_prime))
 		m_prime += 2;
-
+	
+	// resize the bucket vector
 	v_buffer.resize(m_prime);
-	// Create the hash codes. Store them along with the (key, value) object in a vector
-	// Are 2 vectors here necessary? 
 
 	for( size_t i = 0; i < items_number; i++)
 	{
+		// create the hash key
 		long hash_key = hash(keys[i]);
-		hash_key = compress(hash_key);	
+		hash_key = compress(hash_key);
+
 		if( v_buffer[hash_key] == NULL)
 	 		v_buffer[hash_key] = new vector< hash_entry<K, V> >();
 
@@ -120,15 +120,28 @@ long hash_table<K, V>::compress(long hash_value) {
 
 template <typename K, typename V> 
 V hash_table<K, V>::get(const K &k) {
-	long hash_key = hash(k);
-	hash_key = compress(hash_key);
+	long index = compress(hash(k));
+	if( index >= m_prime )
+		return NULL;
 	
+	if ( v_buffer[index] != NULL ) {
+		//if( v_buffer[index]->size() > 4)
+		//cout << v_buffer[index]->size() << endl;
+		typename vector< hash_entry<K, V> >::iterator it;
+		for (it = v_buffer[index]->begin(); it != v_buffer[index]->end(); it++) {
+			if ( k == it->get_key()) 
+				return it->get_value();
+		}
+	}
+
+	return NULL;
+
 }
 
 template <typename K, typename V>
 bool hash_table<K, V>::has_key(const K key) {
 	long index = compress(hash(key));
-	if( index >= v_buffer.size() )
+	if( index >= m_prime )
 		return false;
 	if ( v_buffer[index] != NULL ) {
 		typename vector< hash_entry<K, V> >::iterator it;
