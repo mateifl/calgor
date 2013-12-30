@@ -102,9 +102,10 @@ template <typename T> T access_iterator(pair<T, T> &i, int j) { return i.first; 
 template <typename G, typename T> map<T, T> calculate_sccs( G &g, G &g_reversed) {
 	// run dfs on the reversed graph
 	finishing_times_visitor<T> *v = new finishing_times_visitor<T>();
-	typename map<T, vector<T> >::iterator it;
+	//typename map<T, vector<T> >::iterator it;
+	typename G::iterator it;
 	map<T, short> processed_nodes;
-        int j = 0;
+    int j = 0;
 	for(it = g_reversed.begin(); it != g_reversed.end(); it++)
 	{
         

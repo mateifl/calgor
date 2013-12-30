@@ -48,16 +48,14 @@ int main(int argc, char** argv) {
 	map<string, string> m;
 
 	for(int i = 0; i < keys.size(); i++)
-	{
 		m.insert( make_pair(keys[i], values[i]));
-	}
 
 	for(it = index.begin(); it != index.end(); it++)
 		tmp = m[keys[*it]];
 	t1 = clock();
 	cout << "Time hash: " << (float)(t1 - t)/CLOCKS_PER_SEC << endl;
 
-	cout << htable.get("84102766549") << endl;
+	cout << htable.get("111111") << endl;
 	cout << m["84102766549"] << endl;
 
 	return 0;

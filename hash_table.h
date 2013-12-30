@@ -64,6 +64,7 @@ hash_table<K, V>::hash_table(K *keys, V *values, size_t items_number) {
 	// resize the bucket vector
 	v_buffer.resize(m_prime);
 
+	vector< hash_entry<K, V> >::iterator it;
 	for( size_t i = 0; i < items_number; i++)
 	{
 		// create the hash key
@@ -73,8 +74,20 @@ hash_table<K, V>::hash_table(K *keys, V *values, size_t items_number) {
 		if( v_buffer[hash_key] == NULL)
 	 		v_buffer[hash_key] = new vector< hash_entry<K, V> >();
 
-		hash_entry<K, V> entry = hash_entry<K, V>(keys[i], values[i]);
-		v_buffer[hash_key]->push_back(entry);
+		// ckeck if the key already exists
+		bool exists = false;
+		for(it = v_buffer[hash_key]->begin(); it != v_buffer[hash_key]->end(); it++)
+		{
+			if( it->get_key() == keys[i] ){
+				exists = true;
+				break;
+			}
+		}
+
+		if(!exists) {
+			hash_entry<K, V> entry = hash_entry<K, V>(keys[i], values[i]);
+			v_buffer[hash_key]->push_back(entry);
+		}
 	}	
 
 }
@@ -120,9 +133,10 @@ long hash_table<K, V>::compress(long hash_value) {
 
 template <typename K, typename V> 
 V hash_table<K, V>::get(const K &k) {
+	V v;
 	long index = compress(hash(k));
 	if( index >= m_prime )
-		return NULL;
+		return v;
 	
 	if ( v_buffer[index] != NULL ) {
 		//if( v_buffer[index]->size() > 4)
@@ -134,7 +148,7 @@ V hash_table<K, V>::get(const K &k) {
 		}
 	}
 
-	return NULL;
+	return v;
 
 }
 
