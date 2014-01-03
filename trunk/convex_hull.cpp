@@ -6,3 +6,4 @@ bool compare(point first_point, point second_point) {
     else
         return first_point.x < second_point.y;
 }
+
