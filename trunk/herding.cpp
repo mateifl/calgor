@@ -8,9 +8,22 @@ using namespace std;
 
 typedef vector<vector<int> > graph;
 
-vector<vector<char> > read_data() {
-    vector<vector<char> > res;
-    return res;
+vector<vector<char> > read_data(FILE *f) {
+	int rows, columns;
+	fscanf(f, "%d %d\n", &rows, &columns);
+	vector<char> v_line(columns);
+	vector<vector<char> > v_res(rows);
+	char pch_line[1024];
+	for (int i = 0; i < rows; i++)
+	{
+		fgets(pch_line, 1001, f);
+		for (int j = 0; j < columns; j++)
+		{
+			v_line[j] = pch_line[j];
+		}
+	}
+
+    return v_res;
 }
 
 graph create(vector<vector<char> > m, int rows, int columns ) {
