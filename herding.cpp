@@ -5,7 +5,7 @@
 #include <queue>
 
 using namespace std;
-char coordinates[] = {'S', 'N', 'E', 'W'}; 
+const char coordinates[] = {'S', 'N', 'E', 'W'}; 
 typedef vector<vector<int> > graph;
 
 vector<vector<char> > read_data(FILE *f) {
@@ -13,14 +13,16 @@ vector<vector<char> > read_data(FILE *f) {
 	fscanf(f, "%d %d\n", &rows, &columns);
 	vector<char> v_line(columns);
 	vector<vector<char> > v_res(rows);
-	char *pch_line = new char[columns + 1];
-	for (int i = 0; i <= rows; i++)
+	char *pch_line;
+	for (int i = 0; i < rows; i++)
 	{
-		fgets(pch_line, columns + 1, f);
-		pch_line[columns] = '\0';
+		pch_line = new char[columns + 3];
+		fgets(pch_line, columns + 3, f);
+		//pch_line[columns] = '\0';
 		cout << pch_line << endl;
 		for (int j = 0; j < columns; j++)
 			v_line[j] = pch_line[j];
+		delete[] pch_line;
 		v_res[i] = v_line;
 	}
 
@@ -45,9 +47,8 @@ graph create(vector<vector<char> > m, int rows, int columns ) {
 			k++;
         }
     }
-    
+    return g;
 }
-
 
 int main(int argc, char** argv) {
     vector<vector<char> > data = read_data(stdin);
