@@ -189,28 +189,6 @@ bool check_number2( long long number, set<long long> &prime_set, set<long long> 
 	return false;
 }
 
-template <typename T> vector<T> read_data(FILE *file)
-{
-	vector<T> v_data;
-	T nr1, nr2, nr3, nr4, nr5, nr6, nr7, nr8;
-
-	while( !feof(file) )
-	{
-		fscanf(file, "%ld %ld %ld %ld %ld %ld %ld %ld\n", &nr1, &nr2, &nr3, &nr4, &nr5, &nr6, &nr7, &nr8);
-		v_data.push_back(nr1);
-		v_data.push_back(nr2);
-		v_data.push_back(nr3);
-		v_data.push_back(nr4);
-		v_data.push_back(nr5);
-		v_data.push_back(nr6);
-		v_data.push_back(nr7);
-		v_data.push_back(nr8);
-
-	}
-
-	return v_data;
-}
-
 int main(int argc, char** argv) {
 	long i_nr_tests;
     long long nr;
