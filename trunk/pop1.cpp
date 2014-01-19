@@ -11,6 +11,8 @@
 #include <algorithm>
 #include <set>
 using namespace std;
+vector<int> possible_idx_list();
+int get_next_possible_index(long number, vector<int> &possible_indices);
 
 long long modpow(long long a, long long b, long long n) {
 	long long res = 1;
@@ -121,7 +123,7 @@ template <typename T> bool check_if_prime(T l_number, vector<T> &primes, set<T> 
 bool check_number2( long long number, set<long long> &prime_set, set<long long> &not_prime_set) {
 	long long n, rest;
 	char pch_number[11], pch_buffer[11];
-	sprintf(pch_number, "%d", number);
+	sprintf(pch_number, "%lld", number);
 	pch_number[10] = '\0';
 	unsigned int i = 1, i_copy_lenght;
 	bool n_prime, rest_prime;
@@ -190,8 +192,12 @@ bool check_number2( long long number, set<long long> &prime_set, set<long long> 
 }
 
 int main(int argc, char** argv) {
+
+	vector<int> vv = possible_idx_list();
+	// cout << vv[get_next_possible_index(2, vv)] << endl;
+	// return 0;
 	long i_nr_tests;
-    long long nr;
+    long long nr, nr1;
 	scanf("%ld\n", &i_nr_tests);
     char pch_nr[12];
     
@@ -202,31 +208,75 @@ int main(int argc, char** argv) {
 	set<long long> primes_set, not_prime_set;
 	for(int i = 0; i < i_nr_tests; i++) {
         fgets(pch_nr, 11, stdin);			
-        nr = atol(pch_nr);
-		if( nr % 2 == 0)
-			nr+=1;
-		
+        nr1 = atol(pch_nr);
+		int r = nr % 30030;
+		cout << "r " << r << endl;
+		int next_idx = get_next_possible_index(r, vv);
+		cout << "next_idx " << next_idx << endl;
 		primes_set.clear();
 		not_prime_set.clear();
+		nr1 -= r;
+
 		while(1) {
+			
+			nr = nr1 + vv[next_idx];
 			cout << "Check " << nr << endl;
 			bool prime = is_prime(nr);
 			if( !prime )
 			{
-				nr+=2;
+				next_idx++;
+				if(next_idx == vv.size())
+					next_idx = 0;
 				continue;
 			}
 
 			if( check_number2(nr, primes_set, not_prime_set) ){
-				printf("%d\n", nr);
+				printf("%lld\n", nr);
 				break;
 			}
 			else
-				nr+=2;
+			{
+				next_idx++;
+				if(next_idx == vv.size())
+					next_idx = 0;
+			}
 		}	
 	}
     clock_t t3 = clock();
     cout << "Calculus: " << (float)(t3 - t2)/CLOCKS_PER_SEC << endl;
 
 	return 0;
+}
+
+vector<int> possible_idx_list() {
+	vector<int> res;
+	res.push_back(2);
+	res.push_back(3);
+	res.push_back(5);
+	res.push_back(7);
+	res.push_back(11);
+	res.push_back(13);
+	for(int i = 0; i < 30031; i++){
+		if( i % 2 == 0 || i % 3 == 0 || i % 5 == 0 || i % 7 == 0 || i % 11 == 0 || i % 13 == 0)
+			continue;
+		res.push_back(i);
+	}
+	return res;
+}
+
+int get_next_possible_index(long number, vector<int> &possible_indices){
+	// binary search
+
+	int start_index = 0;
+	int test_idx = possible_indices.size() -1;
+	int new_test_idx;
+	while(1) {
+		new_test_idx = (test_idx + start_index) / 2;
+		if( possible_indices[new_test_idx - 1] < number && possible_indices[new_test_idx] >= number)
+			return new_test_idx;
+		if( possible_indices[new_test_idx] < number ) 
+			start_index = new_test_idx;
+		else
+			test_idx = new_test_idx;
+	}
 }
