@@ -10,7 +10,7 @@
 #include <map>
 using namespace std;
 
-vector<long> bitmasks() {
+vector<long> bitmasks(int N) {
 	vector<long> v_bitmasks;
 	for(int i = 0; i <= N; i++)
 		v_bitmasks.push_back(1 << i);
