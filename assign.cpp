@@ -28,30 +28,13 @@ map<long, long> combine(long l_first, long l_second, vector<long> v_bitmasks){
 	return r;
 }
 
-map<long, long> assign(vector<vector<short> > &data, int length){
+map<long, long> assign(vector<long> &data, int length){
 
 	if(length == 2){
 		return combine(data[0], data[1]);
 	}
 
-	map<vector<short>, long> r = assign(data, length - 1);
-	cout << r.size() << endl;
-	map<vector<short>, long> r2;
-	map<vector<short>, long>::iterator it;
-	vector<short>::iterator it_vect;
-	for( it = r.begin(); it != r.end(); it++)
-	{
-		for(unsigned int i = 0; i < data.size(); i++ )
-		{
-			if(data[length - 1][i] == 1 && it->first[i] == 0)
-			{
-				vector<short> v = it->first;
-				v[i] = 1;
-				long val = r2[v];
-				r2[v] = val + it->second;
-			}
-		}
-	}
+	map<long, long> r2;
 	return r2;
 }
 
@@ -75,7 +58,7 @@ int main(int argc, char** argv) {
 				numbers[i/2] = pch_data[i] - 48;
 			data[j] = numbers;
 		}
-		map<vector<short>, long> res = assign(data, data.size());
+
 		//cout << endl;
 	}
 	clock_t t2 = clock();
