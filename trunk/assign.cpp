@@ -10,30 +10,25 @@
 #include <map>
 using namespace std;
 
-map<vector<short>, long> combine(vector<short> &v_first, vector<short> &v_second){
-	map<vector<short>, long> r;// = assign(data, length - 1);
-	int i_vector_size = v_first.size();
+vector<long> bitmasks() {
+	vector<long> v_bitmasks;
+	for(int i = 0; i <= N; i++)
+		v_bitmasks.push_back(1 << i);
+	return v_bitmasks;
+}
 
-	for(int i = 0; i < i_vector_size; i++)
+
+map<long, long> combine(long l_first, long l_second, vector<long> v_bitmasks){
+	map<long, long> r;
+
+	for(int i = 0; i < v_bitmasks.size(); i++)
 	{
-		if(v_first[i] == 0)
-			continue;
-		for(int j = 0; j < i_vector_size; j++)
-		{
-			if(v_second[j] == 1 && i != j)
-			{
-				vector<short> v = vector<short>(i_vector_size);
-				v[i] = 1;
-				v[j] = 1;
-				long val = r[v];
-				r[v] = val + 1;
-			}
-		}
+		
 	}
 	return r;
 }
 
-map<vector<short>, long> assign(vector<vector<short> > &data, int length){
+map<long, long> assign(vector<vector<short> > &data, int length){
 
 	if(length == 2){
 		return combine(data[0], data[1]);
