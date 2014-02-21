@@ -45,7 +45,7 @@ map<long, long> assign(vector<long> &data, int length){
 		{
 			for(map_iterator = r.begin(); map_iterator != r.end(); map_iterator++ )
 			{
-				if(v_next[i] & map_iterator->first == 0)
+				if( (v_next[i] & map_iterator->first) == 0)
 				{
 					long a = r_temp[v_next[i] | map_iterator->first] + r[map_iterator->first];
 					if(a != 0)
@@ -56,9 +56,7 @@ map<long, long> assign(vector<long> &data, int length){
 		r = r_temp;
 	}
 
-
-	map<long, long> r2;
-	return r2;
+	return r;
 }
 
 int main(int argc, char** argv) {
