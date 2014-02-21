@@ -41,19 +41,29 @@ map<long, long> assign(vector<long> &data, int length){
 	for(int i = 1; i < data.size(); i++)
 	{
 		v_next = decompose(data[i], v_bitmasks);
-		for (int j = 0; j < data.size(); j++)
+		r_temp.clear();
+		for (int j = 0; j < v_next.size(); j++)
 		{
 			for(map_iterator = r.begin(); map_iterator != r.end(); map_iterator++ )
 			{
-				if( (v_next[i] & map_iterator->first) == 0)
+				//cout << v_next[j] << " " <<  map_iterator->first << endl;
+				if( (v_next[j] & map_iterator->first) == 0)
 				{
-					long a = r_temp[v_next[i] | map_iterator->first] + r[map_iterator->first];
+					cout << v_next[j] << " " <<  map_iterator->first << endl;
+					long n = v_next[j] | map_iterator->first;
+					long a = r_temp[n] + r[map_iterator->second];
+					cout << n << " - " << a << endl;
 					if(a != 0)
-						r_temp.insert(make_pair(v_next[i] | map_iterator->first, a));
+						r_temp.insert(make_pair(n, a));
 				}
 			}
 		}
 		r = r_temp;
+		for(map_iterator = r_temp.begin(); map_iterator != r_temp.end(); map_iterator++ )
+			cout << map_iterator->first << "->" << map_iterator->second << endl;
+		cout << "===" << endl;
+		for(map_iterator = r.begin(); map_iterator != r.end(); map_iterator++ )
+			cout << map_iterator->first << "->" << map_iterator->second << endl;
 	}
 
 	return r;
@@ -79,11 +89,11 @@ int main(int argc, char** argv) {
 			long number = strtol(pch_number, NULL, 2);
 			data[j] = number;
 		}
-
-		//cout << endl;
+		map<long, long> r = assign(data, i_number_students);
+		cout << endl;
 	}
 	clock_t t2 = clock();
 
-	cout << " time: " << (float)(t2 - t1)/CLOCKS_PER_SEC << endl;
+	cout << "time: " << (float)(t2 - t1)/CLOCKS_PER_SEC << endl;
 	return 0;
 }
