@@ -64,7 +64,7 @@ hash_table<K, V>::hash_table(K *keys, V *values, size_t items_number) {
 	// resize the bucket vector
 	v_buffer.resize(m_prime);
 
-	vector< hash_entry<K, V> >::iterator it;
+	typename vector< hash_entry<K, V> >::iterator it;
 	for( size_t i = 0; i < items_number; i++)
 	{
 		// create the hash key
