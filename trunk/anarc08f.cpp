@@ -28,7 +28,7 @@ void update_heap(heap nodes_heap, graph g, char* source_node, map<char *, int> m
 }
 
 map<char *, int> dijkstra(graph g, char* source_node) {
-	int MAX_INT = 63356;
+	int MAX_INT = 63356  ;
 	// build the heap
 	heap nodes_heap;
 	// create a map with not visited nodes
