@@ -1,19 +1,17 @@
 DEBUG_FLAGS = -g
+DIST_FOLDER = Debug
 
-hash_test: hash_table.o
-	g++ -g hash_table.o -o  hash_test
+$(DIST_FOLDER)/anarc08f_list.exe: $(DIST_FOLDER)/anarc08f_list.o
+	g++ -g $(DIST_FOLDER)/anarc08f_list.o -o  $(DIST_FOLDER)/anarc08f_list
 
-hash_table.o: hash_table.cpp hash_table.h
-	g++ -g hash_table.cpp -c  -o hash_table.o
+$(DIST_FOLDER)/anarc08f_list.o: anarc08f_list.cpp 
+	g++ -g anarc08f_list.cpp -c  -o $(DIST_FOLDER)/anarc08f_list.o
 
-bottom.exe: Debug/main.o Debug/bottom.o
-	g++ Debug/main.o Debug/bottom.o -o bottom.exe
+$(DIST_FOLDER)/anarc08f.exe: $(DIST_FOLDER)/anarc08f.o
+	g++ -g $(DIST_FOLDER)/anarc08f.o -o  $(DIST_FOLDER)/anarc08f
 
-Debug/bottom.o: bottom.cpp bottom.h
-	g++ -c bottom.cpp -o Debug/bottom.o
-
-Debug/main.o: main.cpp
-	g++ -c main.cpp -o Debug/main.o
+$(DIST_FOLDER)/anarc08f.o: anarc08f.cpp 
+	g++ -g anarc08f.cpp -c  -o $(DIST_FOLDER)/anarc08f.o
 
 clean:
-	rm Debug/*.o bottom.exe 
+	rm $(DIST_FOLDER)/*.o $(DIST_FOLDER)/*.exe 

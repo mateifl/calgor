@@ -42,7 +42,7 @@ map<int, int> dijkstra(graph g, int source_node) {
 	// create a map with not visited nodes
 	vector<int> v_not_visited;
 
-	for( int i = 0; i < g.size(); i++)
+	for(unsigned int i = 0; i < g.size(); i++)
 	{
 		if( i != source_node ){
 			nodes_heap.push(make_pair(MAX_INT, i));
@@ -75,4 +75,44 @@ map<int, int> dijkstra(graph g, int source_node) {
 	}
 
 	return m_shortest_path;
+}
+
+void parse_roads_line(char *pch_line) {
+	char *location1 = strtok(pch_line, " ");
+
+
+
+	//return l;
+}
+
+int main(int argc, char **argv) {
+//	int locations, cars, roads;
+//	char *pch_line = new char[1024 * 8], *pch;
+//
+//	while(true) {
+//		scanf("%d %d %d\n", &locations, &cars, &roads);
+//
+//		if(locations == 0 && cars == 0 && roads == 0)
+//			break;
+//
+//		fgets(pch_line, 8*1024, stdin);
+//
+//		pch = strtok(pch_line, " ");
+//
+//		while( (pch = strtok(NULL, " ")) != NULL )
+//			cout << pch << endl;
+//
+//		for(int i = 0; i < roads; i++){
+//			fgets(pch_line, 1024, stdin);
+//
+//		}
+//	}
+
+	char source[32], mid[32], end[32];
+	scanf("%s %s %s\n", source, mid, end);
+//	cout << strtok(test, " ") << endl;
+//	cout << strtok(NULL, " ") << endl;
+//	cout << strtok(NULL, " ") << endl;
+
+	return 0;
 }
