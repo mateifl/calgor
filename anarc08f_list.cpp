@@ -77,42 +77,50 @@ map<int, int> dijkstra(graph g, int source_node) {
 	return m_shortest_path;
 }
 
-void parse_roads_line(char *pch_line) {
-	char *location1 = strtok(pch_line, " ");
-
-
-
-	//return l;
+void parse_roads_line(char *source, char* destination, char* mid, graph &g, map<char*, int> locations_map) {
+	int i_source_index = locations_map[source];
+	int i_destination_index = locations_map[destination];
+	char pch_value[10];
+	strncpy(pch_value, mid + 2, strlen(mid) - 2);
+	if( mid[0] == '<' )
+	{
+		edge e;
+		e.tail = i_destination_index;
+		e.value = atoi(pch_value);
+		g[i_source_index].push_back(e);
+	}
 }
 
 int main(int argc, char **argv) {
-//	int locations, cars, roads;
-//	char *pch_line = new char[1024 * 8], *pch;
-//
-//	while(true) {
-//		scanf("%d %d %d\n", &locations, &cars, &roads);
-//
-//		if(locations == 0 && cars == 0 && roads == 0)
-//			break;
-//
-//		fgets(pch_line, 8*1024, stdin);
-//
-//		pch = strtok(pch_line, " ");
-//
-//		while( (pch = strtok(NULL, " ")) != NULL )
-//			cout << pch << endl;
-//
-//		for(int i = 0; i < roads; i++){
-//			fgets(pch_line, 1024, stdin);
-//
-//		}
-//	}
-
+	int i_locations, i_cars, i_roads;
+	char *pch_line = new char[1024 * 8], *pch;
 	char source[32], mid[32], end[32];
-	scanf("%s %s %s\n", source, mid, end);
-//	cout << strtok(test, " ") << endl;
-//	cout << strtok(NULL, " ") << endl;
-//	cout << strtok(NULL, " ") << endl;
+
+	while(true) {
+		scanf("%d %d %d\n", &i_locations, &i_cars, &i_roads);
+
+		if(i_locations == 0 && i_cars == 0 && i_roads == 0)
+			break;
+
+		fgets(pch_line, 8*1024, stdin);
+
+		pch = strtok(pch_line, " ");
+
+		int i = 0;
+		map<char*, int> m_locations_map;
+
+		while( (pch = strtok(NULL, " ")) != NULL ){
+			m_locations_map.insert(make_pair(pch, i));
+			i++;
+		}
+
+		graph g = graph(i_locations);
+
+		for(int i = 0; i < i_roads; i++){
+			scanf("%s %s %s", source, mid, end);
+			parse_roads_line(source, end, mid, g, m_locations_map);
+		}
+	}
 
 	return 0;
 }
