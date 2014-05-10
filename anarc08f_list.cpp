@@ -1,3 +1,4 @@
+#include <ctime>
 #include <iostream>
 #include <cstdlib>
 #include <cstdio>
@@ -151,7 +152,7 @@ void parse_roads_line(string &str_source, string &str_destination, string &str_m
 
 
 int main(int argc, char **argv) {
-//	clock_t t0 = clock();
+	clock_t t0 = clock();
 	long i_locations, i_cars, i_roads;
 	char *pch_line = new char[1024 * 200], *pch = new char[100];
 	char *source = new char[100], *mid = new char[100], *end = new char[100]; 
@@ -170,22 +171,22 @@ int main(int argc, char **argv) {
 			x++;
 			continue;
 		}*/
-		vector<int> v_cars(i_cars + 3);
-		int i = 1;
+		vector<long> v_cars(i_cars + 3);
+		long i = 1;
 		string_int_map m_locations_map;
 
 		char* r = fgets(pch_line, 200*1024, stdin);
 		if(r == NULL)
 			break;
-		pch = strtok(pch_line, "\n ");
+		pch = strtok(pch_line, " \n");
 		m_locations_map.insert(make_pair(string(pch), i));
 		v_cars[0] = i;
 		i++;
 		string str_pch;
-		int j = 1;
+		long j = 1;
 		while( (pch = strtok(NULL, "\n ")) != NULL ){
 			str_pch = pch;
-			int i_location_index = m_locations_map[str_pch];
+			long i_location_index = m_locations_map[str_pch];
 			if( i_location_index == 0 )
 			{
 				m_locations_map[str_pch] = i;
@@ -216,7 +217,7 @@ int main(int argc, char **argv) {
 
 		map<long, long> path_values = dijkstra(g, 1);
 		map<long, long> path_values_rev = dijkstra(g_rev, 1);
-		int sum = 0;
+		long sum = 0;
 		for(unsigned long ii = 1; ii < v_cars.size(); ii++ )
 		{
 			sum += path_values[v_cars[ii]] + path_values_rev[v_cars[ii]];
@@ -225,7 +226,7 @@ int main(int argc, char **argv) {
 		x++;
 	}
 
-//	clock_t t1 = clock();
+	clock_t t1 = clock();
 //	cout << "time: " << (float)(t1 - t0)/CLOCKS_PER_SEC << endl;
 	return 0;
 }
