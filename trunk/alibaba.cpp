@@ -27,7 +27,7 @@ int solution(places_vector &places) {
 	set<pair<int, int> > places_set; 
 	for(int i = 0; i < places.size(); i++){
 		locations_heap.push(make_pair(places[i].second, places[i].first));
-		index_map.insert(places[i], i);
+		index_map.insert( make_pair(places[i], i) );
 		places_set.insert(places[i]);
 	}
 
@@ -49,19 +49,55 @@ int solution(places_vector &places) {
 	}
 
 	int i_time = 0;
-	pair<int, int> next_location;
+	pair<int, int> next_location_heap, next_location;
 	while(places_set.size() > 0){
-		next_location = locations_heap.top();
+		// get the next (min) deadline place from the heap
+		next_location_heap = locations_heap.top();
 		locations_heap.pop();
+		next_location = make_pair(next_location_heap.second, next_location_heap.first);
 		if( places_set.find(next_location) == places_set.end() ) 
 			continue;
 
+		// get the locations indexes from the location map
+		int i_start_point_index = index_map[start_location];
+        int i_next_node_index = index_map[next_location];
 
+		i_time += abs( places[i_start_point_index].second - places[i_next_node_index].second );
+
+		if(i_time > places[i_next_node_index].second)
+			return -1;
+
+		if(i_start_point_index < i_next_node_index)
+		{
+			for(int i = i_start_point_index; i <= i_next_node_index; i++)
+				places_set.erase(places[i]);
+		}
+		else
+		{
+			for(int i = i_next_node_index; i <= i_start_point_index; i++)
+				places_set.erase(places[i]);
+		}
+		start_location = next_location;
 	}
 
-	return 0;
+	return i_time;
 }
 
 int main(int argc, char** argv) {
+	int i_testcases, i_location_number, i_first, i_second;
+	scanf("%d", &i_testcases);
+
+	for(int i = 0; i < i_testcases; i++)
+	{
+		scanf("%d", &i_location_number);
+		places_vector v = places_vector(i_location_number);
+		for(int j = 0; j < i_location_number; j++)
+		{
+			scanf("%d %d", &i_first, &i_second);
+			//cout << i_first << " " << i_second << endl;
+			v[j] = make_pair(i_first, i_second);
+		}
+		cout << solution(v) << endl;
+	}
 	return 0;
 }
