@@ -129,18 +129,17 @@ void read_data(FILE *f, graph &g, graph &g_reversed) {
 
 int main(int argc, char** argv) {
 	graph2 g, g_rev;
-	FILE *f;
+	FILE *f = fopen("edges5000_1_res_70.txt", "r");
 	clock_t t1 = clock();
-	f = fopen("edges5000_1_res_70.txt", "r");
+	
 	read_edge_by_line(f, g, g_rev);
-	clock_t t2 = clock();
-	cout << "Read time: " << (float)(t2 - t1)/CLOCKS_PER_SEC << endl;
-	map<int, int> leaders = calculate_sccs<graph2, int>(g, g_rev);
-    
+	// clock_t t2 = clock();
+	// cout << "Read time: " << (float)(t2 - t1)/CLOCKS_PER_SEC << endl;
+	map<int, int> leaders = calculate_sccs<graph2, int>(g, g_rev);    
 	map<int, int>::iterator it;
 	map<int, set<int> > sccs_groups;
 	clock_t t3 = clock();
-	cout << "sccs time: " << (float)(t3 - t2)/CLOCKS_PER_SEC << endl;
+	cout << "sccs time: " << (float)(t3 - t1)/CLOCKS_PER_SEC << endl;
 	for(it = leaders.begin(); it != leaders.end();  it++) 
 		sccs_groups[it->second].insert(it->first);
     
