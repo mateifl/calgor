@@ -1,4 +1,14 @@
-#include "books.h"
+#include <iostream>
+#include <sstream>
+#include <cmath>
+#include <vector>
+#include <string>
+#include <cstdlib>
+#include <cstring>
+#include <cstdio>
+#include <numeric>
+#include <algorithm>
+using namespace std;
 
 bool check_partitions(const vector<long long> &numbers, const long long max_partition, const int partition_number) {
     int p_number = 0;
@@ -11,6 +21,8 @@ bool check_partitions(const vector<long long> &numbers, const long long max_part
         //cout << tmp_sum << " " << tmp_sum + numbers[len - 1] << endl;
         if( (tmp_sum + numbers[len - 1]) > max_partition )
         {
+            // increase the partition number by one if max_partition value 
+            // was reached
             p_number += 1;
             tmp_sum = 0;
         }
@@ -26,7 +38,6 @@ long long max_partition_bs(const vector<long long> &numbers, int partition_numbe
 {
     long long max_limit = accumulate(numbers.begin(), numbers.end(), 0LL);
     long long min_limit = *max_element(numbers.begin(), numbers.end());
-    //cout << max_limit << " " << min_limit << endl;
     long long average;
     
     while(min_limit < max_limit) {
@@ -38,96 +49,6 @@ long long max_partition_bs(const vector<long long> &numbers, int partition_numbe
     }
     
 	return max_limit;
-}
-
-
-long long max_partition(	vector<long long> numbers, int numbers_size, int partition_number, map<pair<int, int>, long long> &subproblems)
-{
-    map<pair<int, int>, long long>::iterator it = subproblems.find(make_pair(numbers_size,partition_number));
-	if (it != subproblems.end()) {
-                return it->second;
-	}
-	if(partition_number == 1) {
-		long long s = accumulate(numbers.begin(), numbers.begin() + numbers_size, 0LL);
-		subproblems[make_pair(numbers_size, partition_number)] = s; 
-		return s;
-	}
-
-	if(numbers_size == 0) {
-		subproblems.insert(make_pair( make_pair(numbers_size, partition_number), numbers[0])); 
-		return numbers[0];
-	}
-	
-	long long max_p = 500L * 10000000L;
-	
-	for(int i = partition_number - 1; i < numbers_size; i++) {
-		long long acc = accumulate(numbers.begin() + i, numbers.begin() + numbers_size, 0LL) ;	
-		long long mp = max_partition(numbers, i, partition_number - 1, subproblems);
-		max_p = min(max_p, max(mp, acc));
-	}
-	
-	subproblems[make_pair(numbers_size, partition_number)] = max_p; 
-	return max_p;
-}
-
-
-void process(string filename) {
-    FILE *input_file;
-    input_file = fopen(filename.c_str(), "r");
-    char pch_line[5120], *pch, pch_line1[128];
-    const char *delim = " ";    
-    long number;
-    int numbers_size, partition_number;
-    vector<long long> v1;
-    map<pair<int, int>, long long> subproblems;
-        
-    while(!feof(input_file))
-    {
-        fscanf(input_file, "%d %d\n", &numbers_size, &partition_number);
-        //cout << numbers_size << " " << partition_number << endl;
-        fgets(pch_line, 5120, input_file);
-        pch = strtok(pch_line, delim);
-        while( pch != NULL ){
-            number = atol(pch);
-            v1.push_back(number);
-            pch = strtok(NULL, delim);
-        }
-        //cout << "input vector created. size: " << v1.size() << endl;
-        long long mp = max_partition(v1, numbers_size, partition_number, subproblems);
-        print_partitions(v1, mp, partition_number);
-        v1.clear();
-        subproblems.clear();
-    }    
-    
-}
-
-void process_bs(string filename) {
-    FILE *input_file;
-    input_file = fopen(filename.c_str(), "r");
-    char pch_line[5120], *pch;
-    const char *delim = " ";    
-    long number;
-    int numbers_size, partition_number;
-    vector<long long> v1;
-        
-    while(!feof(input_file))
-    {
-        fscanf(input_file, "%d %d\n", &numbers_size, &partition_number);
-        //cout << numbers_size << " " << partition_number << endl;
-        fgets(pch_line, 5120, input_file);
-        pch = strtok(pch_line, delim);
-        while( pch != NULL ){
-            number = atol(pch);
-            v1.push_back(number);
-            pch = strtok(NULL, delim);
-        }
-        long long mp = max_partition_bs(v1, partition_number);
-        cout << "Max. partition: " << mp << endl;
-		print_partitions(v1, mp, partition_number);
-        v1.clear();
-        
-    }    
-    
 }
 
 void print_partitions(const vector<long long> numbers, const long long max_partition, const int partition_number)
@@ -168,3 +89,39 @@ void print_partitions(const vector<long long> numbers, const long long max_parti
     line << numbers[0];
     cout << line.str() + " " + result << endl;
 }
+
+void process_bs() {
+    char pch_line[5120], *pch;
+    const char *delim = " ";    
+    long number;
+    int numbers_size, partition_number, testcases;
+    vector<long long> v1;
+    
+    scanf("%d\n", &testcases);
+    
+    while(testcases > 0)
+    {
+        scanf("%d %d\n", &numbers_size, &partition_number);
+        //cout << numbers_size << " " << partition_number << endl;
+        gets(pch_line);
+        pch = strtok(pch_line, delim);
+        while( pch != NULL ){
+            number = atol(pch);
+            v1.push_back(number);
+            pch = strtok(NULL, delim);
+        }
+        long long mp = max_partition_bs(v1, partition_number);
+        //cout << "Max. partition: " << mp << endl;
+	    print_partitions(v1, mp, partition_number);
+        v1.clear();
+        testcases--;
+    }    
+    
+}
+
+int main(int argc, char* argv[])
+{
+    process_bs();
+    return 0;
+}
+
