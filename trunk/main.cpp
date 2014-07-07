@@ -1,25 +1,25 @@
-#include "bottom.h"
-#include "util.h"
-
+#include <iostream>
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
+#include <vector>
+#include <utility>
+#include <cmath>
+#include <string>
+#include <ctime>
+#include <algorithm>
+#include <map>
+#include <queue>
+#include <functional>
+using namespace std;
 
 int main(int argc, char** argv) {
+	vector<int> v;
 
-	graph g, g_rev;
-    read_data(stdin, g, g_rev);
+	for(int i = 0; i < 10; i++)
+		v.push_back(i);
 
+	cout << v.back() << endl;
 
-	//vector<int> v1, v2, v3;
-    /*	
-	g[1].push_back(2);
-	g[1].push_back(3);
-	g[2].push_back(3);
-	g[2].push_back(4);
-	g[3].push_back(5);
-	g[3].push_back(6);
-	g[5].push_back(6);
-	graph g2 = dfs(g, 1);
-
-	print_graph_edges(g2);
-    */
     return 0;
 }
