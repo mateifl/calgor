@@ -5,3 +5,18 @@ void print_short_array(short *a, size_t a_length) {
         cout << a[i] << " " ;
     cout << endl;
 }
+
+
+int main(int argc, char const *argv[])
+{
+    // char pch_number[10];
+    // sprintf(pch_number, "%d", 11111);
+    // cout << pch_number << " " << strlen(pch_number) << endl;
+
+
+    char pch_number[10];
+    memset(pch_number, '0', 10);
+    cout << pch_number << endl;
+      
+    return 0;
+}
