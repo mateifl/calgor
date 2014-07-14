@@ -11,52 +11,30 @@
 using namespace std;
 
 typedef vector<long> l_vector;
+typedef vector<pair<long, vector<int> > > lp_vector;
+typedef vector<lp_vector> lp_matrix;
 
-bool check_partitions(const l_vector &frecv, const long max_partition, const int partition_number) {
-    int p_number = 0, i_position = 1;
-    int len = frecv.size() - 1;
-    long long tmp_sum = 0;
-    
-    while( len > 0 )
-    {
-        tmp_sum += frecv[len] * i_position;
-        
-        //cout << tmp_sum << " " << tmp_sum + numbers[len - 1] << endl;
-        if( (tmp_sum + frecv[len - 1]) > max_partition )
-        {
-            // increase the partition number by one if max_partition value 
-            // was reached
-            p_number += 1;
-            tmp_sum = 0;
-            i_position = 1;
-        }
-        len--;
-    }
-    
-    p_number += 1;
-    return p_number <= partition_number;
+void solution(int i_letters_number, int i_keys_number, l_vector &v_frequency) {
+	lp_matrix memo = lp_matrix(i_keys_number + 1);
+	for (int i = 0; i <= i_keys_number; i++)
+		memo[i] = lp_vector(i_letters_number + 1);
+
+	vector<int> v1; 
+	v1.push_back(1);
+	for (int i = 1; i <= i_letters_number; i++)
+		memo[1][i] = make_pair(memo[1][i - 1].first + i * v_frequency[i - 1], v1);
+
+	for (int i = 0; i <= i_keys_number; i++) {
+		for (int j = i; j <= i_letters_number; j++)
+		{
+			vector<int> v;
+			for (int k = i; k <= j; k++)
+			{
+
+			}
+		}
+	}
 }
-
-
-long max_partition_bs(const l_vector &v_frequencies, int keys)
-{
-    long max_limit = accumulate(v_frequencies.begin(), v_frequencies.end(), 0LL) * keys;
-    long min_limit = *min_element(v_frequencies.begin(), v_frequencies.end());
-    long average;
-    
-    cout << "Limits: " << min_limit << " " << max_limit << endl;
-
-    while(min_limit < max_limit) {
-        average = min_limit + (max_limit - min_limit) / 2;
-        if( check_partitions(v_frequencies, average, keys) )
-            max_limit = average;
-        else
-            min_limit = average + 1;
-    }
-    
-	return max_limit;
-}
-
 
 
 int main()
@@ -91,7 +69,6 @@ int main()
             v_letters[j] = pch_line[j];
         }
 
-        cout << max_partition_bs(v_frequency, i_no_keys) << endl;
     }
     
     return 0;
