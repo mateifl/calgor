@@ -11,8 +11,26 @@
 using namespace std;
 
 typedef vector<long> l_vector;
+typedef struct mem{
+	long value;
+	int position[90];
+}  mem;
+
 typedef vector<pair<long, vector<int> > > lp_vector;
 typedef vector<lp_vector> lp_matrix;
+
+long accum(l_vector v, int i_start, int i_end)
+{
+	long value = 0L;
+	int i_index = 1;
+	l_vector::iterator it;
+	for(it = v.begin() + i_start; it != v.begin() + i_start; it++){
+		value += *it * i_index;
+		i_index += 1;
+	}
+	return value;
+}
+
 
 void solution(int i_letters_number, int i_keys_number, l_vector &v_frequency) {
 	lp_matrix memo = lp_matrix(i_keys_number + 1);
@@ -28,6 +46,8 @@ void solution(int i_letters_number, int i_keys_number, l_vector &v_frequency) {
 		for (int j = i; j <= i_letters_number; j++)
 		{
 			vector<int> v;
+			long l_letter_sum = accum(v_frequency, i, j);
+			long l_frecv_sum = accumulate(v_frequency.begin() + i, v_frequency.begin() + j, 0L);
 			for (int k = i; k <= j; k++)
 			{
 
