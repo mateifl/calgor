@@ -15,10 +15,8 @@ typedef vector<vl> vvl;
 
 ll_vector generate_numbers(ullong ll_limit){
 	ll_vector v_nrs = ll_vector(1048575), v_tmp1 = ll_vector(524288), v_temp2 = ll_vector(524288);
-
 	v_nrs[0] = 1;
 	v_tmp1[0] = 1;
-	ullong ll_start_number = 1;
 	int i_next_index = 1, i_temp_index = 0, i_start_index = 0;
 	while(true) {
 		i_temp_index = 0;
@@ -75,43 +73,40 @@ vvl indexes(ll_vector &v_nrs, int i) {
 	return v;
 }
 
-void solution(const ll_vector &v_nrs, long l_number, vvl idx, vl idx2)
+void solution(const ll_vector &v_nrs, long l_number, vvl &idx, vl &idx2, int d)
 {
 	const int digits = 19;
 	vl v_modulo = vl(v_nrs.size());
-	long l_modulo = 0L;
+	long l_mod = 0L;
 
 	for (int i = 0; i < v_nrs.size(); i++)
 	{
-		l_modulo = v_nrs[i] % l_number;
-		if(l_modulo == 0){
+		l_mod = v_nrs[i] % l_number;
+		if(l_mod == 0){
 			printf("%d\n", v_nrs[i]);
 			return;
 		}
 		else
-			v_modulo[i] = l_modulo;
+			v_modulo[i] = l_mod;
 	}
 
 	long l_multiplier = ((100000 % l_number) * (10000000 % l_number) * (10000000 % l_number)) % l_number;
-	long l_modulo_i = 0L, l_modulo_j = 0L;
+	long l_mod_i = 0L, l_mod_j = 0L;
 	char pch_number1[digits], pch_number2[digits];
 
-	// cout << l_multiplier << endl;
 	for (int i = 0; i < v_nrs.size(); i++){
-		l_modulo_i = (v_modulo[i] * l_multiplier) % l_number;
+		l_mod_i = (v_modulo[i] * l_multiplier) % l_number;
 		for (int j = 0; j < v_nrs.size(); j++) {
-			l_modulo_j = v_modulo[j];
-			l_modulo = (l_modulo_i + l_modulo_j) % l_number;
-			if( l_modulo == 0)
+			l_mod_j = v_modulo[j];
+			l_mod = (l_mod_i + l_mod_j) % l_number;
+			if( l_mod == 0)
 			{
-				
-				sprintf(pch_number1, "%ld", v_nrs[i]);
 				sprintf(pch_number2, "%ld", v_nrs[j]);
 				int i_zeros = digits - strlen(pch_number2);
 				char *pch_zeros = new char[i_zeros];
 				memset(pch_zeros, '0', i_zeros);
 				//cout << pch_number1 << " " << pch_zeros << " " << pch_number2 << endl;
-				printf("%s%s%s\n", pch_number1, pch_zeros, pch_number2);
+				printf("%lld%s%s\n", v_nrs[i], pch_zeros, pch_number2);
 				delete[] pch_zeros;
 				return;
 			}
@@ -149,8 +144,14 @@ int main(int argc, char** argv) {
 	{
 		scanf("%d", &i_number);
 		printf("%d ", i_number);
-		if 
-		solution(v_nrs, i_number);
+		if(i_number % 9 == 0)
+			solution(v_nrs, i_number, idx9, idx2, 9);
+		else if(i_number % 3 == 0)
+			solution(v_nrs, i_number, idx3, idx2, 3);
+		else if(i_number % 2 == 0)
+			solution(v_nrs, i_number, idx9, idx2, 2);
+		else
+			solution(v_nrs, i_number, idx9, idx2, 0);
 	}
 
 	return 0;

@@ -1,10 +1,18 @@
-#include "util.h"
+#include <iostream>
+#include <vector>
+#include <map>
+#include <algorithm>
+#include <cstring>
+#include <cstdlib>
+#include <cstdio>
+using namespace std;
 
 void print_short_array(short *a, size_t a_length) {
     for(unsigned int i = 0; i < a_length; i++)
         cout << a[i] << " " ;
     cout << endl;
 }
+
 
 
 int main(int argc, char const *argv[])
