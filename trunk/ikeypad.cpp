@@ -42,18 +42,37 @@ void solution(int i_letters_number, int i_keys_number, l_vector &v_frequency) {
 	for (int i = 1; i <= i_letters_number; i++)
 		memo[1][i] = make_pair(memo[1][i - 1].first + i * v_frequency[i - 1], v1);
 
-	for (int i = 0; i <= i_keys_number; i++) {
+	for (int i = 2; i <= i_keys_number; i++) {
 		for (int j = i; j <= i_letters_number; j++)
 		{
 			vector<int> v;
 			long l_letter_sum = accum(v_frequency, i, j);
 			long l_frecv_sum = accumulate(v_frequency.begin() + i, v_frequency.begin() + j, 0L);
+			memo[i][j] = make_pair(0, v);
+			long l_min = 10000000L;
+			int k1 = 0;
 			for (int k = i; k <= j; k++)
 			{
-
+				long s1 = memo[i - 1][k - 1].first + l_letter_sum;
+				if (s1 < l_min) {
+					l_min = s1;
+					k1 = k;
+				}
+				l_letter_sum -= l_frecv_sum;
+				l_frecv_sum -= v_frequency[k - 1];
 			}
+			if (k1 == 0) continue;
+			memo[i][j].first = l_min;
+			memo[i][j].second = vector<int>(memo[i - 1][k1 - 1].second.size());
+			copy(memo[i - 1][k1 - 1].second.begin(), memo[i - 1][k1 - 1].second.end(), memo[i][j].second.begin());
+			memo[i][j].second.push_back(k1);
 		}
 	}
+
+	vector<int> indices_list = memo[i_keys_number][i_letters_number].second;
+	for (vector<int>::const_iterator i = indices_list.begin(); i != indices_list.end(); ++i)
+		cout << *i << ' ';
+	cout << endl;
 }
 
 
@@ -73,7 +92,7 @@ int main()
 		scanf("%s", pch_line);
 		cout << "line: " << pch_line << endl;
 		
-        for(int j = 0; j < i_no_letters; j++)
+        for(int j = 0; j < i_no_keys; j++)
             v_keys[j] = pch_line[j];
 
         //fgets(pch_line, 100, stdin);
@@ -88,9 +107,8 @@ int main()
             v_frequency[j] = i_frecv;
             v_letters[j] = pch_line[j];
         }
-
+		solution(i_no_letters, i_no_keys, v_frequency);
     }
     
     return 0;
-	
 }
