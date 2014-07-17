@@ -40,7 +40,7 @@ void solution(int i_letters_number, int i_keys_number, l_vector &v_frequency, ch
 	vector<int> v1; 
 	v1.push_back(1);
 	for (int i = 1; i <= i_letters_number; i++)
-		memo[1][i] = make_pair(memo[0][i - 1].first + i * v_frequency[i - 1], v1);
+		memo[1][i] = make_pair(memo[1][i - 1].first + i * v_frequency[i - 1], v1);
 
 	for (int i = 2; i <= i_keys_number; i++) {
 		for (int j = i; j <= i_letters_number; j++)
@@ -48,22 +48,23 @@ void solution(int i_letters_number, int i_keys_number, l_vector &v_frequency, ch
 			vector<int> v;
 			long l_letter_sum = accum(v_frequency, i - 1, j - 1);
 			long l_frecv_sum = accumulate(v_frequency.begin() + i - 1, v_frequency.begin() + j, 0L);
-			cout << i << "-" << j << " " << l_letter_sum << " -- " << l_frecv_sum << endl;
+			//cout << i << "-" << j << " " << l_letter_sum << " -- " << l_frecv_sum << endl;
 			memo[i][j] = make_pair(0, v);
 			long l_min = 10000000L;
 			int k1 = 0;
 			for (int k = i; k <= j; k++)
 			{
 				long s1 = memo[i - 1][k - 1].first + l_letter_sum;
+				//cout << "s1 " << s1 << " " << memo[i - 1][k - 1].first << endl;
 				if (s1 < l_min) {
 					l_min = s1;
 					k1 = k;
 				}
 				l_letter_sum -= l_frecv_sum;
 				l_frecv_sum -= v_frequency[k - 1];
-				cout << k << "--> " << l_letter_sum << "--> " << l_frecv_sum << endl;
+				//cout << k << "->" << l_letter_sum << "->" << l_frecv_sum << endl;
 			}
-			cout << "k1 " << k1 << endl;
+			//cout << "k1 " << k1 << endl;
 			if (k1 == 0) continue;
 			memo[i][j].first = l_min;
 			memo[i][j].second = vector<int>(memo[i - 1][k1 - 1].second.size());
@@ -73,9 +74,9 @@ void solution(int i_letters_number, int i_keys_number, l_vector &v_frequency, ch
 	}
 
 	vector<int> indices_list = memo.back().back().second;
-	for (vector<int>::const_iterator i = indices_list.begin(); i != indices_list.end(); ++i)
+/*	for (vector<int>::const_iterator i = indices_list.begin(); i != indices_list.end(); ++i)
 		cout << *i << ' ';
-	cout << endl;
+	cout << endl;*/
 	//cout << p_keys << " " << p_letters << endl;
 
 	for (int i = 0; i < indices_list.size() - 1; i++)
