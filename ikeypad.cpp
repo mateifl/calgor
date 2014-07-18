@@ -8,6 +8,7 @@
 #include <cstdio>
 #include <numeric>
 #include <algorithm>
+#include <ctime>
 using namespace std;
 
 typedef vector<long> l_vector;
@@ -50,7 +51,7 @@ void solution(int i_letters_number, int i_keys_number, l_vector &v_frequency, ch
 			long l_frecv_sum = accumulate(v_frequency.begin() + i - 1, v_frequency.begin() + j, 0L);
 			//cout << i << "-" << j << " " << l_letter_sum << " -- " << l_frecv_sum << endl;
 			memo[i][j] = make_pair(0, v);
-			long l_min = 10000000L;
+			long l_min = 1000000000L;
 			int k1 = 0;
 			for (int k = i; k <= j; k++)
 			{
@@ -106,7 +107,7 @@ int main()
     scanf("%d", &i_testcases);
     
     //cout << "Testcases: " << i_testcases << endl;
-
+	clock_t t1 = clock();
     for(int i = 0; i < i_testcases; i++){
         scanf("%d %d", &i_no_keys, &i_no_letters);
         //fgets(pch_line, 100, stdin);
@@ -136,6 +137,7 @@ int main()
 
 		solution(i_no_letters, i_no_keys, v_frequency, pch_keys, pch_letters);
     }
-    
+	clock_t t2 = clock();
+	cout << "time: " << (float)(t2 - t1) / CLOCKS_PER_SEC << endl;
     return 0;
 }
