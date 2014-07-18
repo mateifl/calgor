@@ -14,8 +14,11 @@ using namespace std;
 typedef vector<long> l_vector;
 typedef struct mem{
 	long value;
-	int position[90];
+	int position[91];
 }  mem;
+
+typedef vector<mem> mem_vect;
+typedef vector<mem_vect> mem_mat;
 
 typedef vector<pair<long, vector<int> > > lp_vector;
 typedef vector<lp_vector> lp_matrix;
@@ -31,6 +34,77 @@ long accum(l_vector v, int i_start, int i_end)
 	}
 	return value;
 }
+
+void set_default(int *array, int value, size_t size) {
+	for(unsigned int i = 0; i < size; i++)
+		array[i] = value;
+}
+
+void solution2(int i_letters_number, int i_keys_number, l_vector &v_frequency, char *p_keys, char *p_letters, mem_mat &memo) {
+
+	for (int i = 1; i <= i_letters_number; i++){
+		mem m;
+		m.value = memo[1][i - 1].value + i * v_frequency[i - 1];
+		set_default(m.position, 0, 91);
+		m.position[0] = 1;
+		memo[1][i] = m; 
+	}
+
+	for (int i = 2; i <= i_keys_number; i++) {
+		for (int j = i; j <= i_letters_number; j++)
+		{
+			long l_letter_sum = accum(v_frequency, i - 1, j - 1);
+			long l_frecv_sum = accumulate(v_frequency.begin() + i - 1, v_frequency.begin() + j, 0L);
+			//cout << i << "-" << j << " " << l_letter_sum << " -- " << l_frecv_sum << endl;
+			memo[i][j].value = 0;
+			set_default(memo[i][j].position, 0, 91);
+			long l_min = 1000000000L;
+			int k1 = 0;
+			for (int k = i; k <= j; k++)
+			{
+				long s1 = memo[i - 1][k - 1].value + l_letter_sum;
+				//cout << "s1 " << s1 << " " << memo[i - 1][k - 1].first << endl;
+				if (s1 < l_min) {
+					l_min = s1;
+					k1 = k;
+				}
+				l_letter_sum -= l_frecv_sum;
+				l_frecv_sum -= v_frequency[k - 1];
+				//cout << k << "->" << l_letter_sum << "->" << l_frecv_sum << endl;
+			}
+			//cout << "k1 " << k1 << endl;
+			if(i == 25) 
+				cout << k1 << endl;
+			if (k1 == 0){
+				cout << i << " " << j << endl;
+				continue;
+			}
+			memo[i][j].value = l_min;
+			memcpy(memo[i][j].position, memo[i - 1][k1 - 1].position, 91);
+			memo[i][j].position[i - 1] = k1;
+		}
+	}
+	
+	int *indices_list = memo[i_keys_number][i_letters_number].position;
+
+	for (int i = 0; i < i_keys_number - 1; i++)
+	{
+		int i_string_size = indices_list[i + 1] - indices_list[i];
+		char *pch_partition = new char[i_string_size + 1];
+		strncpy(pch_partition, p_letters + indices_list[i] - 1, i_string_size);
+		pch_partition[i_string_size] = '\0';
+		printf("%c: %s\n", p_keys[i], pch_partition);
+		delete[] pch_partition;
+	}
+
+	int i_string_size = strlen(p_letters) - indices_list[i_keys_number - 1] + 1;
+	char *pch_partition = new char[i_string_size + 1];
+	strncpy(pch_partition, p_letters + indices_list[i_keys_number - 1] - 1, i_string_size);
+	pch_partition[i_string_size] = '\0';
+	printf("%c: %s\n", p_keys[strlen(p_keys) - 1], pch_partition);
+	printf("\n");
+}
+
 
 
 void solution(int i_letters_number, int i_keys_number, l_vector &v_frequency, char *p_keys, char *p_letters) {
@@ -106,6 +180,10 @@ int main()
 	char pch_letters[100], pch_keys[100];
     scanf("%d", &i_testcases);
     
+	mem_mat memo = mem_mat(91);
+	for(int i = 0; i < 91; i++)
+		memo[i] = mem_vect(91);
+
     //cout << "Testcases: " << i_testcases << endl;
 	clock_t t1 = clock();
     for(int i = 0; i < i_testcases; i++){
@@ -135,7 +213,7 @@ int main()
 			continue;
 		}
 
-		solution(i_no_letters, i_no_keys, v_frequency, pch_keys, pch_letters);
+		solution2(i_no_letters, i_no_keys, v_frequency, pch_keys, pch_letters, memo);
     }
 	clock_t t2 = clock();
 	cout << "time: " << (float)(t2 - t1) / CLOCKS_PER_SEC << endl;
