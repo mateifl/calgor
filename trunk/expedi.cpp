@@ -15,10 +15,31 @@ typedef struct point{
 	int fuel;
 } point;
 
-void solution(vector<point> &v_locations) {
-	point start_location = v_locations[0];
+int solution(vector<point> &v_locations) {
+	int start_location_index = 0, next_location_index, current_location_index;
 	int i_stops = 0;
+	int fuel = v_locations[0].fuel;
+	for (int i = 0; i < v_locations.size(); i++)
+	{
+		if (v_locations[i].distance - v_locations.back().distance <= fuel)
+		{
+			i_stops += 1;
+			return i_stops;
+		}
+		if (v_locations[next_location_index].distance > 0 && v_locations[i].distance != v_locations[next_location_index].distance)
+			continue;
 
+		vector<point>::iterator it;
+		for (it = v_locations.begin() + current_location_index; it != v_locations.end(); it++)
+		{
+
+		}
+	}
+
+
+
+	
+	return i_stops;
 }
 
 int main(int argc, char** argv) {
@@ -34,6 +55,7 @@ int main(int argc, char** argv) {
 			p.distance = i_distance;
 			p.fuel = i_fuel;
 			v_locations[j] = p;
+			solution(v_locations);
 		}
 
 	}
