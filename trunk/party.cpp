@@ -11,7 +11,7 @@ using namespace std;
 typedef pair<int, int> int_pair;
 
 int_pair solution(const vector<int_pair> &v_parties, int max_sum, int number_of_parties) {
-	vector<vector<int>> memo = vector<vector<int>>(number_of_parties + 1);
+	vector<vector<int> > memo = vector<vector<int> >(number_of_parties + 1);
 	for(int i = 0; i <= number_of_parties; i++)
 		memo[i] = vector<int>(max_sum + 1);
 
@@ -41,25 +41,25 @@ int_pair solution(const vector<int_pair> &v_parties, int max_sum, int number_of_
 	int_pair cost_fun = make_pair(0, memo[number_of_parties][max_sum]);
 	return cost_fun;
 }
-
-int main(int argc, char** argv) {
-	int i_number_of_parties, i_max_sum;
-	int i_cost, i_fun;
-	while (true)
-	{
-		scanf("%d %d", &i_max_sum, &i_number_of_parties);
-		if(i_max_sum == 0 && i_number_of_parties == 0)
-			break;
-		vector<int_pair> v_parties;
-		for(int i = 0; i < i_number_of_parties; i++)
-		{
-			scanf("%d %d", &i_cost, &i_fun);
-			v_parties.push_back(make_pair(i_cost, i_fun));
-		}
-
-		int_pair sol = solution(v_parties, i_max_sum, i_number_of_parties);
-		printf("%d %d\n", sol.first, sol.second);
-		scanf("");		
-	}
-	return 0;
-}
+//
+//int main(int argc, char** argv) {
+//	int i_number_of_parties, i_max_sum;
+//	int i_cost, i_fun;
+//	while (true)
+//	{
+//		scanf("%d %d", &i_max_sum, &i_number_of_parties);
+//		if(i_max_sum == 0 && i_number_of_parties == 0)
+//			break;
+//		vector<int_pair> v_parties;
+//		for(int i = 0; i < i_number_of_parties; i++)
+//		{
+//			scanf("%d %d", &i_cost, &i_fun);
+//			v_parties.push_back(make_pair(i_cost, i_fun));
+//		}
+//
+//		int_pair sol = solution(v_parties, i_max_sum, i_number_of_parties);
+//		printf("%d %d\n", sol.first, sol.second);
+//		scanf("");
+//	}
+//	return 0;
+//}

@@ -66,29 +66,29 @@ void homo(map<long, int> &numbers, char* pch_operation, long number, set<long> &
 	}
 	return;
 }
-
-int main(int argc, char** argv) { 
-	clock_t t1 = clock();
-	char* operation = new char[7];
-	long number;
-	int numbers; 
-	set<long> number_more_then1;
-	fscanf(stdin, "%d\n", &numbers); 
-	map<long, int> m_numbers;
-	char *pch_result = new char[9 * numbers];
-	memset(pch_result, '\0', 9 * numbers);
-	int i_position = 0;
-	for(int i = 0; i < numbers; i++)
-	{	
-		fscanf(stdin, "%s %d\n", operation, &number);
-		homo(m_numbers, operation, number, number_more_then1, pch_result, i_position);
-	}
-	clock_t t2 = clock();
-	
-	fwrite(pch_result, i_position, 1, stdout);
-	clock_t t3 = clock();
-	cout << i_position << endl;
-	cout << "Time: " << (float)(t2 - t1)/CLOCKS_PER_SEC << endl;
-	cout << "Time: " << (float)(t3 - t1)/CLOCKS_PER_SEC << endl;
-    return 0;
-}
+//
+//int main(int argc, char** argv) {
+//	clock_t t1 = clock();
+//	char* operation = new char[7];
+//	long number;
+//	int numbers;
+//	set<long> number_more_then1;
+//	fscanf(stdin, "%d\n", &numbers);
+//	map<long, int> m_numbers;
+//	char *pch_result = new char[9 * numbers];
+//	memset(pch_result, '\0', 9 * numbers);
+//	int i_position = 0;
+//	for(int i = 0; i < numbers; i++)
+//	{
+//		fscanf(stdin, "%s %d\n", operation, &number);
+//		homo(m_numbers, operation, number, number_more_then1, pch_result, i_position);
+//	}
+//	clock_t t2 = clock();
+//
+//	fwrite(pch_result, i_position, 1, stdout);
+//	clock_t t3 = clock();
+//	cout << i_position << endl;
+//	cout << "Time: " << (float)(t2 - t1)/CLOCKS_PER_SEC << endl;
+//	cout << "Time: " << (float)(t3 - t1)/CLOCKS_PER_SEC << endl;
+//    return 0;
+//}

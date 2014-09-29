@@ -71,20 +71,20 @@ map<char *, int> dijkstra(graph g, char* source_node) {
 }
 
 
-int main(int argc, char** argv) {
-	char pch_line[1024], *pch;
-	string s;
-	while(true) {
-		fgets(pch_line, 1024, stdin);
-		if( pch_line == NULL)
-			break;
-		pch = strtok(pch_line, " ");
-		cout << pch << endl;
-		while(pch != NULL)
-		{
-			pch = strtok(NULL, " ");
-			cout << pch << endl;
-		}
-	}
-	return 0;
-}
+//int main(int argc, char** argv) {
+//	char pch_line[1024], *pch;
+//	string s;
+//	while(true) {
+//		fgets(pch_line, 1024, stdin);
+//		if( pch_line == NULL)
+//			break;
+//		pch = strtok(pch_line, " ");
+//		cout << pch << endl;
+//		while(pch != NULL)
+//		{
+//			pch = strtok(NULL, " ");
+//			cout << pch << endl;
+//		}
+//	}
+//	return 0;
+//}

@@ -116,43 +116,43 @@ void solution(const ll_vector &v_nrs, long l_number, vvl &idx, vl &idx2, int d)
 
 	printf("0\n"); 
 }
-
-int main(int argc, char** argv) {
-	int i_testcases;
-	ll_vector v_nrs = generate_numbers(1111111111111111111LL);
-	cout << v_nrs.size() << endl;
-	vvl idx3 = indexes(v_nrs, 3);
-	vvl idx9 = indexes(v_nrs, 9);
-	vl idx2 = even_indexes(v_nrs.size());
-	// clock_t t1 = clock();
-	// printf("19992 ");
-	// solution(v_nrs, 19992);
-	// printf("19997 ");
-	// solution(v_nrs, 19997);
-	// printf("19999 ");
-	// solution(v_nrs, 19999);
-	// printf("19994 ");
-	// solution(v_nrs, 19994);
-	// printf("999 ");
-	// solution(v_nrs, 999);
-	// clock_t t2 = clock();
-	// cout << "time: " << (float)(t2 - t1)/CLOCKS_PER_SEC << endl;
-	int i_number;
-	scanf("%d", &i_testcases);
-
-	for(int i = 0; i < i_testcases; i++)
-	{
-		scanf("%d", &i_number);
-		printf("%d ", i_number);
-		if(i_number % 9 == 0)
-			solution(v_nrs, i_number, idx9, idx2, 9);
-		else if(i_number % 3 == 0)
-			solution(v_nrs, i_number, idx3, idx2, 3);
-		else if(i_number % 2 == 0)
-			solution(v_nrs, i_number, idx9, idx2, 2);
-		else
-			solution(v_nrs, i_number, idx9, idx2, 0);
-	}
-
-	return 0;
-}
+//
+//int main(int argc, char** argv) {
+//	int i_testcases;
+//	ll_vector v_nrs = generate_numbers(1111111111111111111LL);
+//	cout << v_nrs.size() << endl;
+//	vvl idx3 = indexes(v_nrs, 3);
+//	vvl idx9 = indexes(v_nrs, 9);
+//	vl idx2 = even_indexes(v_nrs.size());
+//	// clock_t t1 = clock();
+//	// printf("19992 ");
+//	// solution(v_nrs, 19992);
+//	// printf("19997 ");
+//	// solution(v_nrs, 19997);
+//	// printf("19999 ");
+//	// solution(v_nrs, 19999);
+//	// printf("19994 ");
+//	// solution(v_nrs, 19994);
+//	// printf("999 ");
+//	// solution(v_nrs, 999);
+//	// clock_t t2 = clock();
+//	// cout << "time: " << (float)(t2 - t1)/CLOCKS_PER_SEC << endl;
+//	int i_number;
+//	scanf("%d", &i_testcases);
+//
+//	for(int i = 0; i < i_testcases; i++)
+//	{
+//		scanf("%d", &i_number);
+//		printf("%d ", i_number);
+//		if(i_number % 9 == 0)
+//			solution(v_nrs, i_number, idx9, idx2, 9);
+//		else if(i_number % 3 == 0)
+//			solution(v_nrs, i_number, idx3, idx2, 3);
+//		else if(i_number % 2 == 0)
+//			solution(v_nrs, i_number, idx9, idx2, 2);
+//		else
+//			solution(v_nrs, i_number, idx9, idx2, 0);
+//	}
+//
+//	return 0;
+//}

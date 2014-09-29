@@ -43,25 +43,25 @@ vector<gnode> read_data_nodes(FILE *f, int &rows, int &columns) {
 }
 
 
-vector<vector<char> > read_data(FILE *f) {
-	int rows, columns;
-	fscanf(f, "%d %d\n", &rows, &columns);
-	vector<char> v_line(columns);
-	vector<vector<char> > v_res(rows);
-	char *pch_line = new char[columns + 3];
-	for (int i = 0; i < rows; i++)
-	{
-		fgets(pch_line, columns + 3, f);
-		//pch_line[columns] = '\0';
-		//cout << pch_line << endl;
-		for (int j = 0; j < columns; j++)
-			v_line[j] = pch_line[j];
-		//delete[] pch_line;
-		v_res[i] = v_line;
-	}
-	delete[] pch_line;
-    return v_res;
-}
+//vector<vector<char> > read_data(FILE *f) {
+//	int rows, columns;
+//	fscanf(f, "%d %d\n", &rows, &columns);
+//	vector<char> v_line(columns);
+//	vector<vector<char> > v_res(rows);
+//	char *pch_line = new char[columns + 3];
+//	for (int i = 0; i < rows; i++)
+//	{
+//		fgets(pch_line, columns + 3, f);
+//		//pch_line[columns] = '\0';
+//		//cout << pch_line << endl;
+//		for (int j = 0; j < columns; j++)
+//			v_line[j] = pch_line[j];
+//		//delete[] pch_line;
+//		v_res[i] = v_line;
+//	}
+//	delete[] pch_line;
+//    return v_res;
+//}
 
 graph create(vector<vector<char> > &m, int rows, int columns ) {
 	graph g = graph(rows * columns);
@@ -129,27 +129,27 @@ void bfs(vector<gnode> &data, int start_node, vector<bool> &discovered, int rows
 		}
     }    
 }
-
-int main(int argc, char** argv) { 
-	clock_t t1 = clock();
-	int rows, columns;
-    vector<gnode> data = read_data_nodes(stdin, rows, columns);
-    clock_t t2 = clock();
-    cout << "read time: " << (float)(t2 - t1) << endl; 
-
-	vector<bool> discovered = vector<bool>(data.size()); 
-	vector<bool>::iterator it;
-
-	int groups = 0;
-	for(size_t i = 0; i < discovered.size(); i++) {
-		if( discovered[i] )
-			continue;
-
-		bfs(data, i, discovered, rows, columns);
-		groups++;
-	}
-	cout << groups << endl;
-	clock_t t3 = clock();
-	cout << "calculation time: " << (float)(t3 - t2) << endl;	
-    return 0;
-}
+//
+//int main(int argc, char** argv) {
+//	clock_t t1 = clock();
+//	int rows, columns;
+//    vector<gnode> data = read_data_nodes(stdin, rows, columns);
+//    clock_t t2 = clock();
+//    cout << "read time: " << (float)(t2 - t1) << endl;
+//
+//	vector<bool> discovered = vector<bool>(data.size());
+//	vector<bool>::iterator it;
+//
+//	int groups = 0;
+//	for(size_t i = 0; i < discovered.size(); i++) {
+//		if( discovered[i] )
+//			continue;
+//
+//		bfs(data, i, discovered, rows, columns);
+//		groups++;
+//	}
+//	cout << groups << endl;
+//	clock_t t3 = clock();
+//	cout << "calculation time: " << (float)(t3 - t2) << endl;
+//    return 0;
+//}

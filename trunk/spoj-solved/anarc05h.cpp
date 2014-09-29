@@ -36,30 +36,30 @@ long solution(vector<int> &numbers, int i_start_index, int i_sum_end, map<pair<i
         memo[make_pair(i_start_index, i_sum_end)] = res;
     return res;
 }
-
-int main(int argc, char** argv) {
-    char *pch = new char[27];
-    int i = 1;
-	clock_t t1 = clock();
-
-    while(1)
-    {
-        scanf("%s", pch);
-        if (strncmp(pch, "bye", 3) == 0)
-            break;
-
-        vector<int> numbers = vector<int>(strlen(pch));
-        for(unsigned int j = 0; j < numbers.size(); j++) 
-			numbers[j] = pch[j] - '0';
-
-        map< pair<int, long>, long> memo; 
-		long s = solution(numbers, 0, 0, memo) + 1;
-
-        printf("%d. %d\n", i, s);
-        i += 1;
-    }
-	clock_t t2 = clock();
-//	cout << "time: " << (float)(t2 - t1) / CLOCKS_PER_SEC << endl;
-//	cout << "CLOCKS_PER_SEC: " << CLOCKS_PER_SEC << endl;
-    return 0;
-}
+//
+//int main(int argc, char** argv) {
+//    char *pch = new char[27];
+//    int i = 1;
+//	clock_t t1 = clock();
+//
+//    while(1)
+//    {
+//        scanf("%s", pch);
+//        if (strncmp(pch, "bye", 3) == 0)
+//            break;
+//
+//        vector<int> numbers = vector<int>(strlen(pch));
+//        for(unsigned int j = 0; j < numbers.size(); j++)
+//			numbers[j] = pch[j] - '0';
+//
+//        map< pair<int, long>, long> memo;
+//		long s = solution(numbers, 0, 0, memo) + 1;
+//
+//        printf("%d. %d\n", i, s);
+//        i += 1;
+//    }
+//	clock_t t2 = clock();
+////	cout << "time: " << (float)(t2 - t1) / CLOCKS_PER_SEC << endl;
+////	cout << "CLOCKS_PER_SEC: " << CLOCKS_PER_SEC << endl;
+//    return 0;
+//}

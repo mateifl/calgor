@@ -126,53 +126,53 @@ void read_data(FILE *f, graph &g, graph &g_reversed) {
 		pch = strtok(NULL, " ");
 	}
 }
-
-int main(int argc, char** argv) {
-	graph2 g, g_rev;
-	FILE *f = fopen("edges5000_1_res_70.txt", "r");
-	clock_t t1 = clock();
-	
-	read_edge_by_line(f, g, g_rev);
-	// clock_t t2 = clock();
-	// cout << "Read time: " << (float)(t2 - t1)/CLOCKS_PER_SEC << endl;
-	map<int, int> leaders = calculate_sccs<graph2, int>(g, g_rev);    
-	map<int, int>::iterator it;
-	map<int, set<int> > sccs_groups;
-	clock_t t3 = clock();
-	cout << "sccs time: " << (float)(t3 - t1)/CLOCKS_PER_SEC << endl;
-	for(it = leaders.begin(); it != leaders.end();  it++) 
-		sccs_groups[it->second].insert(it->first);
-    
-	clock_t t4 = clock();
-	cout << "Arrange time: " << (float)(t4 - t3)/CLOCKS_PER_SEC << endl;
-	cout << "SCCS number: " << sccs_groups.size() << endl;
-
-	map<int, set<int> >::iterator it_sccs;
-	set<int>::iterator it_group;
-	vector<int>::iterator it_vector;
-	for(it_sccs = sccs_groups.begin(); it_sccs != sccs_groups.end(); it_sccs++)
-	{
-		bool flag = true;
-		// check the set which contains the nodes in sccs, it_sccs->second
-		for(it_group = it_sccs->second.begin(); it_group != it_sccs->second.end(); it_group++)
-		{
-			// get the end nodes from the original graph
-			vector<int> end_nodes = *g[*it_group];
-			// check if each of them is in the current sccs
-			for(it_vector = end_nodes.begin(); it_vector != end_nodes.end(); it_vector++)
-			{
-				if( it_sccs->second.find(*it_vector) == it_sccs->second.end() ){
-					flag  = false;
-					break;
-				}
-			}
-			if( !flag )
-			{
-				cout << "Not bottom!" << endl;
-				break;
-			}
-		}
-	}
-
-	return 0;
-}
+//
+//int main(int argc, char** argv) {
+//	graph2 g, g_rev;
+//	FILE *f = fopen("edges5000_1_res_70.txt", "r");
+//	clock_t t1 = clock();
+//
+//	read_edge_by_line(f, g, g_rev);
+//	// clock_t t2 = clock();
+//	// cout << "Read time: " << (float)(t2 - t1)/CLOCKS_PER_SEC << endl;
+//	map<int, int> leaders = calculate_sccs<graph2, int>(g, g_rev);
+//	map<int, int>::iterator it;
+//	map<int, set<int> > sccs_groups;
+//	clock_t t3 = clock();
+//	cout << "sccs time: " << (float)(t3 - t1)/CLOCKS_PER_SEC << endl;
+//	for(it = leaders.begin(); it != leaders.end();  it++)
+//		sccs_groups[it->second].insert(it->first);
+//
+//	clock_t t4 = clock();
+//	cout << "Arrange time: " << (float)(t4 - t3)/CLOCKS_PER_SEC << endl;
+//	cout << "SCCS number: " << sccs_groups.size() << endl;
+//
+//	map<int, set<int> >::iterator it_sccs;
+//	set<int>::iterator it_group;
+//	vector<int>::iterator it_vector;
+//	for(it_sccs = sccs_groups.begin(); it_sccs != sccs_groups.end(); it_sccs++)
+//	{
+//		bool flag = true;
+//		// check the set which contains the nodes in sccs, it_sccs->second
+//		for(it_group = it_sccs->second.begin(); it_group != it_sccs->second.end(); it_group++)
+//		{
+//			// get the end nodes from the original graph
+//			vector<int> end_nodes = *g[*it_group];
+//			// check if each of them is in the current sccs
+//			for(it_vector = end_nodes.begin(); it_vector != end_nodes.end(); it_vector++)
+//			{
+//				if( it_sccs->second.find(*it_vector) == it_sccs->second.end() ){
+//					flag  = false;
+//					break;
+//				}
+//			}
+//			if( !flag )
+//			{
+//				cout << "Not bottom!" << endl;
+//				break;
+//			}
+//		}
+//	}
+//
+//	return 0;
+//}

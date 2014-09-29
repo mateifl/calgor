@@ -1,4 +1,5 @@
-#include "main.h"
+
+
 #include "sat.h"
 
 map<int, scondition> read_sat_data(string filename, set<int> &numbers) {

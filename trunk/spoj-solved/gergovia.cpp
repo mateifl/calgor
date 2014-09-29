@@ -50,20 +50,20 @@ long long calculate(vector<long> &v, vector<long> &v2) {
 	
 	return work;
 }
-
-int main(int argc, char** argv) {
-	vector<long> v, v2;
-	clock_t t = clock();
-	while(1) {
-		v = read_data(stdin);
-		if(v.size() == 0)
-			break;
-
-		v2 = vector<long>(v.size());
-		long long work = calculate(v, v2);
-		printf("%lld\n", work);
-	}
-	clock_t t1 = clock();
-	cout << "Time: " << (float)(t1 - t)/CLOCKS_PER_SEC << endl;
-	return 0;
-}
+//
+//int main(int argc, char** argv) {
+//	vector<long> v, v2;
+//	clock_t t = clock();
+//	while(1) {
+//		v = read_data(stdin);
+//		if(v.size() == 0)
+//			break;
+//
+//		v2 = vector<long>(v.size());
+//		long long work = calculate(v, v2);
+//		printf("%lld\n", work);
+//	}
+//	clock_t t1 = clock();
+//	cout << "Time: " << (float)(t1 - t)/CLOCKS_PER_SEC << endl;
+//	return 0;
+//}

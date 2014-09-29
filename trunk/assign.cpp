@@ -69,31 +69,31 @@ map<long, long> assign(vector<long> &data, int length){
 	return r;
 }
 
-int main(int argc, char** argv) {
-
-	int i_testcases, i_number_students;
-	scanf("%d\n", &i_testcases);
-	cout << "testcases " << i_testcases << endl;
-	clock_t t1 = clock();
-	for(int k = 0; k < i_testcases; k++)
-	{
-		scanf("%d\n", &i_number_students);
-		vector<long> data = vector<long>(i_number_students);
-		char *pch_data = new char[2 * i_number_students];
-		char *pch_number = new char[i_number_students];
-		for(int j = 0; j < i_number_students; j++){
-			
-			fgets(pch_data, 2 * i_number_students + 2, stdin);
-			for(int i = 0; i < 2 * i_number_students; i+=2)
-				pch_number[i/2] = pch_data[i];
-			long number = strtol(pch_number, NULL, 2);
-			data[j] = number;
-		}
-		map<long, long> r = assign(data, i_number_students);
-		cout << endl;
-	}
-	clock_t t2 = clock();
-
-	cout << "time: " << (float)(t2 - t1)/CLOCKS_PER_SEC << endl;
-	return 0;
-}
+//int main(int argc, char** argv) {
+//
+//	int i_testcases, i_number_students;
+//	scanf("%d\n", &i_testcases);
+//	cout << "testcases " << i_testcases << endl;
+//	clock_t t1 = clock();
+//	for(int k = 0; k < i_testcases; k++)
+//	{
+//		scanf("%d\n", &i_number_students);
+//		vector<long> data = vector<long>(i_number_students);
+//		char *pch_data = new char[2 * i_number_students];
+//		char *pch_number = new char[i_number_students];
+//		for(int j = 0; j < i_number_students; j++){
+//
+//			fgets(pch_data, 2 * i_number_students + 2, stdin);
+//			for(int i = 0; i < 2 * i_number_students; i+=2)
+//				pch_number[i/2] = pch_data[i];
+//			long number = strtol(pch_number, NULL, 2);
+//			data[j] = number;
+//		}
+//		map<long, long> r = assign(data, i_number_students);
+//		cout << endl;
+//	}
+//	clock_t t2 = clock();
+//
+//	cout << "time: " << (float)(t2 - t1)/CLOCKS_PER_SEC << endl;
+//	return 0;
+//}

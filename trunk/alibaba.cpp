@@ -83,21 +83,21 @@ int solution(places_vector &places) {
 	return i_time;
 }
 
-int main(int argc, char** argv) {
-	int i_testcases, i_location_number, i_first, i_second;
-	scanf("%d", &i_testcases);
-
-	for(int i = 0; i < i_testcases; i++)
-	{
-		scanf("%d", &i_location_number);
-		places_vector v = places_vector(i_location_number);
-		for(int j = 0; j < i_location_number; j++)
-		{
-			scanf("%d %d", &i_first, &i_second);
-			//cout << i_first << " " << i_second << endl;
-			v[j] = make_pair(i_first, i_second);
-		}
-		cout << solution(v) << endl;
-	}
-	return 0;
-}
+//int main(int argc, char** argv) {
+//	int i_testcases, i_location_number, i_first, i_second;
+//	scanf("%d", &i_testcases);
+//
+//	for(int i = 0; i < i_testcases; i++)
+//	{
+//		scanf("%d", &i_location_number);
+//		places_vector v = places_vector(i_location_number);
+//		for(int j = 0; j < i_location_number; j++)
+//		{
+//			scanf("%d %d", &i_first, &i_second);
+//			//cout << i_first << " " << i_second << endl;
+//			v[j] = make_pair(i_first, i_second);
+//		}
+//		cout << solution(v) << endl;
+//	}
+//	return 0;
+//}
