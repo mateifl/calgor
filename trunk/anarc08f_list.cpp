@@ -12,15 +12,21 @@
 using namespace std;
 
 struct edge {
+	long head;
 	long tail;
 	long value;
+	long heap_value;
 };
 
 typedef map<string, long> string_int_map;
 typedef edge edge;
 typedef vector<vector<edge> > graph;
 // first -> edge value, second - edge id.
-typedef priority_queue<pair<long, long>, vector<pair<long, long> >, greater<pair<long, long> > > heap;
+template <class T> struct greater_edge : binary_function <T,T,bool> {
+  bool operator() (const T& x, const T& y) const {return x.heap_value < y.heap_value;}
+};
+typedef priority_queue<edge, vector<edge>, greater_edge<edge > > heap;
+
 
 void update_heap(heap &nodes_heap, graph &g, long source_node, long path_value, vector<long> &v_not_visited) {
 	vector<edge> edges = g[source_node];
@@ -29,54 +35,49 @@ void update_heap(heap &nodes_heap, graph &g, long source_node, long path_value, 
 	{
 		if( v_not_visited[it->tail] > path_value + it->value )
 		{
-			nodes_heap.push(make_pair(path_value + it->value, it->tail));
+			//nodes_heap.push(make_pair(path_value + it->value, it->tail));
 			v_not_visited[it->tail] = path_value + it->value;
 		}
 	}
 }
 
-map<long, long> dijkstra(graph g, long source_node) {
-	long MAX_INT = 1000000;
-	// build the heap
+vector<long> dijkstra(graph g, long source_node) {
+
+	// the heap
 	heap nodes_heap;
 	// create a map with not visited nodes
-	vector<long> v_not_visited(g.size());
+	vector<bool> v_bool_visited = vector<bool>(g.size());
+	v_bool_visited[source_node] = true;
 
-	for(unsigned long i = 0; i < g.size(); i++)
-	{
-		if( i != source_node ){
-			nodes_heap.push(make_pair(MAX_INT, i));
-			v_not_visited[i] = MAX_INT;
-		}
+	for(int i = 0; i < g[source_node].size(); i++) {
+		g[source_node][i].heap_value = g[source_node][i].value;
+		nodes_heap.push(g[source_node][i]);
 	}
-	nodes_heap.push(make_pair(0, source_node));
-	v_not_visited[source_node] = 0;
 	// initialize the map that will store the shortest paths.
+	vector<long> m_shortest_path = vector<long>(g.size());
+	m_shortest_path[source_node] = 0;
+	edge next_edge;
 
-	map<long, long> m_shortest_path;
-	m_shortest_path.insert(make_pair(source_node, 0));
-	pair<long, long> node;
 	while( nodes_heap.size() > 0) {
-		node = nodes_heap.top();
+		next_edge = nodes_heap.top();
 		nodes_heap.pop();
 
-		if( node.first == MAX_INT )
-			break;
-		else if( v_not_visited[node.second] < 0 )
+		if( v_bool_visited[next_edge.head] && v_bool_visited[next_edge.tail] )
 			continue;
-		else {
-			m_shortest_path.insert(make_pair( node.second, node.first ));
-			update_heap(nodes_heap, g, node.second, node.first, v_not_visited);
-			v_not_visited[node.second] = -1;
-		}
-
+		
+		m_shortest_path[next_edge.tail] =  m_shortest_path[next_edge.head] + next_edge.value;
+		for(int i = 0; i < g[next_edge.tail].size(); i++){
+			if( v_bool_visited[g[next_edge.tail][i].tail] )
+				nodes_heap.push(g[next_edge.tail][i]);
+			}
 		// mark node as visited
-		v_not_visited[node.second] = -1;
+		v_bool_visited[next_edge.head] = true;
 	}
 
 	return m_shortest_path;
 }
 
+/*
 void parse_roads_line(char *pch_source, char* pch_destination, char* mid, graph &g, string_int_map &locations_map) {
 	
 	string str_source = string(pch_source), str_destination = string(pch_destination);
@@ -114,6 +115,7 @@ void parse_roads_line(char *pch_source, char* pch_destination, char* mid, graph 
 	}
 
 }
+*/
 
 void parse_roads_line(string &str_source, string &str_destination, string &str_mid, graph &g, string_int_map &locations_map) {
 
@@ -136,6 +138,7 @@ void parse_roads_line(string &str_source, string &str_destination, string &str_m
 	if( str_mid[str_mid.size() - 1] == '>' )
 	{
 		edge e;
+		e.head = i_source_index;
 		e.tail = i_destination_index;
 		e.value = atoi(str_value.c_str());
 		g[i_source_index].push_back(e);
@@ -143,6 +146,7 @@ void parse_roads_line(string &str_source, string &str_destination, string &str_m
 	if( str_mid[0] == '<' )
 	{
 		edge e;
+		e.head = i_destination_index;
 		e.tail = i_source_index;
 		e.value = atoi(str_value.c_str());
 		g[i_destination_index].push_back(e);
@@ -161,16 +165,10 @@ int main(int argc, char **argv) {
 		int rs = scanf("%d %d %d\n", &i_locations, &i_cars, &i_roads);
 		if(rs < 3)
 			break;
-		//cout << rs << endl;
-//		cout << i_locations << " " << i_cars << " " << i_roads << endl;
+
 		if(i_locations == 0 && i_cars == 0 && i_roads == 0)
 			break;
-/*		if(i_cars == 0)
-		{
-			printf("%d. %d\n", x, 0);
-			x++;
-			continue;
-		}*/
+
 		vector<long> v_cars(i_cars + 3);
 		long i = 1;
 		string_int_map m_locations_map;
@@ -215,8 +213,8 @@ int main(int argc, char **argv) {
 			parse_roads_line(end, source, mid, g_rev, m_locations_map);
 		}
 
-		map<long, long> path_values = dijkstra(g, 1);
-		map<long, long> path_values_rev = dijkstra(g_rev, 1);
+		vector<long> path_values = dijkstra(g, 1);
+		vector<long> path_values_rev = dijkstra(g_rev, 1);
 		long sum = 0;
 		for(unsigned long ii = 1; ii < v_cars.size(); ii++ )
 		{
