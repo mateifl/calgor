@@ -1,6 +1,14 @@
 #ifndef _CONVEX_HULL_
 #define _CONVEX_HULL_
-#include "main.h"
+#include <string>
+#include <iostream>
+#include <map>
+#include <set>
+#include <cmath>
+#include <vector>
+#include <fstream>
+#include <cstdlib>
+using namespace std;
 
 struct point {
     float x;

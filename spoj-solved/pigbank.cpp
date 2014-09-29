@@ -43,33 +43,33 @@ int  solution2( int_pair_vector &coins, int weight) {
 	}
 	return v_memo[weight];
 }
-
-int main(int argc, char* argv[]) {
-
-	int i_test_cases, i_first, i_second, i_coins;
-	scanf("%d", &i_test_cases);
-
-	for(int i = 0; i < i_test_cases; i++)
-	{
-		
-		scanf("%d %d", &i_first, &i_second);
-		int weight = i_second - i_first;
-		scanf("%d", &i_coins);
-		int_pair_vector v_coins = int_pair_vector(i_coins);
-		for(int j = 0; j < i_coins; j++) {
-			scanf("%d %d", &i_first, &i_second);
-			v_coins[j] = make_pair(i_first, i_second);
-		}
-
-		sort(v_coins.begin(), v_coins.end(), sort_pred());
-
-		int i_result = solution2(v_coins, weight);
-
-		if (i_result > 0)
-			printf("The minimum amount of money in the piggy-bank is %d.\n", i_result);
-		else
-			printf("This is impossible.\n");
-	}
-
-	return 0;
-}	
+//
+//int main(int argc, char* argv[]) {
+//
+//	int i_test_cases, i_first, i_second, i_coins;
+//	scanf("%d", &i_test_cases);
+//
+//	for(int i = 0; i < i_test_cases; i++)
+//	{
+//
+//		scanf("%d %d", &i_first, &i_second);
+//		int weight = i_second - i_first;
+//		scanf("%d", &i_coins);
+//		int_pair_vector v_coins = int_pair_vector(i_coins);
+//		for(int j = 0; j < i_coins; j++) {
+//			scanf("%d %d", &i_first, &i_second);
+//			v_coins[j] = make_pair(i_first, i_second);
+//		}
+//
+//		sort(v_coins.begin(), v_coins.end(), sort_pred());
+//
+//		int i_result = solution2(v_coins, weight);
+//
+//		if (i_result > 0)
+//			printf("The minimum amount of money in the piggy-bank is %d.\n", i_result);
+//		else
+//			printf("This is impossible.\n");
+//	}
+//
+//	return 0;
+//}

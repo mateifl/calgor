@@ -98,46 +98,46 @@ void solution(int i_letters_number, int i_keys_number, l_vector &v_frequency, ch
 	printf("\n");
 }
 
-
-int main()
-{
-    int i_testcases, i_no_letters, i_no_keys;
-    long i_frecv;
-	char pch_letters[100], pch_keys[100];
-    scanf("%d", &i_testcases);
-    
-    //cout << "Testcases: " << i_testcases << endl;
-	clock_t t1 = clock();
-    for(int i = 0; i < i_testcases; i++){
-        scanf("%d %d", &i_no_keys, &i_no_letters);
-        //fgets(pch_line, 100, stdin);
-		scanf("%s", pch_keys);
-		scanf("%s", pch_letters);
-        l_vector v_frequency = l_vector(i_no_letters);
-
-        for (int j = 0; j < i_no_letters; j++)
-        {
-            scanf("%ld", &i_frecv);
-            v_frequency[j] = i_frecv;
-        }
-		printf("Keypad #%d:\n", i + 1);
-
-		if (i_no_keys == 1){
-			printf("%c: %s\n", pch_keys[0], pch_letters);
-			printf("\n");
-			continue;
-		}
-
-		if (i_no_keys == i_no_letters){
-			for (int i = 0; i < i_no_keys; i++)
-				printf("%c: %c\n", pch_keys[i], pch_letters[i]);
-			printf("\n");
-			continue;
-		}
-
-		solution(i_no_letters, i_no_keys, v_frequency, pch_keys, pch_letters);
-    }
-	clock_t t2 = clock();
-	cout << "time: " << (float)(t2 - t1) / CLOCKS_PER_SEC << endl;
-    return 0;
-}
+//
+//int main()
+//{
+//    int i_testcases, i_no_letters, i_no_keys;
+//    long i_frecv;
+//	char pch_letters[100], pch_keys[100];
+//    scanf("%d", &i_testcases);
+//
+//    //cout << "Testcases: " << i_testcases << endl;
+//	clock_t t1 = clock();
+//    for(int i = 0; i < i_testcases; i++){
+//        scanf("%d %d", &i_no_keys, &i_no_letters);
+//        //fgets(pch_line, 100, stdin);
+//		scanf("%s", pch_keys);
+//		scanf("%s", pch_letters);
+//        l_vector v_frequency = l_vector(i_no_letters);
+//
+//        for (int j = 0; j < i_no_letters; j++)
+//        {
+//            scanf("%ld", &i_frecv);
+//            v_frequency[j] = i_frecv;
+//        }
+//		printf("Keypad #%d:\n", i + 1);
+//
+//		if (i_no_keys == 1){
+//			printf("%c: %s\n", pch_keys[0], pch_letters);
+//			printf("\n");
+//			continue;
+//		}
+//
+//		if (i_no_keys == i_no_letters){
+//			for (int i = 0; i < i_no_keys; i++)
+//				printf("%c: %c\n", pch_keys[i], pch_letters[i]);
+//			printf("\n");
+//			continue;
+//		}
+//
+//		solution(i_no_letters, i_no_keys, v_frequency, pch_keys, pch_letters);
+//    }
+//	clock_t t2 = clock();
+//	cout << "time: " << (float)(t2 - t1) / CLOCKS_PER_SEC << endl;
+//    return 0;
+//}

@@ -1,6 +1,15 @@
 #ifndef SAT_H_INCLUDED
 #define SAT_H_INCLUDED
 
+#include <string>
+#include <iostream>
+#include <map>
+#include <set>
+#include <cmath>
+#include <vector>
+#include <fstream>
+#include <cstdlib>
+using namespace std;
 struct scondition {
     int t1;
     int t2;

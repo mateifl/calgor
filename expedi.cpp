@@ -41,23 +41,23 @@ int solution(vector<point> &v_locations) {
 	
 	return i_stops;
 }
-
-int main(int argc, char** argv) {
-	int i_testcases, i_distance, i_fuel, i_locations_number;
-	scanf("%d", &i_testcases);
-	point p;
-	for (int i = 0; i < i_testcases; i++)
-	{
-		scanf("%d", &i_locations_number);
-		vector<point> v_locations = vector<point>(i_locations_number);
-		for (int j = 0; j < i_locations_number; j++) {
-			scanf("%d %d", &i_distance, &i_fuel);
-			p.distance = i_distance;
-			p.fuel = i_fuel;
-			v_locations[j] = p;
-			solution(v_locations);
-		}
-
-	}
-	return 0;
-}
+//
+//int main(int argc, char** argv) {
+//	int i_testcases, i_distance, i_fuel, i_locations_number;
+//	scanf("%d", &i_testcases);
+//	point p;
+//	for (int i = 0; i < i_testcases; i++)
+//	{
+//		scanf("%d", &i_locations_number);
+//		vector<point> v_locations = vector<point>(i_locations_number);
+//		for (int j = 0; j < i_locations_number; j++) {
+//			scanf("%d %d", &i_distance, &i_fuel);
+//			p.distance = i_distance;
+//			p.fuel = i_fuel;
+//			v_locations[j] = p;
+//			solution(v_locations);
+//		}
+//
+//	}
+//	return 0;
+//}

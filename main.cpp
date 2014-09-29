@@ -41,13 +41,3 @@ vlong generate_numbers(){
 	return v_nrs;
 }
 
-void solution(vlong &v_num, long n_check) {
-	
-}
-
-int main(int argc, char** argv) {
-	vlong v = generate_numbers();
-
-
-    return 0;
-}
