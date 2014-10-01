@@ -53,7 +53,7 @@ vector<int> dijkstra(graph g, int source_node) {
 			continue;
 		
 		m_shortest_path[next_edge.tail] =  m_shortest_path[next_edge.head] + next_edge.value;
-		for(int i = 0; i < g[next_edge.tail].size(); i++){
+		for(uint i = 0; i < g[next_edge.tail].size(); i++){
 			if( v_bool_visited[g[next_edge.tail][i].tail] )
 				nodes_heap.push(g[next_edge.tail][i]);
 			}
