@@ -108,6 +108,10 @@ int main(int argc, char **argv) {
 	int i_locations, i_cars, i_roads;
 	char *pch_line = new char[1024 * 100], *pch = new char[100];
 	FILE *ifile = fopen("one.in", "r");
+	if(ifile == NULL) {
+		printf("ERROR no input file");
+		return 0;
+	}
 	int x = 1;
 	while (true) {
 		int rs = fscanf(ifile, "%d %d %d\n", &i_locations, &i_cars, &i_roads);
@@ -117,6 +121,9 @@ int main(int argc, char **argv) {
 		if(i_cars == 0){
 			printf("%d. %d\n", x, 0);
 			x++;
+			for(int k = 0; k <= i_roads + 1 ; k++){
+				fgets(pch_line, 100 * 1024, ifile);
+			}
 			continue;
 		}
 		vector<int> v_cars(i_cars);
