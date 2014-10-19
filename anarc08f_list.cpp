@@ -54,7 +54,7 @@ vector<int> dijkstra(graph g, int source_node) {
 
 		m_shortest_path[next_edge.tail] = m_shortest_path[next_edge.head] + next_edge.value;
 		for (uint i = 0; i < g[next_edge.tail].size(); i++) {
-			if (v_bool_visited[g[next_edge.tail][i].tail]) {
+			if (!v_bool_visited[g[next_edge.tail][i].tail]) {
 				edge e = g[next_edge.tail][i];
 				e.heap_value = m_shortest_path[next_edge.tail] + e.value;
 				nodes_heap.push(e);
@@ -114,6 +114,11 @@ int main(int argc, char **argv) {
 		if (i_locations == 0 && i_cars == 0 && i_roads == 0)
 			break;
 
+		if(i_cars == 0){
+			printf("%d. %d\n", x, 0);
+			x++;
+			continue;
+		}
 		vector<int> v_cars(i_cars);
 		int i = 0;
 		string_int_map m_locations_map;
