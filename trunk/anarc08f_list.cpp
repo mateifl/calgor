@@ -70,6 +70,7 @@ vector<int> dijkstra(graph g, int source_node) {
 void parse_roads_line(string &str_source, string &str_destination,
 		string &str_mid, graph &g, string_int_map &locations_map) {
 
+    
 	int i_source_index = -1, i_destination_index = -1;
 	if ( locations_map.find(str_source) == locations_map.end() ) {
 		i_source_index = locations_map.size();
@@ -91,6 +92,7 @@ void parse_roads_line(string &str_source, string &str_destination,
 		e.head = i_source_index;
 		e.tail = i_destination_index;
 		e.value = atoi(str_value.c_str());
+		// this line produces a SIGSEGV
 		g[i_source_index].push_back(e);
 	}
 	if (str_mid[0] == '<') {
@@ -98,6 +100,7 @@ void parse_roads_line(string &str_source, string &str_destination,
 		e.head = i_destination_index;
 		e.tail = i_source_index;
 		e.value = atoi(str_value.c_str());
+        // the next line produces a SIGSEGV
 		g[i_destination_index].push_back(e);
 	}
 
@@ -107,9 +110,9 @@ int main(int argc, char **argv) {
 	clock_t t0 = clock();
 	int i_locations, i_cars, i_roads;
 	char *pch_line = new char[1024 * 100], *pch = new char[100];
-	FILE *ifile = fopen("one.in", "r");
+	FILE *ifile = stdin;
 	if(ifile == NULL) {
-		printf("ERROR no input file");
+		printf("ERROR no input file\n");
 		return 0;
 	}
 	int x = 1;
@@ -133,13 +136,13 @@ int main(int argc, char **argv) {
 		char* r = fgets(pch_line, 100 * 1024, ifile);
 		if (r == NULL)
 			break;
-		pch = strtok(pch_line, " \n");
+		pch = strtok(pch_line, " \n\r");
 		m_locations_map.insert(make_pair(string(pch), i));
 		v_cars[0] = i;
 		i++;
 		string str_pch;
 		int j = 0;
-		while ((pch = strtok(NULL, "\n ")) != NULL) {
+		while ((pch = strtok(NULL, "\n\r ")) != NULL) {
 			str_pch = pch;
 			int i_location_index;
 
@@ -157,21 +160,15 @@ int main(int argc, char **argv) {
 
 		graph g = graph(i_locations), g_rev = graph(i_locations);
 
-		string source, mid, end;
+		char town1[16], town2[16], middle[16];
+		string str_town1, str_town2, str_middle;
 		for (int i = 0; i < i_roads; i++) {
-			r = fgets(pch_line, 100 * 1024, ifile);
-			if (r == NULL)
-				break;
-			string line = pch_line;
-			line.erase(line.size() - 1);
-			source = line.substr(0, line.find_first_of(" "));
-			mid = line.substr(line.find_first_of(" ") + 1,
-					line.find_last_of(" ") - line.find_first_of(" ") - 1);
-			mid = mid.erase(0, mid.find_first_not_of(" "));
-			mid = mid.erase(mid.find_last_not_of(" ") + 1);
-			end = line.substr(line.find_last_of(" ") + 1);
-			parse_roads_line(source, end, mid, g, m_locations_map);
-			parse_roads_line(end, source, mid, g_rev, m_locations_map);
+			fscanf(ifile, "%s %s %s", town1, middle, town2);
+			str_town1 = town1;
+			str_town2 = town2;
+			str_middle = middle;
+			parse_roads_line(str_town1, str_town2, str_middle, g, m_locations_map);
+			parse_roads_line(str_town2, str_town1, str_middle, g_rev, m_locations_map);
 		}
 
 		vector<int> path_values = dijkstra(g, 0);
