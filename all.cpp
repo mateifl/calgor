@@ -5,22 +5,30 @@
 #include <cstring>
 #include <vector>
 #include <map>
+#include <set>
 using namespace std;
 
 typedef vector< set<int> > graph;
 
 
 void process_disk(	const int disk_number, 
+                    const int i_first_disk,
+					graph &in_graph, graph &out_graph,
 					set<int> &s_installed1, set<int> &s_installed2,
 					set<int> &s_ready1, set<int> &s_ready2) {
 	if (disk_number == 1) {
-        s = state.get(READY_INSTALL1);
+        set<int> s = s_ready1;
 
         while (!s.empty()) {
         	set<int>::iterator it;
-        	for( it = s.start(); i != s.end() ; i++)
+        	for(it = s.start(); i != s.end(); i++)
         	{
-        		
+        		set<int> s1 = out_graph[*it];
+                inGraph[j].remove(i);
+                if(inGraph[j].empty() && j > i_first_disk) 
+                {
+
+                }
         	}
         }
     }
