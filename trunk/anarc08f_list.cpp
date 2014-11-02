@@ -105,7 +105,7 @@ void parse_roads_line(string &str_source, string &str_destination,
 	}
 
 }
-
+/*
 int main(int argc, char **argv) {
 	clock_t t0 = clock();
 	int i_locations, i_cars, i_roads;
@@ -185,3 +185,4 @@ int main(int argc, char **argv) {
 //	cout << "time: " << (float)(t1 - t0)/CLOCKS_PER_SEC << endl;
 	return 0;
 }
+*/
