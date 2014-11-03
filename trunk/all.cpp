@@ -83,20 +83,31 @@ void solve(graph &in_graph, list_graph &out_graph, int i_first_disk, int i_secon
 	vector<int> s_installed2 = vector<int>();
 	vector<int> s_ready1 = vector<int>();
 	vector<int> s_ready2 = vector<int>();
+	vector<int> s_nodep1 = vector<int>();
+	vector<int> s_nodep2 = vector<int>();
 
 	for (int i = 1; i < in_graph.size(); i++) {
-        if (in_graph[i].size() == 0 && i <= i_first_disk) {
+        if (in_graph[i].size() == 0 && i <= i_first_disk && out_graph[i].size() > 0 ) {
 			s_ready1.push_back(i);
-        } else if (in_graph[i].size() == 0 && i > i_first_disk) {
+		}
+		else if (in_graph[i].size() == 0 && i <= i_first_disk && out_graph[i].size() == 0) {
+			s_nodep1.push_back(i);
+		}
+		else if (in_graph[i].size() == 0 && i > i_first_disk && out_graph[i].size() > 0) {
 			s_ready2.push_back(i);
         }
+		else if (in_graph[i].size() == 0 && i > i_first_disk && out_graph[i].size() == 0) {
+			s_nodep2.push_back(i);
+		}
     }
 
     int start = 1;
     if(s_ready1.size() < s_ready2.size())
     	start = 2;
-	cout << "Start processing: " << i_first_disk << " " << i_second_disk << endl;
+	//cout << "Start processing: " << i_first_disk << " " << i_second_disk << endl;
     int counter = 0;
+	s_ready1.insert(s_ready1.begin() + s_ready1.size(), s_nodep1.begin(), s_nodep1.end());
+	s_ready2.insert(s_ready2.begin() + s_ready2.size(), s_nodep2.begin(), s_nodep2.end());
     while(s_installed1.size() + s_installed2.size() <  i_first_disk + i_second_disk )
     {
     	counter += 1;
@@ -139,7 +150,10 @@ int main(int argc, char** argv) {
 	}
 
 	int i_first_disk, i_second_disk, i_dependencies;
+	int x = 1;
 	while (true) {
+		//cout << x << "." << endl;
+		x += 1;
 		int rs = fscanf(ifile, "%d %d %d\n", &i_first_disk, &i_second_disk, &i_dependencies);
 
 		if (i_first_disk == 0 && i_second_disk == 0 && i_dependencies == 0)
@@ -157,5 +171,9 @@ int main(int argc, char** argv) {
 
 		solve(in_graph, out_graph, i_first_disk, i_second_disk);
 	}
+
+	clock_t t1 = clock();
+
+	cout << "Read time: " << (float)(t1 - t0) / CLOCKS_PER_SEC << endl;
 
 }
