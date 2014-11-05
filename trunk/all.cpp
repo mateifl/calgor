@@ -23,7 +23,7 @@ void print(vector<int> v)
 void process_disk(const int disk_number,
                     const int i_first_disk,
 					graph &in_graph, list_graph &out_graph,
-					vector<int> &s_installed1, vector<int> &s_installed2,
+					int &i_installed1, int &i_installed2,
 					vector<int> &s_ready1, vector<int> &s_ready2) {
 	if (disk_number == 1) {
         vector<int> s = s_ready1;
@@ -44,7 +44,7 @@ void process_disk(const int disk_number,
 						temp.push_back(*it2);
 				}
         	}
-			s_installed1.insert(s_installed1.begin() + s_installed1.size(), s.begin(), s.end());
+			i_installed1 += s.size();
         	s = temp;
         	temp.clear();
         }
@@ -69,7 +69,7 @@ void process_disk(const int disk_number,
 						temp.push_back(*it2);
 				}
         	}
-			s_installed2.insert(s_installed2.begin() + s_installed2.size(), s.begin(), s.end());
+			i_installed2 += s.size();
         	s = temp;
         	temp.clear();
         }
@@ -79,12 +79,11 @@ void process_disk(const int disk_number,
 
 
 void solve(graph &in_graph, list_graph &out_graph, int i_first_disk, int i_second_disk) {
-	vector<int> s_installed1 = vector<int>();
-	vector<int> s_installed2 = vector<int>();
 	vector<int> s_ready1 = vector<int>();
 	vector<int> s_ready2 = vector<int>();
 	vector<int> s_nodep1 = vector<int>();
 	vector<int> s_nodep2 = vector<int>();
+	int i_installed1 = 0, i_installed2 = 0;
 
 	for (int i = 1; i < in_graph.size(); i++) {
         if (in_graph[i].size() == 0 && i <= i_first_disk && out_graph[i].size() > 0 ) {
@@ -104,16 +103,26 @@ void solve(graph &in_graph, list_graph &out_graph, int i_first_disk, int i_secon
     int start = 1;
     if(s_ready1.size() < s_ready2.size())
     	start = 2;
+
+	if (s_ready1.size() == s_ready2.size()){
+		if (s_ready1.size() + s_nodep1.size() == i_first_disk)
+			start = 1;
+		if (s_ready2.size() + s_nodep2.size() == i_second_disk)
+			start = 2;
+	}
+
+	//if (s_ready1.size() == s_ready2.size())
+	//	printf("=");
 	//cout << "Start processing: " << i_first_disk << " " << i_second_disk << endl;
     int counter = 0;
 	s_ready1.insert(s_ready1.begin() + s_ready1.size(), s_nodep1.begin(), s_nodep1.end());
 	s_ready2.insert(s_ready2.begin() + s_ready2.size(), s_nodep2.begin(), s_nodep2.end());
-    while(s_installed1.size() + s_installed2.size() <  i_first_disk + i_second_disk )
+    while(i_installed1 + i_installed2 <  i_first_disk + i_second_disk )
     {
     	counter += 1;
-    	process_disk(start, i_first_disk, in_graph, out_graph, s_installed1, s_installed2, s_ready1, s_ready2);
+		process_disk(start, i_first_disk, in_graph, out_graph, i_installed1, i_installed1, s_ready1, s_ready2);
 
-		if(s_installed1.size() + s_installed2.size() ==  i_first_disk + i_second_disk )
+		if (i_installed1 + i_installed2 == i_first_disk + i_second_disk)
     		break;
 
     	if (start == 1)
@@ -122,15 +131,12 @@ void solve(graph &in_graph, list_graph &out_graph, int i_first_disk, int i_secon
     		start = 1;
 
     	counter += 1;
-    	process_disk(start, i_first_disk, in_graph, out_graph, s_installed1, s_installed2, s_ready1, s_ready2);
-//		cout << s_installed1.size() << endl;
-//		cout << s_installed2.size() << endl;
+		process_disk(start, i_first_disk, in_graph, out_graph, i_installed1, i_installed1, s_ready1, s_ready2);
 
     	if (start == 1)
     		start = 2;
     	else
     		start = 1;
-
     }
 
 	counter += 1;
@@ -174,6 +180,6 @@ int main(int argc, char** argv) {
 
 	clock_t t1 = clock();
 
-	cout << "Read time: " << (float)(t1 - t0) / CLOCKS_PER_SEC << endl;
+	//cout << "Read time: " << (float)(t1 - t0) / CLOCKS_PER_SEC << endl;
 
 }
