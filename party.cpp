@@ -29,7 +29,6 @@ int_pair solution(const vector<party> &v_parties, int max_sum, int number_of_par
 	{
 		for (int j = 0; j <= max_sum; j++)
 		{
-			//cout << i << " " << j << endl;
 			i_temp_val1 = memo[i - 1][j];
 			if (j < v_parties[i - 1].cost)
 			{

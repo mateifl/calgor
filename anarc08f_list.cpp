@@ -92,7 +92,6 @@ void parse_roads_line(string &str_source, string &str_destination,
 		e.head = i_source_index;
 		e.tail = i_destination_index;
 		e.value = atoi(str_value.c_str());
-		// this line produces a SIGSEGV
 		g[i_source_index].push_back(e);
 	}
 	if (str_mid[0] == '<') {
@@ -100,12 +99,11 @@ void parse_roads_line(string &str_source, string &str_destination,
 		e.head = i_destination_index;
 		e.tail = i_source_index;
 		e.value = atoi(str_value.c_str());
-        // the next line produces a SIGSEGV
 		g[i_destination_index].push_back(e);
 	}
 
 }
-/*
+
 int main(int argc, char **argv) {
 	clock_t t0 = clock();
 	int i_locations, i_cars, i_roads;
@@ -116,6 +114,8 @@ int main(int argc, char **argv) {
 		return 0;
 	}
 	int x = 1;
+
+	char town1[16], town2[16], middle[16];
 	while (true) {
 		int rs = fscanf(ifile, "%d %d %d\n", &i_locations, &i_cars, &i_roads);
 		if (i_locations == 0 && i_cars == 0 && i_roads == 0)
@@ -136,13 +136,13 @@ int main(int argc, char **argv) {
 		char* r = fgets(pch_line, 100 * 1024, ifile);
 		if (r == NULL)
 			break;
-		pch = strtok(pch_line, " \n\r");
+		pch = strtok(pch_line, " \r\n");
 		m_locations_map.insert(make_pair(string(pch), i));
 		v_cars[0] = i;
 		i++;
 		string str_pch;
 		int j = 0;
-		while ((pch = strtok(NULL, "\n\r ")) != NULL) {
+		while ((pch = strtok(NULL, " \r\n")) != NULL) {
 			str_pch = pch;
 			int i_location_index;
 
@@ -160,7 +160,7 @@ int main(int argc, char **argv) {
 
 		graph g = graph(i_locations), g_rev = graph(i_locations);
 
-		char town1[16], town2[16], middle[16];
+
 		string str_town1, str_town2, str_middle;
 		for (int i = 0; i < i_roads; i++) {
 			fscanf(ifile, "%s %s %s", town1, middle, town2);
@@ -172,7 +172,7 @@ int main(int argc, char **argv) {
 		}
 
 		vector<int> path_values = dijkstra(g, 0);
-		vector<int> path_values_rev = dijkstra(g_rev, 0);
+		vector<int> path_values_rev = dijkstra(g_rev, 0);		
 		int sum = 0;
 		for (unsigned int ii = 0; ii < v_cars.size(); ii++) {
 			sum += path_values[v_cars[ii]] + path_values_rev[v_cars[ii]];
@@ -185,4 +185,3 @@ int main(int argc, char **argv) {
 //	cout << "time: " << (float)(t1 - t0)/CLOCKS_PER_SEC << endl;
 	return 0;
 }
-*/
