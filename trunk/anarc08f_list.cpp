@@ -103,85 +103,85 @@ void parse_roads_line(string &str_source, string &str_destination,
 	}
 
 }
-
-int main(int argc, char **argv) {
-	clock_t t0 = clock();
-	int i_locations, i_cars, i_roads;
-	char *pch_line = new char[1024 * 100], *pch = new char[100];
-	FILE *ifile = stdin;
-	if(ifile == NULL) {
-		printf("ERROR no input file\n");
-		return 0;
-	}
-	int x = 1;
-
-	char town1[16], town2[16], middle[16];
-	while (true) {
-		int rs = fscanf(ifile, "%d %d %d\n", &i_locations, &i_cars, &i_roads);
-		if (i_locations == 0 && i_cars == 0 && i_roads == 0)
-			break;
-
-		if(i_cars == 0){
-			printf("%d. %d\n", x, 0);
-			x++;
-			for(int k = 0; k <= i_roads + 1 ; k++){
-				fgets(pch_line, 100 * 1024, ifile);
-			}
-			continue;
-		}
-		vector<int> v_cars(i_cars);
-		int i = 0;
-		string_int_map m_locations_map;
-
-		char* r = fgets(pch_line, 100 * 1024, ifile);
-		if (r == NULL)
-			break;
-		pch = strtok(pch_line, " \r\n");
-		m_locations_map.insert(make_pair(string(pch), i));
-		v_cars[0] = i;
-		i++;
-		string str_pch;
-		int j = 0;
-		while ((pch = strtok(NULL, " \r\n")) != NULL) {
-			str_pch = pch;
-			int i_location_index;
-
-			if (m_locations_map.find(str_pch) == m_locations_map.end()) {
-				m_locations_map[str_pch] = i;
-				i_location_index = i;
-				i++;
-			}
-			else
-				i_location_index = m_locations_map[str_pch];
-
-			v_cars[j] = i_location_index;
-			j++;
-		}
-
-		graph g = graph(i_locations), g_rev = graph(i_locations);
-
-
-		string str_town1, str_town2, str_middle;
-		for (int i = 0; i < i_roads; i++) {
-			fscanf(ifile, "%s %s %s", town1, middle, town2);
-			str_town1 = town1;
-			str_town2 = town2;
-			str_middle = middle;
-			parse_roads_line(str_town1, str_town2, str_middle, g, m_locations_map);
-			parse_roads_line(str_town2, str_town1, str_middle, g_rev, m_locations_map);
-		}
-
-		vector<int> path_values = dijkstra(g, 0);
-		vector<int> path_values_rev = dijkstra(g_rev, 0);		
-		int sum = 0;
-		for (unsigned int ii = 0; ii < v_cars.size(); ii++) {
-			sum += path_values[v_cars[ii]] + path_values_rev[v_cars[ii]];
-		}
-		printf("%d. %d\n", x, sum);
-		x++;
-	}
-
-	clock_t t1 = clock();
-//	cout << "time: " << (float)(t1 - t0)/CLOCKS_PER_SEC << endl;
-	return 0;
-}
+//
+//int main(int argc, char **argv) {
+//	clock_t t0 = clock();
+//	int i_locations, i_cars, i_roads;
+//	char *pch_line = new char[1024 * 100], *pch = new char[100];
+//	FILE *ifile = stdin;
+//	if(ifile == NULL) {
+//		printf("ERROR no input file\n");
+//		return 0;
+//	}
+//	int x = 1;
+//
+//	char town1[16], town2[16], middle[16];
+//	while (true) {
+//		int rs = fscanf(ifile, "%d %d %d\n", &i_locations, &i_cars, &i_roads);
+//		if (i_locations == 0 && i_cars == 0 && i_roads == 0)
+//			break;
+//
+//		if(i_cars == 0){
+//			printf("%d. %d\n", x, 0);
+//			x++;
+//			for(int k = 0; k <= i_roads + 1 ; k++){
+//				fgets(pch_line, 100 * 1024, ifile);
+//			}
+//			continue;
+//		}
+//		vector<int> v_cars(i_cars);
+//		int i = 0;
+//		string_int_map m_locations_map;
+//
+//		char* r = fgets(pch_line, 100 * 1024, ifile);
+//		if (r == NULL)
+//			break;
+//		pch = strtok(pch_line, " \r\n");
+//		m_locations_map.insert(make_pair(string(pch), i));
+//		v_cars[0] = i;
+//		i++;
+//		string str_pch;
+//		int j = 0;
+//		while ((pch = strtok(NULL, " \r\n")) != NULL) {
+//			str_pch = pch;
+//			int i_location_index;
+//
+//			if (m_locations_map.find(str_pch) == m_locations_map.end()) {
+//				m_locations_map[str_pch] = i;
+//				i_location_index = i;
+//				i++;
+//			}
+//			else
+//				i_location_index = m_locations_map[str_pch];
+//
+//			v_cars[j] = i_location_index;
+//			j++;
+//		}
+//
+//		graph g = graph(i_locations), g_rev = graph(i_locations);
+//
+//
+//		string str_town1, str_town2, str_middle;
+//		for (int i = 0; i < i_roads; i++) {
+//			fscanf(ifile, "%s %s %s", town1, middle, town2);
+//			str_town1 = town1;
+//			str_town2 = town2;
+//			str_middle = middle;
+//			parse_roads_line(str_town1, str_town2, str_middle, g, m_locations_map);
+//			parse_roads_line(str_town2, str_town1, str_middle, g_rev, m_locations_map);
+//		}
+//
+//		vector<int> path_values = dijkstra(g, 0);
+//		vector<int> path_values_rev = dijkstra(g_rev, 0);
+//		int sum = 0;
+//		for (unsigned int ii = 0; ii < v_cars.size(); ii++) {
+//			sum += path_values[v_cars[ii]] + path_values_rev[v_cars[ii]];
+//		}
+//		printf("%d. %d\n", x, sum);
+//		x++;
+//	}
+//
+//	clock_t t1 = clock();
+////	cout << "time: " << (float)(t1 - t0)/CLOCKS_PER_SEC << endl;
+//	return 0;
+//}
