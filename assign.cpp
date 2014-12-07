@@ -17,7 +17,7 @@ vector<long> bitmasks(int N) {
 	return v_bitmasks;
 }
 
-vector<long> decompose(long l_first, vector<long> v_bitmasks){
+vector<long> decompose(long l_first, vector<long> &v_bitmasks){
 	vector<long> r;
 	for(int i = 0; i < v_bitmasks.size(); i++)
 	{
@@ -27,73 +27,78 @@ vector<long> decompose(long l_first, vector<long> v_bitmasks){
 	return r;
 }
 
-map<long, long> assign(vector<long> &data, int length){
-	vector<long> v_bitmasks = bitmasks(data.size()), v_next;
+vector<long> assign(vector<long> &data, int length){
+	vector<long> v_bitmasks = bitmasks(length);
+	// decompose every set of student options
+	vector< vector<long> > v_decompositions = vector< vector<long> >(length);
+	for(unsigned int i = 0; i < length; i++)
+		v_decompositions[i] = decompose(data[i], v_bitmasks);
 
-	map<long, long> r, r_temp;
-	for(int i = 0; i < data.size(); i++)
-	{
-		if(data[0] & v_bitmasks[i])
-			r.insert(make_pair(v_bitmasks[i], 1L));
-	}
-	
-	map<long, long>::iterator map_iterator;
-	for(int i = 1; i < data.size(); i++)
-	{
-		v_next = decompose(data[i], v_bitmasks);
-		r_temp.clear();
-		for (int j = 0; j < v_next.size(); j++)
-		{
-			for(map_iterator = r.begin(); map_iterator != r.end(); map_iterator++ )
-			{
-				//cout << v_next[j] << " " <<  map_iterator->first << endl;
-				if( (v_next[j] & map_iterator->first) == 0)
-				{
-					cout << v_next[j] << " " <<  map_iterator->first << endl;
-					long n = v_next[j] | map_iterator->first;
-					long a = r_temp[n] + r[map_iterator->second];
-					cout << n << " - " << a << endl;
-					if(a != 0)
-						r_temp.insert(make_pair(n, a));
-				}
+	// 
+	vector<long> result;
+	for(unsigned int i = 0; i < v_decompositions[0].size(); i++) {
+		for(unsigned int j = 0; j < v_decompositions[1].size(); j++) {
+			//cout << ((v_decompositions[0][i] & v_decompositions[1][j]) == 0) << endl;
+			if((v_decompositions[0][i] & v_decompositions[1][j]) == 0) {
+				result.push_back(v_decompositions[0][i] | v_decompositions[1][j]);
 			}
 		}
-		r = r_temp;
-		for(map_iterator = r_temp.begin(); map_iterator != r_temp.end(); map_iterator++ )
-			cout << map_iterator->first << "->" << map_iterator->second << endl;
-		cout << "===" << endl;
-		for(map_iterator = r.begin(); map_iterator != r.end(); map_iterator++ )
-			cout << map_iterator->first << "->" << map_iterator->second << endl;
 	}
 
-	return r;
+	for(unsigned int i = 2; i < length; i++)
+	{
+		cout << result.size() << endl;
+		vector<long> result_temp;
+		for(unsigned int j = 0; j < result.size(); j++) {
+			for(unsigned int k = 0; k < v_decompositions[i].size(); k++) {
+				if( (result[j] & v_decompositions[i][k]) == 0 )
+					result_temp.push_back( result[j] | v_decompositions[i][k] );
+			}
+		}
+		result = result_temp;
+	}
+	return result;
 }
 
-//int main(int argc, char** argv) {
-//
-//	int i_testcases, i_number_students;
-//	scanf("%d\n", &i_testcases);
-//	cout << "testcases " << i_testcases << endl;
-//	clock_t t1 = clock();
-//	for(int k = 0; k < i_testcases; k++)
-//	{
-//		scanf("%d\n", &i_number_students);
-//		vector<long> data = vector<long>(i_number_students);
-//		char *pch_data = new char[2 * i_number_students];
-//		char *pch_number = new char[i_number_students];
-//		for(int j = 0; j < i_number_students; j++){
-//
-//			fgets(pch_data, 2 * i_number_students + 2, stdin);
-//			for(int i = 0; i < 2 * i_number_students; i+=2)
-//				pch_number[i/2] = pch_data[i];
-//			long number = strtol(pch_number, NULL, 2);
-//			data[j] = number;
-//		}
-//		map<long, long> r = assign(data, i_number_students);
-//		cout << endl;
-//	}
-//	clock_t t2 = clock();
-//
-//	cout << "time: " << (float)(t2 - t1)/CLOCKS_PER_SEC << endl;
-//	return 0;
-//}
+long create_number(char *pch_data, int length) {
+	long l_power_2 = 1;
+	long result = 0;
+	for(unsigned int i = 0; i < length; i++)
+	{
+		result += l_power_2 * (pch_data[i] - 48);
+		l_power_2 *= 2;
+	}
+	return result;
+}
+
+int main(int argc, char** argv) {
+
+	int i_testcases, i_number_students;
+	scanf("%d\n", &i_testcases);
+	cout << "test cases: " << i_testcases << endl;
+	clock_t t1 = clock();
+	for(int k = 0; k < i_testcases; k++)
+	{
+		scanf("%d\n", &i_number_students);
+		vector<long> data = vector<long>(i_number_students);
+		char *pch_data = new char[2 * i_number_students];
+		char *pch_number = new char[i_number_students + 1];
+		for(int j = 0; j < i_number_students; j++){
+
+			fgets(pch_data, 2 * i_number_students + 2, stdin);
+			for(int i = 0; i < 2 * i_number_students; i+=2)
+				pch_number[i/2] = pch_data[i];
+			pch_number[i_number_students] = '\0';
+			long number = create_number(pch_number, i_number_students);
+			data[j] = number;
+		}
+		//delete pch_data;
+		//delete pch_number;
+		vector<long> r = assign(data, i_number_students);
+		cout << r.size() << endl;
+	}
+	clock_t t2 = clock();
+
+	cout << "time: " << (float)(t2 - t1)/CLOCKS_PER_SEC << endl;
+	return 0;
+}

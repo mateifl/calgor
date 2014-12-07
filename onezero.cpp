@@ -46,7 +46,7 @@ ll_vector generate_numbers(ullong ll_limit){
 	return v_nrs;
 }
 
-vl even_indexes(long l) {
+void even_indexes(long l) {
 	vl v = vl(l);
 	for(long i =  0;  i <= l; i++)
 		v[i] = 2 * i + 1;
