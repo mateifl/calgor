@@ -7,7 +7,7 @@
 	g - graph in adjacency list representation
 	start_node - start node for DFS
 	processed_node - map with the status of every node: 0 - not visited, 1 - visited (node visited but not every neighbour), 
-	2 - processed (the node and everyone of it's negihbours have been visited).
+	2 - processed (the node and everyone of it's neighbours have been visited).
 	visitor - object used to gather data related to the DFS.
  */
 template <typename T> void generic_dfs(map<T, vector<T> > g, T start_node, map<T, short> &processed_nodes, dfs_visitor<T> *visitor) {
