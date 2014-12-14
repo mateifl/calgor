@@ -65,6 +65,8 @@ vector<edge> prim(graph &g, int i_source_node) {
 		// mark node as visited
 		v_bool_visited[next_edge.tail] = true;
 		i_node_index += 1;
+		//if (i_node_index % 10 == 0)
+		//	printf("%d %d\n", i_node_index, nodes_heap.size());
 	}
 
 	return v_mst;
@@ -114,15 +116,21 @@ int main(int argc, char **argv) {
 		*/
 		vector<edge> mst = prim(g, 1);
 		int val_mst = 0;
+		
 		for (int k = 0; k < mst.size(); k++) {
 			val_mst += mst[k].val;
+			/*
 			if (mst[k].head < mst[k].tail)
 				cout << mst[k].head << " " << mst[k].tail << " " << mst[k].val << endl;
 			else
 				cout << mst[k].tail << " " << mst[k].head << " " << mst[k].val << endl;
+			*/
 		}
-		cout << "val = " << val_mst << endl;
+		
+		//cout << "val = " << val_mst << endl;
+		printf("%d\n", val_mst * i_price);
 	}
-
+	//clock_t t1 = clock();
+	//cout << "time: " << (float)(t1 - t0) / CLOCKS_PER_SEC << endl;
 	return 0;
 }
