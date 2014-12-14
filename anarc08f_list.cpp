@@ -29,10 +29,8 @@ template<class T> struct greater_edge: binary_function<T, T, bool> {
 typedef priority_queue<edge, vector<edge>, greater_edge<edge> > heap;
 
 vector<int> dijkstra(graph g, int source_node) {
-
 	// the heap
 	heap nodes_heap;
-	// create a map with not visited nodes
 	vector<bool> v_bool_visited = vector<bool>(g.size());
 	v_bool_visited[source_node] = true;
 
