@@ -17,7 +17,6 @@ struct edge {
 	//int heap_value;
 };
 
-typedef map<string, int> string_int_map;
 typedef edge edge;
 typedef vector<vector<edge> > graph;
 typedef unsigned int uint;

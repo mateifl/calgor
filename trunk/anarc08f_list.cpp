@@ -105,7 +105,7 @@ void parse_roads_line(string &str_source, string &str_destination,
 //int main(int argc, char **argv) {
 //	clock_t t0 = clock();
 //	int i_locations, i_cars, i_roads;
-//	char *pch_line = new char[1024 * 100], *pch = new char[100];
+//	char *pch_line = new char[1024 * 100], *pch =	;
 //	FILE *ifile = stdin;
 //	if(ifile == NULL) {
 //		printf("ERROR no input file\n");
