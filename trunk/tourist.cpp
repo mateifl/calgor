@@ -16,14 +16,13 @@
 #include <string>
 using namespace std;
 
-
 typedef struct coord {
 	int x;
 	int y;
 
 } coord;
 
-void setup_initial(vector<string> &v_matrix, vector< vector<long> > &v_memo,
+void setup_initial(vector<string> &v_matrix, vector< vector<long> > &v_memo, vector< vector<coord> > &v_coord,
 					 int i_width, int i_height) {
 	for(int i = 0; i < i_height; i++)
 		v_memo[i] = vector<long>(i_width);
@@ -35,6 +34,8 @@ void setup_initial(vector<string> &v_matrix, vector< vector<long> > &v_memo,
 			v_memo[0][i] = -1;
 			break;
 		}
+		v_coord[0][i].y = 0;
+		v_coord[0][i].x = i - 1;
 		if(v_matrix[0][i] == '*')
 			v_memo[0][i] = v_memo[0][i - 1] + 1;
 		else if(v_matrix[0][i] == '.')
@@ -46,7 +47,8 @@ void setup_initial(vector<string> &v_matrix, vector< vector<long> > &v_memo,
 			v_memo[i][0] = -1;
 			break;
 		}
-
+		v_coord[i][0].y = i - 1;
+		v_coord[i][0].x = 0;
 		if(v_matrix[i][0] == '*')
 			v_memo[i][0] = v_memo[i - 1][0] + 1;
 		else if(v_matrix[i][0] == '.')
@@ -61,8 +63,7 @@ int tourist(vector<string> &v_matrix, int i_width, int i_height) {
 		v_coord[i] = vector<coord>(i_width);
 
 	vector< vector<long> > v_memo = vector< vector<long> >(i_height);
-
-	setup_initial(v_matrix, v_memo, i_width, i_height);
+	setup_initial(v_matrix, v_memo, v_coord, i_width, i_height);
 
 	for(int i = 1; i < i_height; i++) {
 		for(int j = 1; j < i_width; j++) {
@@ -70,24 +71,24 @@ int tourist(vector<string> &v_matrix, int i_width, int i_height) {
 				v_memo[i][j] = -1;
 				continue;
 			}
-//			cout << i << " " << j << endl;
+			cout << i << " " << j << endl;
 			coord s;
 			if( v_memo[i][j - 1] > v_memo[i - 1][j]) {
 				s.x = j - 1;
 				s.y = i;
 				v_coord[i][j] = s;
+				cout << i << " " << j - 1 << endl;
 			}
 			else {
 				s.x = j;
 				s.y = i - 1;
 				v_coord[i][j] = s;
+				cout << i - 1 << " " << j << endl;
 			}
 
 			cout << "===" << endl;
-			if(v_matrix[i][j] == '*'){
+			if (v_matrix[i][j] == '*')
 				v_memo[i][j] = max(v_memo[i][j - 1], v_memo[i - 1][j]) + 1;
-
-			}
 			else if(v_matrix[i][j] == '.')
 				v_memo[i][j] = max(v_memo[i][j - 1], v_memo[i - 1][j]);
 		}
@@ -95,6 +96,18 @@ int tourist(vector<string> &v_matrix, int i_width, int i_height) {
 
 
 	int value = v_memo[i_height - 1][i_width - 1];
+
+	//retrieve the path 
+	int x = v_coord[i_height - 1][i_width - 1].x, y = v_coord[i_height - 1][i_width - 1].y;
+	cout << x << " " << y << endl;
+	int x1, y1;
+	while (x != 0 || y != 0) {
+		x1 = v_coord[y][x].x;
+		y1 = v_coord[y][x].y;
+		cout << x1 << " " << y1 << endl;
+		x = x1;
+		y = y1;
+	}
 
 //	v_memo = vector< vector<long> >(i_width);
 //	v_memo[i_height - 1][i_width - 1] = v_matrix[0][0] == '*' ? 1 : 0;
