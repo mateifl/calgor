@@ -19,19 +19,74 @@ using namespace std;
 typedef struct coord {
 	int x;
 	int y;
-
 } coord;
+
+void setup_initial_back(	 vector<string> &v_matrix,
+							 vector< vector<long> > &v_memo,
+					 	 	 int i_width, int i_height) {
+	for(int i = 0; i < i_height; i++)
+		v_memo[i] = vector<long>(i_width);
+
+	v_memo[i_height - 1][i_width - 1] = v_matrix[0][0] == '*' ? 1 : 0;
+	int idx = -1;
+	for(int i = i_width - 2; i > 0; i--){
+		if(v_matrix[i_height - 1][i - 1] == '#') {
+			v_memo[i_height - 1][i - 1] = -1;
+			idx = i;
+			break;
+		}
+
+		if(v_matrix[i_height - 1][i- 1] == '*')
+			v_memo[i_height - 1][i - 1] = v_memo[i_height - 1][i] + 1;
+		else if(v_matrix[i_height - 1][i - 1] == '.')
+			v_memo[i_height - 1][i - 1] = v_memo[i_height - 1][i];
+	}
+
+	if(idx > 0)
+	for(int i = idx; i >= 0; i--) {
+		v_memo[i_height - 1][i] = -1;
+	}
+
+	idx = -1;
+	for(int i = i_height - 1; i > 0; i--){
+		if(v_matrix[i - 1][i_width - 1] == '#') {
+			v_memo[i - 1][i_width - 1] = -1;
+			idx = i;
+			break;
+		}
+
+		if(v_matrix[i - 1][i_width - 1] == '*')
+			v_memo[i - 1][i_width - 1] = v_memo[i][i_width - 1] + 1;
+		else if(v_matrix[i][i_width - 1] == '.')
+			v_memo[i - 1][i_width - 1] = v_memo[i][i_width - 1];
+	}
+
+	if(idx > 0)
+	for(int i = idx; i >= 0; i--) {
+		v_memo[i][i_width - 1] = -1;
+	}
+
+//	for(int i = 0; i < i_height; i++)
+//	{
+//		for(int j = 0; j < i_width; j++)
+//			cout << v_memo[i][j];
+//		cout << endl;
+//	}
+
+}
 
 void setup_initial(vector<string> &v_matrix, vector< vector<long> > &v_memo, vector< vector<coord> > &v_coord,
 					 int i_width, int i_height) {
+
 	for(int i = 0; i < i_height; i++)
 		v_memo[i] = vector<long>(i_width);
 
 	v_memo[0][0] = v_matrix[0][0] == '*' ? 1 : 0;
-
+	int idx = -1;
 	for(int i = 1; i < i_width; i++){
 		if(v_matrix[0][i] == '#') {
 			v_memo[0][i] = -1;
+			idx = i;
 			break;
 		}
 		v_coord[0][i].y = 0;
@@ -42,9 +97,16 @@ void setup_initial(vector<string> &v_matrix, vector< vector<long> > &v_memo, vec
 			v_memo[0][i] = v_memo[0][i - 1];
 	}
 
+	if(idx > 0)
+	for(int i = idx; i < i_width; i++) {
+		v_memo[0][i] = -1;
+	}
+
+	idx = -1;
 	for(int i = 1; i < i_height; i++){
 		if(v_matrix[i][0] == '#') {
 			v_memo[i][0] = -1;
+			idx = i;
 			break;
 		}
 		v_coord[i][0].y = i - 1;
@@ -54,6 +116,17 @@ void setup_initial(vector<string> &v_matrix, vector< vector<long> > &v_memo, vec
 		else if(v_matrix[i][0] == '.')
 			v_memo[i][0] = v_memo[i - 1][0];
 	}
+
+	if(idx > 0)
+	for(int i = idx; i < i_height; i++) {
+		v_memo[i][0] = -1;
+	}
+//	for(int i = 0; i < i_height; i++)
+//	{
+//		for(int j = 0; j < i_width; j++)
+//			cout << v_memo[i][j];
+//		cout << endl;
+//	}
 }
 
 int tourist(vector<string> &v_matrix, int i_width, int i_height) {
@@ -71,22 +144,25 @@ int tourist(vector<string> &v_matrix, int i_width, int i_height) {
 				v_memo[i][j] = -1;
 				continue;
 			}
-			cout << i << " " << j << endl;
+
+			if(v_memo[i][j - 1] == -1 && v_memo[i - 1][j] == -1) {
+				v_memo[i][j] = -1;
+				continue;
+			}
+
+
 			coord s;
 			if( v_memo[i][j - 1] > v_memo[i - 1][j]) {
 				s.x = j - 1;
 				s.y = i;
 				v_coord[i][j] = s;
-				cout << i << " " << j - 1 << endl;
 			}
 			else {
 				s.x = j;
 				s.y = i - 1;
 				v_coord[i][j] = s;
-				cout << i - 1 << " " << j << endl;
 			}
 
-			cout << "===" << endl;
 			if (v_matrix[i][j] == '*')
 				v_memo[i][j] = max(v_memo[i][j - 1], v_memo[i - 1][j]) + 1;
 			else if(v_matrix[i][j] == '.')
@@ -99,31 +175,42 @@ int tourist(vector<string> &v_matrix, int i_width, int i_height) {
 
 	//retrieve the path 
 	int x = v_coord[i_height - 1][i_width - 1].x, y = v_coord[i_height - 1][i_width - 1].y;
-	cout << x << " " << y << endl;
+
 	int x1, y1;
 	while (x != 0 || y != 0) {
+		v_matrix[y][x] = '.';
 		x1 = v_coord[y][x].x;
 		y1 = v_coord[y][x].y;
-		cout << x1 << " " << y1 << endl;
 		x = x1;
 		y = y1;
 	}
 
-//	v_memo = vector< vector<long> >(i_width);
-//	v_memo[i_height - 1][i_width - 1] = v_matrix[0][0] == '*' ? 1 : 0;
-//
-//	for(int i = (i_height - 2); i >= 0; i--) {
-//		for(int j = (i_width - 2); j >= 0; j--) {
-//			if(v_matrix[i][j] == '#')
-//				v_memo[i][j] = -1;
-//			else if(v_matrix[i][j] == '*')
-//				v_memo[i][j] = max(v_memo[i][j + 1], v_memo[i + 1][j]) + 1;
-//			else if(v_matrix[i][j] == '.')
-//				v_memo[i][j] = max(v_memo[i][j + 1], v_memo[i + 1][j]);
-//		}
-//	}
-//
-//	value += v_memo[0][0];
+	v_memo = vector< vector<long> >(i_height);
+	for(int i = 0; i < i_height; i++)
+		v_memo[i] = vector<long>(i_width);
+
+	setup_initial_back(v_matrix, v_memo, i_width, i_height);
+
+	v_memo[i_height - 1][i_width - 1] = v_matrix[0][0] == '*' ? 1 : 0;
+
+	for(int i = (i_height - 2); i >= 0; i--) {
+		for(int j = (i_width - 2); j >= 0; j--) {
+			if(v_matrix[i][j] == '#')
+				v_memo[i][j] = -1;
+
+			if(v_memo[i][j + 1] == -1 && v_memo[i + 1][j] == -1) {
+				v_memo[i][j] = -1;
+				continue;
+			}
+
+			else if(v_matrix[i][j] == '*')
+				v_memo[i][j] = max(v_memo[i][j + 1], v_memo[i + 1][j]) + 1;
+			else if(v_matrix[i][j] == '.')
+				v_memo[i][j] = max(v_memo[i][j + 1], v_memo[i + 1][j]);
+		}
+	}
+
+	value += v_memo[0][0];
 	return value;
 }
 
