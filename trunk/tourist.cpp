@@ -42,28 +42,9 @@ void setup_initial_back(	 vector<string> &v_matrix,
 			v_memo[i_height - 1][i - 1] = v_memo[i_height - 1][i];
 	}
 
-	if(idx > 0)
-	for(int i = idx; i >= 0; i--) {
-		v_memo[i_height - 1][i] = -1;
-	}
-
-	idx = -1;
-	for(int i = i_height - 1; i > 0; i--){
-		if(v_matrix[i - 1][i_width - 1] == '#') {
-			v_memo[i - 1][i_width - 1] = -1;
-			idx = i;
-			break;
-		}
-
-		if(v_matrix[i - 1][i_width - 1] == '*')
-			v_memo[i - 1][i_width - 1] = v_memo[i][i_width - 1] + 1;
-		else if(v_matrix[i][i_width - 1] == '.')
-			v_memo[i - 1][i_width - 1] = v_memo[i][i_width - 1];
-	}
-
-	if(idx > 0)
-	for(int i = idx; i >= 0; i--) {
-		v_memo[i][i_width - 1] = -1;
+	if(idx > 0) {
+		for(int i = idx; i >= 0; i--)
+			v_memo[i_height - 1][i] = -1;
 	}
 
 //	for(int i = 0; i < i_height; i++)
@@ -102,25 +83,6 @@ void setup_initial(vector<string> &v_matrix, vector< vector<long> > &v_memo, vec
 		v_memo[0][i] = -1;
 	}
 
-	idx = -1;
-	for(int i = 1; i < i_height; i++){
-		if(v_matrix[i][0] == '#') {
-			v_memo[i][0] = -1;
-			idx = i;
-			break;
-		}
-		v_coord[i][0].y = i - 1;
-		v_coord[i][0].x = 0;
-		if(v_matrix[i][0] == '*')
-			v_memo[i][0] = v_memo[i - 1][0] + 1;
-		else if(v_matrix[i][0] == '.')
-			v_memo[i][0] = v_memo[i - 1][0];
-	}
-
-	if(idx > 0)
-	for(int i = idx; i < i_height; i++) {
-		v_memo[i][0] = -1;
-	}
 //	for(int i = 0; i < i_height; i++)
 //	{
 //		for(int j = 0; j < i_width; j++)
@@ -139,7 +101,7 @@ int tourist(vector<string> &v_matrix, int i_width, int i_height) {
 	setup_initial(v_matrix, v_memo, v_coord, i_width, i_height);
 
 	for(int i = 1; i < i_height; i++) {
-		for(int j = 1; j < i_width; j++) {
+		for(int j = 0; j < i_width; j++) {
 			if(v_matrix[i][j] == '#') {
 				v_memo[i][j] = -1;
 				continue;
@@ -194,7 +156,7 @@ int tourist(vector<string> &v_matrix, int i_width, int i_height) {
 	v_memo[i_height - 1][i_width - 1] = v_matrix[0][0] == '*' ? 1 : 0;
 
 	for(int i = (i_height - 2); i >= 0; i--) {
-		for(int j = (i_width - 2); j >= 0; j--) {
+		for(int j = (i_width - 1); j >= 0; j--) {
 			if(v_matrix[i][j] == '#')
 				v_memo[i][j] = -1;
 
@@ -215,8 +177,9 @@ int tourist(vector<string> &v_matrix, int i_width, int i_height) {
 }
 
 int main(int argc, char** argv) {
+//	FILE *ifile = stdin;
 
-	FILE *ifile = stdin;
+	FILE *ifile = fopen("tc_tourist.txt", "r");
 	if(ifile == NULL) {
 		printf("ERROR no input file\n");
 		return 0;
@@ -242,5 +205,6 @@ int main(int argc, char** argv) {
     	printf("%d\n", i_val);
 	}
 
+    fclose(ifile);
 	return 0;
 }
