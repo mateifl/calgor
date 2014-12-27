@@ -21,6 +21,8 @@ typedef struct coord {
 	int y;
 } coord;
 
+typedef struct visited
+
 void setup_initial_back(	 vector<string> &v_matrix,
 							 vector< vector<long> > &v_memo,
 					 	 	 int i_width, int i_height) {
