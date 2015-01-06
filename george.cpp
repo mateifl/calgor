@@ -6,23 +6,24 @@
 #include <vector>
 #include <queue>
 #include <ctime>
-#include <map>
+#include <unordered_map>
 using namespace std;
+
 typedef unsigned long ulong;
 typedef unsigned int uint;
+
 struct edge {
 	ulong head;
 	ulong tail;
 	ulong value;
 };
 
-typedef struct step {
-	ulong head;
-	ulong tail;
-	uint start_time;
-	uint end_time;
-} step;
+struct step {
+	ulong first;
+	ulong second;
+};
 
+typedef step step;
 typedef edge edge;
 
 typedef vector<vector<ulong> > graph;
@@ -35,17 +36,30 @@ template<class T> struct greater_edge : binary_function<T, T, bool> {
 };
 typedef priority_queue<edge, vector<edge>, greater_edge<edge> > heap;
 
-vector<ulong> dijkstra(graph &g, long source_node, graph &g_edges, vector<ulong> &v_george_nodes, int delay) {
+vector<ulong> dijkstra(graph &g, long source_node, graph &g_edges, vector<ulong> &v_george_nodes, ulong l_delay) {
 	// compute mr. george path 
-	map< pair<ulong, ulong>, pair<ulong, ulong> > m_george_steps;
-	ulong i_last_time = 0;
+	ulong i_g_total_time = 0;
 	for (uint i = 1; i < v_george_nodes.size(); i++)
+		i_g_total_time += g[v_george_nodes[i - 1]][v_george_nodes[i]];
+
+	vector<step> v_george_steps(i_g_total_time);
+	ulong i_last_time = 0;
+	ulong l_head = v_george_nodes[0], l_tail = v_george_nodes[1], l_node_index = 1;
+	ulong l_value = g[l_head][l_tail];
+	for (uint i = 0; i < i_g_total_time + 1; i++)
 	{
-		ulong head = v_george_nodes[i - 1], tail = v_george_nodes[i];
-		m_george_steps.insert(make_pair(
-							make_pair(v_george_nodes[i - 1], v_george_nodes[i]), 
-							make_pair(i_last_time, i_last_time + g[head][tail]) 
-							));
+		step key;
+		key.first = l_head;
+		key.second = l_tail;
+		v_george_steps[i] = key;
+		if (i == l_value)
+		{
+			l_node_index += 1;
+			l_head = v_george_nodes[l_node_index - 1];
+			l_tail = v_george_nodes[l_node_index];
+			l_value += g[l_head][l_tail];
+		}
+
 	}
 	// the heap
 	heap nodes_heap;
@@ -99,39 +113,38 @@ int main(int argc, char **argv) {
 	time_t t = clock();
 	ulong  i_nodes, i_edges, i_start, i_end, l_delay, l_g_nodes, l_g_node, i_head, i_tail, i_value;
 
-	while (true) {
-		scanf("%d %d", &i_nodes, &i_edges);
-		scanf("%d %d %d %d", &i_start, &i_end, l_delay, l_g_nodes);
-		//cout << i_nodes << " " << i_edges << " " << endl;
-		graph g = graph(i_nodes), g_edges(i_nodes);
+	
+	scanf("%d %d", &i_nodes, &i_edges);
+	scanf("%d %d %d %d", &i_start, &i_end, &l_delay, &l_g_nodes);
+	//cout << i_nodes << " " << i_edges << " " << endl;
+	i_nodes += 1;
+	graph g = graph(i_nodes), g_edges(i_nodes);
 
-		for (ulong j = 0; j < i_nodes; j++)
-		{
-			g[j] = vector<ulong>(i_nodes);
-			g[j].assign(i_nodes, ULONG_MAX);
-		}
-
-		vector<ulong> v_g_nodes(l_g_nodes);
-		for (ulong j = 0; j < l_g_nodes; j++) {
-			scanf("%d", &l_g_node);
-			v_g_nodes[j] = l_g_node;
-		}
-
-		for (ulong j = 0; j < i_edges; j++){
-			scanf("%d %d %d", &i_head, &i_tail, &i_value);
-			g[i_head][i_tail] = i_value;
-			g_edges[i_head].push_back(i_tail);
-		}
-
-		clock_t t0 = clock();
-		//cout << "time: " << (float)(t0 - t) / CLOCKS_PER_SEC << endl;
-		vector<ulong> v = dijkstra(g, i_start, g_edges, v_g_nodes, l_delay);
-
-		if (v[i_end] == ULONG_MAX)
-			printf("-1\n");
-		else
-			printf("%d\n", v[i_end]);
+	for (ulong j = 0; j < i_nodes; j++)
+	{
+		g[j] = vector<ulong>(i_nodes);
+		g[j].assign(i_nodes, ULONG_MAX);
 	}
+
+	vector<ulong> v_g_nodes(l_g_nodes);
+	for (ulong j = 0; j < l_g_nodes; j++) {
+		scanf("%d", &l_g_node);
+		v_g_nodes[j] = l_g_node;
+	}
+
+	for (ulong j = 0; j < i_edges; j++){
+		scanf("%d %d %d", &i_head, &i_tail, &i_value);
+		g[i_head][i_tail] = i_value;
+		g[i_tail][i_head] = i_value;
+		g_edges[i_head].push_back(i_tail);
+		g_edges[i_tail].push_back(i_head);
+	}
+
+	clock_t t0 = clock();
+	//cout << "time: " << (float)(t0 - t) / CLOCKS_PER_SEC << endl;
+	vector<ulong> v = dijkstra(g, i_start, g_edges, v_g_nodes, l_delay);
+	printf("%d\n", v[i_end]);
+	
 
 	//clock_t t1 = clock();
 	//cout << "time: " << (float)(t1 - t)/CLOCKS_PER_SEC << endl;
