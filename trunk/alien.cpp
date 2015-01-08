@@ -15,7 +15,7 @@ typedef struct sol {
 } sol;
 
 sol alien_c(vector<ulong> &v_values, int i_min, int i_middle, int i_max, ulong l_limit){
-	cout << i_min << " " << i_middle << " " << i_max << endl;
+	// cout << i_min << " " << i_middle << " " << i_max << endl;
 	ulong z = 0;
 	vector<ulong> v_sums;
 	for (int i = i_middle - 1; i >= i_min; --i) {
@@ -39,7 +39,11 @@ sol alien_c(vector<ulong> &v_values, int i_min, int i_middle, int i_max, ulong l
 			max_j = j;
 			l_sum = sum_1;
 		}
+		// if the first index is 0, we must add 1
+		
 		ulong diff1 = max_j > 0 ? max_j - i_middle + i + 1 : 0;
+		int x = ((i_min == 0) && (i_middle + i + 1) == 0) ? 1 : 0;
+		diff1 += 1;
 		if (diff1 >= diff) {
 			i_max_v = l_sum;
 			diff = diff1;
@@ -81,6 +85,8 @@ sol alien(vector<ulong> &v_values, uint i_start_idx, uint i_end_idx, ulong l_lim
 }
 
 int main(int argc, char** argv) {
+	time_t t = clock();
+
     uint i_testcases_number, i_length;
     ulong l_max_sum, l_value;
     scanf("%d", &i_testcases_number);
@@ -96,8 +102,11 @@ int main(int argc, char** argv) {
     		v_values[j] = l_value;
     	}
     	sol s = alien(v_values, 0, i_length - 1, l_max_sum);
-    	cout << s.l_value << " " << s.diff << endl;
+    	printf("%d %d\n", s.l_value, s.diff);
 
     }
+
+	time_t t1 = clock();
+	//cout << "time: " << (float)(t1 - t) / CLOCKS_PER_SEC << endl;
 	return 0;
 }
