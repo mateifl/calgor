@@ -28,7 +28,7 @@ result solution(int i_last_station, int i_steps, int i_time_limit,
     }
 
     if(i_steps == 0 && i_last_station != 0){
-        r.risk = UINT_MAX;
+        r.risk = INT_MAX;
         r.time = 0;
         return r;
     }
