@@ -21,7 +21,7 @@ typedef struct result
 
 result solution(int i_last_station, int i_steps, int i_time_limit,
 				vector< vector<ulong> > &times, vector< vector<ulong> > &risks,
-				vector<result> &temp_r, int time_s, int risk_s, result memo[][101][101]) {
+				vector<result> &temp_r, int time_s, int risk_s, result memo[251][101][101]) {
 
 	if (memo[i_time_limit][i_last_station][i_steps].risk > -1)
 		return memo[i_time_limit][i_last_station][i_steps];
