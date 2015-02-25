@@ -38,7 +38,6 @@ v_ulong assign(v_ulong &data, int length){
 	for(ulong i = 0; i < length; i++)
 		v_decompositions[i] = decompose(data[i], v_bitmasks);
 
-	// 
 	v_ulong result((1 << length));
 	for(ulong i = 0; i < v_decompositions[0].size(); i++) {
 		for(ulong j = 0; j < v_decompositions[1].size(); j++) {
@@ -49,9 +48,6 @@ v_ulong assign(v_ulong &data, int length){
 			}
 		}
 	}
-
-	//for (ulong i = 0; i < memo.size(); i++)
-	//	cout << memo[i] << " " << result[i] << endl;
 
 	for(ulong i = 2; i < length; i++)
 	{
@@ -90,7 +86,7 @@ int main(int argc, char** argv) {
 	ulong i_testcases, i_number_students;
 	scanf("%d", &i_testcases);
 //	cout << "test cases: " << i_testcases << endl;
-	clock_t t1 = clock();
+//	clock_t t1 = clock();
 	for(ulong k = 0; k < i_testcases; k++)
 	{
 		scanf("%d", &i_number_students);
@@ -109,7 +105,7 @@ int main(int argc, char** argv) {
 		printf("%d\n", accumulate(r.begin(), r.end(), 0));
 		
 	}
-	clock_t t2 = clock();
+	//clock_t t2 = clock();
 	//cout << "time: " << (float)(t2 - t1)/CLOCKS_PER_SEC << endl;
 	return 0;
 }
