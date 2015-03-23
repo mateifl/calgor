@@ -147,7 +147,7 @@ int main(int argc, char **argv) {
 	
 
 	//clock_t t1 = clock();
-	//cout << "time: " << (float)(t1 - t)/CLOCKS_PER_SEC << endl;
+	//cout << "time: " << (float)(t1 - t) / CLOCKS_PER_SEC << endl;
 
 	return 0;
 }
