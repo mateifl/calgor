@@ -176,6 +176,7 @@ int main(int argc, char **argv) {
 		vector<ulong> path_values = dijkstra(g, 0);
 		vector<ulong> path_values_rev = dijkstra(g_rev, 0);
 		ulong sum = 0;
+
 		for (unsigned int ii = 0; ii < v_cars.size(); ii++) {
 			sum += path_values[v_cars[ii]] + path_values_rev[v_cars[ii]];
 		}

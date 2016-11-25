@@ -22,6 +22,7 @@ sol alien_c(vector<ulong> &v_values, int i_min, int i_middle, int i_max, ulong l
 		z += v_values[i];
 		if (z >= l_limit)
 			break;
+
 		v_sums.push_back(z);
 	}
 

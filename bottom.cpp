@@ -15,6 +15,7 @@ template <typename T> void generic_dfs(map<T, vector<T> > g, T start_node, map<T
 	node_stack.push(start_node);
 	T node;
 
+	
 	vector<T> neighbors;
 	typename vector<T>::iterator it;
 	vector<T> nodes;

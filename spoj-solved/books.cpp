@@ -14,7 +14,7 @@ bool check_partitions(const vector<long long> &numbers, const long long max_part
     int p_number = 0;
     int len = numbers.size() - 1;
     long long tmp_sum = 0;
-    
+
     while( len > 0 )
     {
         tmp_sum += numbers[len];
