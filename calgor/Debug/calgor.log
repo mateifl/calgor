@@ -1,9 +1,0 @@
-﻿  bellman-ford.cpp
-d:\dev\calgor\bellman-ford.cpp(50): warning C4018: '<': signed/unsigned mismatch
-d:\dev\calgor\bellman-ford.cpp(66): warning C4474: 'scanf' : too many arguments passed for format string
-  d:\dev\calgor\bellman-ford.cpp(66): note: placeholders and their parameters expect 1 variadic arguments, but 3 were provided
-d:\dev\calgor\bellman-ford.cpp(66): error C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1270): note: see declaration of 'scanf'
-d:\dev\calgor\bellman-ford.cpp(69): warning C4477: 'scanf' : format string '%ld' requires an argument of type 'long *', but variadic argument 2 has type 'ulong'
-d:\dev\calgor\bellman-ford.cpp(69): error C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1270): note: see declaration of 'scanf'
