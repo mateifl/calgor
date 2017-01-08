@@ -42,27 +42,6 @@ vector<gnode> read_data_nodes(FILE *f, int &rows, int &columns) {
     return v_res;
 }
 
-
-//vector<vector<char> > read_data(FILE *f) {
-//	int rows, columns;
-//	fscanf(f, "%d %d\n", &rows, &columns);
-//	vector<char> v_line(columns);
-//	vector<vector<char> > v_res(rows);
-//	char *pch_line = new char[columns + 3];
-//	for (int i = 0; i < rows; i++)
-//	{
-//		fgets(pch_line, columns + 3, f);
-//		//pch_line[columns] = '\0';
-//		//cout << pch_line << endl;
-//		for (int j = 0; j < columns; j++)
-//			v_line[j] = pch_line[j];
-//		//delete[] pch_line;
-//		v_res[i] = v_line;
-//	}
-//	delete[] pch_line;
-//    return v_res;
-//}
-
 graph create(vector<vector<char> > &m, int rows, int columns ) {
 	graph g = graph(rows * columns);
 	int k = 0;
@@ -93,7 +72,6 @@ graph create(vector<vector<char> > &m, int rows, int columns ) {
 }
 
 void bfs(vector<gnode> &data, int start_node, vector<bool> &discovered, int rows, int columns  ) {
-    
 	discovered[start_node] = true;
     queue<int> q;
     q.push(start_node);
