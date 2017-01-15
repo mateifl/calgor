@@ -81,8 +81,6 @@ sol alien(vector<ulong> &v_values, uint i_start_idx, uint i_end_idx, ulong l_lim
 	else 
 	if( sol3.diff >= sol1.diff && sol3.diff >= sol2.diff  )
 		return sol3;	
-
-
 }
 
 int main(int argc, char** argv) {
