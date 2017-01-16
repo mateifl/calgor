@@ -23,15 +23,13 @@ typedef struct result
 
 int main(int argc, char const *argv[])
 {
-    vector<result> v(10);
-    result r;
-    cout << r.risk << endl;
-    for(int i = 0; i < 10; i++)
-        v[i] = r;
-
-    v[5].risk = 6;
-    cout << v.size() << endl;
-    cout << v[2].risk << endl;     
-    return 0;
+   FILE* f = fopen("test.txt", "r");
+   char pch[128];
+   for(int i = 0; i < 10; i++)
+   {
+       fgets(pch, 128, f);
+       cout << pch << endl;
+   }
+   fclose(f);
 
 }
