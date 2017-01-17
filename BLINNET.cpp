@@ -9,15 +9,16 @@
 #include <queue>
 using namespace std;
 
+typedef unsigned int uint;
 struct edge {
-	// int head;
+	int head;
 	int tail;
 	int val;
 };
 
 typedef edge edge;
 typedef vector< vector<edge> > graph;
-typedef unsigned int uint;
+
 template<class T> struct greater_edge: binary_function<T, T, bool> {
 	bool operator()(const T& x, const T& y) const {
 		return x.val > y.val;
@@ -34,7 +35,7 @@ vector<edge> prim(graph &g, int i_source_node) {
 	for (uint i = 0; i < g[i_source_node].size(); i++) {
 		nodes_heap.push(g[i_source_node][i]);
 	}
-	// initialize the vector that will store the MST.
+	
 	vector<edge> v_mst;
 	
 	edge next_edge;
@@ -73,49 +74,45 @@ int main(int argc, char **argv) {
 	clock_t t0 = clock();
 	uint i_cities, i_neighbors, i_test_cases;
     uint i_head, i_tail, i_value;
-	FILE *ifile = stdin;
+	//FILE *ifile = stdin;
+	FILE *ifile = fopen("tc_blinnet.in", "r");
 	fscanf(ifile, "%d", &i_test_cases);
     char buffer[128];
 
 	for(uint i = 0; i < i_test_cases; i++)
-	{
+	{	
 		fscanf(ifile, "%d", &i_cities);
         graph g = graph(i_cities);
-        uint i = 0;
+		//fgets(buffer, 128, ifile);
         while(true) {
+			// read town name
             fgets(buffer, 128, ifile);
-            if( buffer ){
+			cout << buffer << endl;
+			if( strlen(buffer) == 2 )
                 break;
-            }     
 
-            fscanf(ifile, "%d", &i_neighbors);  
+			fscanf(ifile, "%d", &i_neighbors);  
             for (size_t j = 0; j < i_neighbors; j++)
             {
                 fscanf(ifile, "%d %d", &i_tail, &i_value);
-                egde e; 
+                edge e; 
                 e.head = i;
                 e.tail = i_tail;
                 e.val = i_value;
                 g[i].push_back(e);
-                egde e1;
+                edge e1;
                 e1.head = i_tail;
                 e1.tail = i;
                 e1.val = i_value;
                 g[i_tail].push_back(e1);
             }
-            
-            i += 1;   
         }
         
 		vector<edge> mst = prim(g, 1);
 		int val_mst = 0;
 		
-		for (int k = 0; k < mst.size(); k++) {
+		for (int k = 0; k < mst.size(); k++) 
 			val_mst += mst[k].val;
-
-		}
-		
-		//cout << "val = " << val_mst << endl;
 		printf("%d\n", val_mst);
 	}
 	//clock_t t1 = clock();

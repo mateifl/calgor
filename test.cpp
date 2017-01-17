@@ -25,10 +25,12 @@ int main(int argc, char const *argv[])
 {
    FILE* f = fopen("test.txt", "r");
    char pch[128];
-   for(int i = 0; i < 10; i++)
+   while(!feof(f))
    {
        fgets(pch, 128, f);
-       cout << pch << endl;
+       if(strcmp(pch, "\n") == 0)
+        cout << "Found EOL" << endl;
+       cout << "|" << pch << "|"  << strlen(pch) << endl;
    }
    fclose(f);
 
