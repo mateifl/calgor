@@ -84,7 +84,7 @@ int main(int argc, char **argv) {
 		fscanf(ifile, "%d", &i_cities);
         graph g = graph(i_cities);
 		//fgets(buffer, 128, ifile);
-        while(true) {
+        for(uint j = 0; j < i_cities; j++) {
 			// read town name
             fgets(buffer, 128, ifile);
 			cout << buffer << endl;
