@@ -70,29 +70,30 @@ int solution(vector<point> &v_locations) {
 }
 
 
-void test() {
-	heap h;
+// void test() {
+// 	heap h;
 
-	point p;
-	p.distance = 10;
-	p.fuel = 8;
-	h.push(p);
-	p.distance = 15;
-	p.fuel = 20;
-	h.push(p);
-	p.distance = 8;
-	p.fuel = 3;
-	h.push(p);
-	p.distance = 7;
-	p.fuel = 15;
-	h.push(p);
-	p = h.top();
-	cout << p.fuel << endl; 
-}
+// 	point p;
+// 	p.distance = 10;
+// 	p.fuel = 8;
+// 	h.push(p);
+// 	p.distance = 15;
+// 	p.fuel = 20;
+// 	h.push(p);
+// 	p.distance = 8;
+// 	p.fuel = 3;
+// 	h.push(p);
+// 	p.distance = 7;
+// 	p.fuel = 15;
+// 	h.push(p);
+// 	p = h.top();
+// 	cout << p.fuel << endl; 
+// }
 
 int main(int argc, char** argv) {
 	// test();
-	FILE *f = fopen("tc_expedi2.in", "r");
+	// FILE *f = fopen("tc_expedi2.in", "r");
+	FILE *f = stdin;
 	u_int i_testcases, i_distance, i_fuel, i_locations_number;
 	fscanf(f, "%d", &i_testcases);
 	point p;

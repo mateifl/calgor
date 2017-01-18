@@ -10,56 +10,80 @@
 #include <set>
 using namespace std;
 typedef unsigned int u_int;
-typedef vector< vector<int> > graph;
 
+struct edge {
+	u_int head;
+	u_int tail;
+	u_int value;
+	u_int heap_value;
+};
 
-graph create(char **pch, u_int rows, u_int columns, vector<u_int> &edges) {
+typedef edge edge;
+typedef vector< vector<edge> > graph;
+
+graph create(char **pch, u_int rows, u_int columns) {
     graph g(rows * columns);
 
     for (size_t i = 0; i < rows; i++)
     {
         for (size_t j = 0; j < columns; j++)
         {
-            if(pch[i][j] == '.')
-            {
-                if(i == 0 || j == 0 || i == (rows - 1) || j == (columns - 1))
-                    edges.push_back(i * columns + j);
-                
-                if(j > 0 && pch[i][j - 1] == '.')
-                    g[i * columns + j].push_back(i * columns + j - 1);
-                if(j < (columns - 1) && pch[i][j + 1] == '.') 
-                    g[i * columns + j].push_back(i * columns + j + 1);
-                if(i > 0 && pch[i - 1][j] == '.') 
-                    g[i * columns + j].push_back((i - 1) * columns + j);
-                if(i < (rows - 1) && pch[i + 1][j] == '.') 
-                    g[i * columns + j].push_back((i + 1) * columns + j);
-            }    
-        }
+			if (pch[i][j] == 'X')
+				continue;
+
+			if(i < (rows - 1)) {
+				edge e;
+				char v = pch[i + 1][j];
+				e.head = i * columns + j;
+				e.tail = (i + 1) * columns + j;
+				e.value = atoi(&v);
+				g[i * columns + j].push_back(e);
+				e.head = (i + 1) * columns + j;
+				e.tail = i * columns + j;
+				g[(i + 1) * columns + j].push_back(e);
+			}
+
+			if (i > 0) {
+				edge e;
+				char v = pch[i - 1][j];
+				e.head = i * columns + j;
+				e.tail = (i - 1) * columns + j;
+				e.value = atoi(&v);
+				g[e.head].push_back(e);
+				e.head = (i - 1) * columns + j;
+				e.tail = i * columns + j;
+				g[e.head].push_back(e);
+			}
+
+			if (j < (columns - 1)) {
+				edge e;
+				char v = pch[i][j + 1];
+				e.head = i * columns + j;
+				e.tail = i * columns + j + 1;
+				e.value = atoi(&v);
+				g[e.head].push_back(e);
+				e.head = i * columns + j + 1;
+				e.tail = i * columns + j;
+				g[e.head].push_back(e);
+			}
+
+			if (j > 0) {
+				edge e;
+				char v = pch[i][j - 1];
+				e.head = i * columns + j;
+				e.tail = (i - 1) * columns + j;
+				e.value = atoi(&v);
+				g[e.head].push_back(e);
+				e.head = (i - 1) * columns + j;
+				e.tail = i * columns + j;
+				g[e.head].push_back(e);
+			}
+		}
     }
     return g;
 }
 
-bool bfs(graph g, u_int start_node, u_int end_node) {
-	vector<bool> discovered(g.size());
-	discovered[start_node] = true;
-	queue<int> q;
-	q.push(start_node);
-	int node;
 
-	while (q.size() > 0) {
-		node = q.front();
-		if (node == end_node)
-			return true;
-		q.pop();
-		discovered[node] = true;
-
-		for (u_int i = 0; i < g[node].size(); i++) {
-			if( !discovered[g[node][i]] )
-				q.push(g[node][i]);
-		}
-	}
-	return false;
-}
 
 
 int main(int argc, char** argv) {
@@ -82,15 +106,8 @@ int main(int argc, char** argv) {
 
         vector<u_int> edges;
         graph g = create(pch, rows, columns, edges);
-		if (edges.size() != 2) {
-			printf("invalid\n");
-			continue;
-		}
-		bool result = bfs(g, edges[0], edges[1]);
-		if(result)
-			printf("valid\n");
-		else
-			printf("invalid\n");
+
+
 		delete[] pch;
     }
     return 0;
