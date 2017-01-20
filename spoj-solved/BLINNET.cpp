@@ -5,7 +5,6 @@
 #include <cstring>
 #include <vector>
 #include <string>
-#include <algorithm>
 #include <queue>
 using namespace std;
 
@@ -74,37 +73,31 @@ int main(int argc, char **argv) {
 	clock_t t0 = clock();
 	uint i_cities, i_neighbors, i_test_cases;
     uint i_head, i_tail, i_value;
-	//FILE *ifile = stdin;
-	FILE *ifile = fopen("tc_blinnet.in", "r");
+	FILE *ifile = stdin;
+	//FILE *ifile = fopen("tc_blinnet.in", "r");
 	fscanf(ifile, "%d", &i_test_cases);
     char buffer[128];
 
 	for(uint i = 0; i < i_test_cases; i++)
 	{	
 		fscanf(ifile, "%d", &i_cities);
-        graph g = graph(i_cities);
+        graph g = graph(i_cities + 1);
 		//fgets(buffer, 128, ifile);
-        for(uint j = 0; j < i_cities; j++) {
+        for(uint j = 1; j <= i_cities; j++) {
 			// read town name
-            fgets(buffer, 128, ifile);
-			cout << buffer << endl;
-			if( strlen(buffer) == 2 )
-                break;
+            fscanf(ifile, "%s", buffer);
+			//cout << buffer << endl;
 
 			fscanf(ifile, "%d", &i_neighbors);  
-            for (size_t j = 0; j < i_neighbors; j++)
+            for (size_t k = 0; k < i_neighbors; k++)
             {
                 fscanf(ifile, "%d %d", &i_tail, &i_value);
+				//cout << i_tail << " " << i_value << endl;
                 edge e; 
-                e.head = i;
+                e.head = j;
                 e.tail = i_tail;
                 e.val = i_value;
-                g[i].push_back(e);
-                edge e1;
-                e1.head = i_tail;
-                e1.tail = i;
-                e1.val = i_value;
-                g[i_tail].push_back(e1);
+                g[e.head].push_back(e);
             }
         }
         

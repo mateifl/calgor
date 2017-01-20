@@ -27,6 +27,10 @@ void read_ingore_empty_line(FILE *f, char *pch) {
         fgets(pch, 126, f);
 }
 
+
+
+
+
 int main(int argc, char const *argv[])
 {
     // cout << atoi("10\n\0") << endl;
@@ -46,8 +50,10 @@ int main(int argc, char const *argv[])
         cout << "town: " <<  pch << endl;
         read_ingore_empty_line(f, pch);
         neighbors = atoi(pch);
+        for (size_t j = 0; j < neighbors; j++)  {}
 
-        
+
+
     }
 
     // for (size_t i = 0; i < testcases; i++)
