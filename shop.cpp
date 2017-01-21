@@ -104,10 +104,7 @@ int main(int argc, char** argv) {
             fscanf(f, "%s", pch[j]);
         }
 
-        vector<u_int> edges;
-        graph g = create(pch, rows, columns, edges);
-
-
+        graph g = create(pch, rows, columns);
 		delete[] pch;
     }
     return 0;
