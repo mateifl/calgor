@@ -6,3 +6,7 @@ Debug
 x64
 calgor.sln
 calgor.VC.db
+.vs
+calgor
+Release
+*.exe
